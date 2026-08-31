@@ -30,3 +30,5 @@ rm -f fixtures/*.json public/fixtures/*.jpg
 
 Then re-run each look once through `/test` with your own photo. Budget roughly
 2 units per try-on.
+
+**Photo spec and the full regeneration steps: `docs/ASSETS.md`.**

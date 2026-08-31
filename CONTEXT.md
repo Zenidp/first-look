@@ -201,6 +201,9 @@ Two things deliberately left undone:
 2. **`public/references/` is empty** — 13 declared slots for kebaya, hijab and
    regional makeup, parked until you source the images.
 
+**`docs/ASSETS.md` is the shooting and sourcing spec for both** — exact framing,
+measured face-size limits, the 13 filenames, and where each file goes.
+
 ### Deploy facts
 
 - Repo `Zenidp/first-look`, **private**. Vercel GitHub App was granted access manually; `vercel git connect` cannot do that for a private repo on its own.
