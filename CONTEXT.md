@@ -178,39 +178,87 @@ Record in Bahasa or English, but subtitle in English. Judges are American.
 
 | Date | Session summary | State at end |
 |---|---|---|
-| Sun 30 Aug 2026 | Read the docs down to the raw OpenAPI bundles (`docs.perfectcorp.com/_bundle/reference/<api>.json` — far more reliable than the rendered pages). Scaffolded Next.js 16.3.3 + TS + Tailwind. Built the Perfect Corp client, feature registry and fixture cache. **One real hair try-on end to end: HTTP 200, 7.4s over 5 polls, 2 units.** Repeat call served from cache in 4ms for 0 units. | Day 1 goal met: auth, upload, task, poll and cache proven live. |
-| Mon 31 Aug 2026 | Audited all 29 APIs and confirmed every registered version is the newest. Generalised to `/api/tryon/[feature]` + `/api/templates/[feature]` + `/api/features`, **30 features registered**. Mirrored 10 makeup pattern catalogues (4,458 patterns). Proved 7 of 9 request families live. **Found the `styled` fashion family is generative, not a try-on** — and turned that into the prewedding concept generator (`/prewedding`, 8 concepts, 3 verified). Wrote `docs/FINDINGS.md` and `scripts/smoke.sh` (18/18, zero units). Built the empty Nusantara reference library. Shipped: 11 commits to GitHub, deployed to Vercel, git auto-deploy verified. ~32 units spent in total. | **Deployed and auto-deploying.** Day 2 work done. |
+| Sun 30 Aug 2026 | Read the docs down to the raw OpenAPI bundles (`docs.perfectcorp.com/_bundle/reference/<api>.json` — far more reliable than the rendered pages). Scaffolded Next.js 16.3.3 + TS + Tailwind. Built the Perfect Corp client, feature registry and fixture cache. **One real hair try-on end to end: 7.4s over 5 polls, 2 units.** Repeat call served from cache in 4ms for 0 units. | Day 1 goal met: auth, upload, task, poll and cache proven live. |
+| Mon 31 Aug 2026 (am) | Audited all 29 APIs, every registered version confirmed newest. Generalised to `/api/tryon/[feature]` + `/api/templates/[feature]` + `/api/features`, **30 features registered**. Mirrored 10 makeup pattern catalogues (4,458 patterns). **Found the `styled` fashion family is generative, not a try-on** — turned that into the prewedding concept generator. Wrote `docs/FINDINGS.md` and `scripts/smoke.sh` (18/18, zero units). Shipped to GitHub and Vercel, git auto-deploy verified. | Deployed and auto-deploying. |
+| Mon 31 Aug 2026 (pm) | Generated the whole asset set with Gemini via `scripts/generate-assets.py`: a **synthetic bride** (10 photos) and **18 reference images**. Cleared both licensing blockers. **Every one of the 30 features now tested end to end**, with 18 fixtures banking 28 units of results. Fixed five bugs, three of which only appear in production. | **Everything works. Ready for Day 3.** |
 
 ### Where to pick up (Day 3, Tue 1 Sep)
 
-Per section 9, Day 3 is **Hair Readiness + shared look board, then feature freeze.**
-Day 4 is video, project page and submission only — no new code.
+Per section 9, Day 3 is **Hair Readiness + shared look board, then feature
+freeze.** Day 4 is video, project page and submission only — no new code.
 
-Ready to build on:
-- All four diagnostics are registered and the JSON result path is proven live —
-  `hairLengthDetection` returned `{"hair_length":{"term":"ear length"}}` in 5.8s.
-- **Hair type and frizziness need exactly 3 photos** (front, right, left);
-  length and density need 1. Full diagnostic sweep costs 7 units per bride.
-- The readiness verdict is our own rule layer over those four values plus the
-  wedding-date delta. Section 6 says keep the rules transparent and explainable.
+#### What is done and proven
 
-Both earlier blockers are now cleared:
-1. ~~Fixtures must be regenerated~~ — **done.** Every Perfect Corp–derived
-   fixture is deleted. What remains comes from a **synthetic bride** generated
-   with Gemini (`scripts/generate-assets.py`, sources in git-ignored `input/`).
-   No third-party imagery, no outstanding consent. **The repo can go public:**
-   `gh repo edit Zenidp/first-look --visibility public --accept-visibility-change-consequences`
-2. ~~`public/references/` is empty~~ — **done.** All 13 slots filled and live in
-   production. Verified end to end: the Javanese kebaya composites onto the
-   synthetic bride's photo with her face, background and pose intact.
+- **All 30 features work**, each verified by eye, not just by HTTP 200.
+- **18 fixtures** replay for 0 units, in production, on the read-only Vercel
+  filesystem. That is the demo path.
+- **Synthetic bride** in git-ignored `input/`: `face-front` (hair up),
+  `face-front-hairdown`, `face-front-smile`, `face-right`, `face-left`,
+  `full-body`, `hands`, `hand-ring`, `hand-bracelet`, `hand-nails`.
+  Which photo you use is not interchangeable — see below.
+- **18 references** in `public/references/`: 8 Nusantara garments (incl. 2 hijab
+  looks), 5 regional makeup, 4 jewellery products, 1 contact lens.
+- No third-party imagery anywhere. **The repo can go public:**
+  `gh repo edit Zenidp/first-look --visibility public --accept-visibility-change-consequences`
 
-Still open: **the five regional makeup references need an MUA to confirm they
-are recognisably correct and not generic.** Paes ageng and suntiang are the ones
-to check. A wrong region is worse than a missing one — clear the `credit` field
-on any that fail and the slot hides itself.
+#### Building Hair Readiness — what already exists
 
-**`docs/ASSETS.md` is the shooting and sourcing spec for both** — exact framing,
-measured face-size limits, the 13 filenames, and where each file goes.
+- All four diagnostics registered, JSON result path proven:
+  `hairLengthDetection` → `{"hair_length":{"term":"ear length"}}` in 5.8s;
+  `hairTypeDetection` → `{"hair_type":{"mapping":"2A to 2B"}}` in 7.5s.
+- Type and frizziness need **exactly 3 photos** (front, right, left) — length
+  and density need 1. Full sweep is 7 units per bride.
+- The verdict is our own rule layer over those four values plus the wedding-date
+  delta. Section 6: keep the rules transparent and explainable in the UI.
+
+**The one trap to design around.** The diagnostic answers about the *photo*, not
+the person: the same bride read `2A to 2B` with hair loose and `1 to 2A` with
+hair in a bun — a full band apart. A readiness verdict that moves because of
+how she wore her hair that morning is not a verdict. Insist on loose hair, and
+say in the UI what the reading was based on. `FINDINGS.md` §2g.
+
+#### Still open
+
+1. **The five regional makeup references need an MUA to confirm** they read as
+   correct rather than generic. Paes ageng and suntiang are the ones to check.
+   A wrong region is worse than a missing one — clear the `credit` field on any
+   that fail and the slot hides itself.
+2. The Nusantara garments are Gemini-generated stand-ins. Fine for the demo;
+   real designer photography would be stronger for the submission.
+
+#### Where things are documented
+
+| File | What it holds |
+|---|---|
+| `docs/FINDINGS.md` | Everything measured against the live API that the docs get wrong or omit. **Read this before changing any API call.** |
+| `docs/ASSETS.md` | Photo spec: framing, face-size limits, filenames, where each file goes |
+| `docs/IMAGE-PROMPTS.md` | Gemini prompts for regenerating any asset |
+| `scripts/generate-assets.py` | `--list`, `--group bride\|garment\|makeup\|jewellery`, `--all` |
+| `scripts/measure-anchor.py` | Derives 2D-VTO anchor points from a product photo |
+| `scripts/smoke.sh` | 18 checks, zero units, needs `PHOTO=` and a running server |
+
+### Which photo goes with which feature
+
+Every one of these pairings has a fixture, so it replays for **0 units**. Using
+a different photo is a cache miss and a real billable call — and several
+features reject the wrong subject outright after charging.
+
+| Feature | Photo | Reference |
+|---|---|---|
+| Hair Style | `face-front` | template `female_s_wave_brunette` |
+| Outfit (newest engine) | `full-body` | any of the 8 Nusantara garments |
+| Earrings | `face-front` | `earring-gold-drop` |
+| Necklace | `face-front` | `necklace-gold-collar` |
+| Ring | `hand-ring` | `ring-gold-solitaire` |
+| Bracelet | `hand-bracelet` | `bracelet-gold-cuff` |
+| Nail | `hand-nails` | — (default effects payload) |
+| Teeth Whitening | `face-front-smile` | — |
+| Eye Colour Lens | `face-front` | `lens-hazel` |
+| Custom Makeup | `face-front` | — |
+| Hair Type (3 photos) | `face-front-hairdown`, `face-right`, `face-left` | — |
+
+Slot order is wire order for the three-photo diagnostics, and it is now part of
+the cache key, so a swapped order is no longer silently answered from cache.
 
 ### Deploy facts
 
