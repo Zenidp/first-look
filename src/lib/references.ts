@@ -55,6 +55,13 @@ export type ReferenceItem = {
   credit: string;
   /** Licence or written permission. Required for the same reason. */
   license: string;
+  /**
+   * Placement parameters for the 2D VTO suite, merged into `object_infos[0]`.
+   * Without them the engine guesses and a bangle lands flat on the forearm.
+   * `bracelet_anchor_point` is the pair of FARTHEST points on the product's
+   * inner edge — measured, not eyeballed; see scripts/measure-anchor.py.
+   */
+  parameter?: Record<string, unknown>;
   notes?: string;
 };
 
@@ -219,6 +226,11 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
     use: "bracelet",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
     license: "AI-generated for this project; no third-party rights",
+    parameter: {
+      bracelet_anchor_point: [[602, 272], [406, 738]],
+      bracelet_wearing_location: 0,
+      bracelet_shadow_intensity: 0.35,
+    },
     notes: "Needs the wrist facing the camera, arm vertical — see input/hand-bracelet.jpg.",
   },
   {

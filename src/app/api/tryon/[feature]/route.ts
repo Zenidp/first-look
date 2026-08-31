@@ -4,6 +4,7 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 
 import { getFeature, isFeatureId, type FeatureId } from "@/lib/perfectcorp/features";
+import { REFERENCE_LIBRARY } from "@/lib/references";
 import { PerfectCorpError, runTask, uploadImage } from "@/lib/perfectcorp/client";
 import { buildPayload, cacheableOptions, PayloadError } from "@/lib/perfectcorp/payload";
 import {
@@ -106,6 +107,12 @@ export async function POST(request: Request, ctx: RouteContext<"/api/tryon/[feat
           await readFile(path.join(process.cwd(), "public", "references", `${referenceId}.jpg`)),
         );
         refName = `${referenceId}.jpg`;
+        // Placement parameters travel with the product, not the request. A
+        // caller-supplied `parameter` still wins.
+        const entry = REFERENCE_LIBRARY.find((r) => r.id === referenceId);
+        if (entry?.parameter && options.parameter === undefined) {
+          options.parameter = entry.parameter;
+        }
       } catch {
         return bad(
           `No image in the reference library for "${referenceId}". Add public/references/${referenceId}.jpg.`,

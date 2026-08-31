@@ -263,6 +263,63 @@ kebaya fixture replays in 11ms for 0 units.
 
 ---
 
+## 2f. Perfect Corp ships no jewellery catalogue, and placement is on you
+
+Verified by enumerating every path in the five 2D VTO bundles:
+
+| Feature family | Catalogue endpoint |
+|---|---|
+| Hair style, look, cloth, fabric, bangs, beard… | `GET /s2s/…/task/template/<name>` |
+| **Earring, necklace, ring, bracelet, watch** | **none — not one** |
+
+The 2D VTO suite is built for retailers bringing their own SKU photos, so the
+jewellery in this project is generated rather than fetched. There is nothing to
+fetch. (Their docs do embed a handful of illustrative product images, but §7
+forbids redistributing them.)
+
+### The product photo format is not free-form
+
+A bangle photographed **face-on and flat** composited as a sticker: a straight
+band laid over the forearm, overhanging the arm silhouette on both sides, with
+no wrap and no occlusion.
+
+The engine needs a **closed ring shot at a three-quarter angle from above, with
+the inner opening visible**. That is what their own `bracelet_anchor_point`
+diagram shows, and it is the only way the engine can infer the ring's plane.
+
+### `object_infos[].parameter` is where placement lives
+
+Never sent it at first, so the engine guessed. The keys are per-feature:
+
+```
+bracelet_anchor_point       [[x1,y1],[x2,y2]] on the product's INNER edge
+bracelet_wearing_location   -0.3 … 1.0, 0 = at the wrist joint
+bracelet_shadow_intensity   0 … 1
+earring_anchor_point, earring_wearing_location, earring_scale,
+earring_is_right_ear, ring_anchor_point, …
+```
+
+### "The 2 farthest points" means the farthest *pair*
+
+This cost two attempts. The inner opening of an angled bangle is a tilted
+ellipse, so its horizontal extremes and its farthest-apart pair are different
+points — 281px apart versus 506px. Using the horizontal extremes scaled the
+bangle about twice too large.
+
+`scripts/measure-anchor.py` measures it properly: flood the background from the
+border, take the largest enclosed region as the opening (filigree openwork
+creates hundreds of small ones), then the farthest pair on its convex hull.
+
+With the right product format and measured anchor points, the bangle sits at
+the wrist joint, wraps in perspective, and the arm correctly occludes its far
+side. The values live on the reference entry in `src/lib/references.ts`, so
+picking it from the library sends them automatically.
+
+Earrings, necklace and ring were acceptable on engine defaults; only the
+bracelet needed this.
+
+---
+
 ## 3. A failed AI task still costs units
 
 From the endpoint descriptions, verbatim:

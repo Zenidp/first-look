@@ -1,0 +1,27 @@
+{
+  "key": "eddfde808cefb2347bb1985e6afdf1ab",
+  "feature": "bracelet",
+  "inputs": {
+    "__feature": "bracelet",
+    "parameter": {
+      "bracelet_anchor_point": [
+        [
+          602,
+          272
+        ],
+        [
+          406,
+          738
+        ]
+      ],
+      "bracelet_wearing_location": 0,
+      "bracelet_shadow_intensity": 0.35
+    }
+  },
+  "taskId": "bubIDLn1KMMXg87CREy5CLLGzgIVdux5yi94fqpUXgC3APJ9aUKr2XnBTXGc43y7rsVEnq3ffBAO2Lf_ZLul6Q",
+  "unitsSpent": 1,
+  "elapsedMs": 4236,
+  "polls": 3,
+  "createdAt": "2026-08-31T07:30:27.038Z",
+  "imagePath": "/fixtures/eddfde808cefb2347bb1985e6afdf1ab.jpg"
+}

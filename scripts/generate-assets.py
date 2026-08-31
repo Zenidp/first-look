@@ -283,9 +283,17 @@ JEWELLERY = {
     "ring-gold-solitaire":
         "A gold bridal solitaire ring: a polished yellow gold band with a single round "
         "brilliant-cut diamond in a raised setting, shown upright from the front.",
+    # A face-on flat cuff gives the engine nothing to anchor to and lands as a
+    # sticker on the forearm. It needs a CLOSED bangle shot at an angle from
+    # above so the inner opening is visible — the two farthest points of that
+    # opening are what the anchor points refer to.
     "bracelet-gold-cuff":
-        "A gold bridal bracelet: an ornate filigree yellow gold cuff set with small white "
-        "pearls, shown from the front as an open circle.",
+        "A gold bridal bangle bracelet: a closed circular yellow gold bangle with ornate "
+        "filigree engraving and small white pearls set into the band. Photographed at a "
+        "three-quarter angle from slightly above so the ring shape is seen in perspective "
+        "as an ellipse and the INNER OPENING of the bangle is clearly visible through the "
+        "middle, with the inner wall of the far side of the band showing. The whole bangle "
+        "is inside the frame, nothing cropped.",
 }
 for jid, desc in JEWELLERY.items():
     job(jid, "jewellery", f"public/references/{jid}.jpg", JEWELLERY_BASE + desc, aspect="1:1")

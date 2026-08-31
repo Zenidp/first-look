@@ -118,13 +118,26 @@ export function buildPayload(feature: FeatureId, input: BuildInput): Record<stri
     }
 
     // The 2D VTO suite wants the flat ids AND nested descriptors naming them.
+    //
+    // `parameter` is where placement actually lives, and leaving it out is why a
+    // bracelet lands flat and low on the forearm: the engine falls back to a
+    // guess. Each feature names its own keys, e.g.
+    //   bracelet_anchor_point      the 2 farthest points on the bracelet's INNER edge
+    //   bracelet_wearing_location  -0.3..1.0, 0 = at the wrist joint
+    //   earring_is_right_ear, earring_scale, ring_anchor_point, …
+    // Passed straight through so the caller can tune without a code change.
     case "jewelry": {
       if (!refFileId) throw new PayloadError(`${f.label} requires a product photo`, "MissingReference");
+      const object: Record<string, unknown> = { name: refFileId };
+      const parameter = options.parameter;
+      if (parameter && typeof parameter === "object" && !Array.isArray(parameter)) {
+        object.parameter = parameter;
+      }
       return {
         src_file_id: src,
         ref_file_ids: [refFileId],
         source_info: { name: src },
-        object_infos: [{ name: refFileId }],
+        object_infos: [object],
       };
     }
 
@@ -200,6 +213,7 @@ export function cacheableOptions(
   const keep = [
     "templateId", "preset", "gender", "style", "garmentCategory",
     "changeShoes", "hairColor", "effectType", "effects", "effect", "index",
+    "parameter",
   ];
   const out: Record<string, unknown> = { __feature: feature };
   for (const k of keep) {
