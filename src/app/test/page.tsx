@@ -306,23 +306,32 @@ export default function TestPage() {
 
       <section className="mt-5">
         <label className="block text-sm font-medium">
-          {needPhotos === 3 ? "Three photos, one slot each" : "Bride's photo"}
+          {needPhotos === 3 ? "Tiga foto — satu slot masing-masing" : "Foto pengantin"}
         </label>
         {needPhotos === 3 && (
-          <p className="mt-1 text-xs text-neutral-500">
-            The order matters and the API cannot infer it. Put each photo in its own
-            slot — a wrong order returns <code>error_face_angle_invalid</code> after
-            the units are already spent.
+          <p className="mt-1 rounded-lg bg-amber-50 p-2 text-xs text-amber-900">
+            <strong>Urutan menentukan hasil</strong>, dan API tidak bisa menebaknya.
+            Salah urutan menghasilkan <code>error_face_angle_invalid</code> setelah
+            kredit terpakai.
+            <br />
+            <strong>Rambut harus tergerai</strong> di ketiga foto — endpoint ini membaca
+            tekstur rambut. Foto berambut sanggul akan terbaca lebih lurus dari
+            aslinya.
           </p>
         )}
         <div className="mt-2 space-y-3">
           {Array.from({ length: needPhotos }, (_, i) => (
             <div key={i}>
               {needPhotos === 3 && (
-                <span className="block text-xs font-medium text-neutral-700">
-                  {["1. Front (head straight, within 10°)",
-                    "2. Right side (turned more than 15°)",
-                    "3. Left side (turned more than 15°)"][i]}
+                <span className="block text-xs font-medium text-neutral-800">
+                  {[
+                    "1. HADAP DEPAN — kepala lurus ke kamera, maks 10°",
+                    "2. HADAP KANAN — menoleh ke kanan, lebih dari 15°",
+                    "3. HADAP KIRI — menoleh ke kiri, lebih dari 15°",
+                  ][i]}
+                  <span className="ml-1 font-normal text-neutral-500">
+                    {["(face-front-hairdown.jpg)", "(face-right.jpg)", "(face-left.jpg)"][i]}
+                  </span>
                 </span>
               )}
               <input
@@ -332,8 +341,15 @@ export default function TestPage() {
                 onChange={(e) => { const f = e.target.files?.[0]; if (f) pickPhotoAt(i, f); }}
               />
               {previews[i] && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={previews[i]} alt="" className="mt-1 w-24 rounded-lg" />
+                <span className="mt-1 flex items-center gap-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={previews[i]} alt="" className="w-24 rounded-lg" />
+                  {needPhotos === 3 && (
+                    <span className="text-xs text-neutral-500">
+                      slot {i + 1} → {["depan", "kanan", "kiri"][i]}
+                    </span>
+                  )}
+                </span>
               )}
             </div>
           ))}

@@ -1,0 +1,19 @@
+{
+  "key": "30bbb85501390adfeb5031530fb4780e",
+  "feature": "hairTypeDetection",
+  "inputs": {
+    "__feature": "hairTypeDetection",
+    "__photoOrder": "68983f8601e9a1a1,937a15f4a5370821,c218ed2f3c50ca44"
+  },
+  "data": {
+    "hair_type": {
+      "mapping": "2A to 2B",
+      "term": "Slight to Medium Wavy"
+    }
+  },
+  "taskId": "UlCpLYpKJBJVRTQL3d9kJ-YOL79AWe2vLn3KyxkTxfiIBPip_jU3BDtH6SyMgkSsiP-cNNm0IpvzVURHq0sAXA",
+  "unitsSpent": 2,
+  "elapsedMs": 6029,
+  "polls": 4,
+  "createdAt": "2026-08-31T08:08:57.691Z"
+}

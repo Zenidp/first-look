@@ -320,6 +320,45 @@ bracelet needed this.
 
 ---
 
+## 2g. The hair diagnostic answers about the *photo*, not the person
+
+Two runs of `hairTypeDetection` on the same synthetic bride, same right/left
+photos, differing only in the front shot:
+
+| Front photo | Result |
+|---|---|
+| `face-front-hairdown.jpg` — hair loose | **2A to 2B**, Slight to Medium Wavy |
+| `face-front.jpg` — hair in a tight bun | **1 to 2A**, Straight to Slight Wavy |
+
+Hair scraped back leaves almost no texture to read, so the engine reports
+straighter hair than the person has. Not a bug — a correct reading of the
+wrong photo.
+
+**This matters for Hair Readiness.** A verdict on whether her hair can reach a
+target style by the wedding is worthless if the answer moves a whole band
+depending on how she happened to wear her hair that morning. The UI has to
+insist on loose hair in all three shots, and the readiness copy should say what
+the diagnostic was based on.
+
+Diagnosed at **zero cost** by recomputing the fixture key for every three-photo
+combination in `input/` until one matched the key in the Vercel logs — worth
+remembering as a technique, since it identifies exactly what a user uploaded
+without another API call.
+
+### The cache key ignored photo order
+
+`fixtureKey` sorts the image hashes, which is right when photos are
+interchangeable and wrong here: the API reads them as front, right, left and
+answers differently when swapped, so both orders collided on one entry. A
+swapped run would have silently replayed the correct-order result.
+
+Order is now folded into the identity for multi-photo features only, leaving
+every other fixture key untouched. Verified: correct order replays for 0 units;
+swapped order no longer hits that entry and is rejected by the API, as it
+should be.
+
+---
+
 ## 3. A failed AI task still costs units
 
 From the endpoint descriptions, verbatim:

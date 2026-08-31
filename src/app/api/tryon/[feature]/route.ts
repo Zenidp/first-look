@@ -140,6 +140,17 @@ export async function POST(request: Request, ctx: RouteContext<"/api/tryon/[feat
     const identity = cacheableOptions(feature, options);
     const imageHashes = photoBytes.map(hashBytes);
     if (refBytes) imageHashes.push(hashBytes(refBytes));
+
+    // fixtureKey sorts the hashes, which is fine when the photos are
+    // interchangeable. They are not for the three-photo diagnostics: the API
+    // reads them as front, right, left and answers differently if they are
+    // swapped, so front/right/left and front/left/right must not collide on
+    // one cache entry. Fold the order into the identity for those features
+    // only, leaving every other fixture key untouched.
+    if (expected > 1) {
+      identity.__photoOrder = photoBytes.map(hashBytes).join(",");
+    }
+
     const key = fixtureKey(feature, identity, imageHashes);
 
     // --- cache first, before spending anything ------------------------------
