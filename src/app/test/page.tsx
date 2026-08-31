@@ -306,17 +306,17 @@ export default function TestPage() {
 
       <section className="mt-5">
         <label className="block text-sm font-medium">
-          {needPhotos === 3 ? "Tiga foto — satu slot masing-masing" : "Foto pengantin"}
+          {needPhotos === 3 ? "Three photos, one per slot" : "Bride's photo"}
         </label>
         {needPhotos === 3 && (
           <p className="mt-1 rounded-lg bg-amber-50 p-2 text-xs text-amber-900">
-            <strong>Urutan menentukan hasil</strong>, dan API tidak bisa menebaknya.
-            Salah urutan menghasilkan <code>error_face_angle_invalid</code> setelah
-            kredit terpakai.
+            <strong>Order decides the result</strong> and the API cannot infer it. A
+            wrong order returns <code>error_face_angle_invalid</code> after the units
+            are already spent.
             <br />
-            <strong>Rambut harus tergerai</strong> di ketiga foto — endpoint ini membaca
-            tekstur rambut. Foto berambut sanggul akan terbaca lebih lurus dari
-            aslinya.
+            <strong>Hair must be loose</strong> in all three — this endpoint reads hair
+            texture, and a photo with the hair tied back reads straighter than she
+            actually is.
           </p>
         )}
         <div className="mt-2 space-y-3">
@@ -325,9 +325,9 @@ export default function TestPage() {
               {needPhotos === 3 && (
                 <span className="block text-xs font-medium text-neutral-800">
                   {[
-                    "1. HADAP DEPAN — kepala lurus ke kamera, maks 10°",
-                    "2. HADAP KANAN — menoleh ke kanan, lebih dari 15°",
-                    "3. HADAP KIRI — menoleh ke kiri, lebih dari 15°",
+                    "1. FRONT — head square to camera, within 10°",
+                    "2. RIGHT — turned to her right, more than 15°",
+                    "3. LEFT — turned to her left, more than 15°",
                   ][i]}
                   <span className="ml-1 font-normal text-neutral-500">
                     {["(face-front-hairdown.jpg)", "(face-right.jpg)", "(face-left.jpg)"][i]}
@@ -346,7 +346,7 @@ export default function TestPage() {
                   <img src={previews[i]} alt="" className="w-24 rounded-lg" />
                   {needPhotos === 3 && (
                     <span className="text-xs text-neutral-500">
-                      slot {i + 1} → {["depan", "kanan", "kiri"][i]}
+                      slot {i + 1} → {["front", "right", "left"][i]}
                     </span>
                   )}
                 </span>
