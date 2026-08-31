@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "smoke": "./scripts/smoke.sh",
+    "dev:offline": "PERFECTCORP_OFFLINE=1 next dev",
+    "start:offline": "PERFECTCORP_OFFLINE=1 next start"
   },
   "dependencies": {
     "next": "16.3.3",
