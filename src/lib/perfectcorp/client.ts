@@ -35,7 +35,8 @@ function apiKey(): string {
   const key = process.env.PERFECTCORP_API_KEY?.trim();
   if (!key) {
     throw new PerfectCorpError(
-      "PERFECTCORP_API_KEY is not set. Paste it into .env.local and restart the dev server.",
+      "PERFECTCORP_API_KEY is not set. Locally: add it to .env.local and restart. " +
+        "On Vercel: Project Settings > Environment Variables, then redeploy.",
       "MissingApiKey",
     );
   }
