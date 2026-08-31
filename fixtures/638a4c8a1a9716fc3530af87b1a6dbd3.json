@@ -1,0 +1,15 @@
+{
+  "key": "638a4c8a1a9716fc3530af87b1a6dbd3",
+  "feature": "scarf",
+  "inputs": {
+    "__feature": "scarf",
+    "gender": "female",
+    "style": "style_french_elegance"
+  },
+  "taskId": "Ynpv_k6GBfwm6IpsXxhwxUEF8hZZsnm6tovukMRd7YZDsZtOP2z8GCkdZ2SeKS1L7LjmMZR6kmPmlZxNKC56fg",
+  "unitsSpent": 2,
+  "elapsedMs": 15931,
+  "polls": 10,
+  "createdAt": "2026-08-30T17:47:38.058Z",
+  "imagePath": "/fixtures/638a4c8a1a9716fc3530af87b1a6dbd3.jpg"
+}

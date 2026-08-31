@@ -1,0 +1,15 @@
+{
+  "key": "14adedfa1b3e82acbf1d23b0a604ab62",
+  "feature": "clothesTemplates",
+  "inputs": {
+    "__feature": "clothesTemplates",
+    "templateId": "wedding_high_neck_lace",
+    "garmentCategory": "full_body"
+  },
+  "taskId": "ZkcSc8g-G-UGOUBWYTHrPliOBtFM76xOwQFyX22ojduNGsOKxQ-Gang9bJo3i-j6Hh3cupCFInmNMtJ7WiezAQ",
+  "unitsSpent": 2,
+  "elapsedMs": 7600,
+  "polls": 5,
+  "createdAt": "2026-08-30T17:14:44.655Z",
+  "imagePath": "/fixtures/14adedfa1b3e82acbf1d23b0a604ab62.jpg"
+}

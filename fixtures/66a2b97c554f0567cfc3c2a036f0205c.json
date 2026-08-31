@@ -1,0 +1,14 @@
+{
+  "key": "66a2b97c554f0567cfc3c2a036f0205c",
+  "feature": "hairColor",
+  "inputs": {
+    "__feature": "hairColor",
+    "preset": "Jet Black"
+  },
+  "taskId": "s4Ao0HLK0Fb9dptS3d3_U9UGEgZNRI2n07fR_2bwwskkTJNSLJwZpd2M91_-QKJnDtzZw-qXapKUf8ErhvArwA",
+  "unitsSpent": 1,
+  "elapsedMs": 4206,
+  "polls": 3,
+  "createdAt": "2026-08-30T17:13:21.459Z",
+  "imagePath": "/fixtures/66a2b97c554f0567cfc3c2a036f0205c.jpg"
+}

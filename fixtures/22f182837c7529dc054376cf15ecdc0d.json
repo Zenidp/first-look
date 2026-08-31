@@ -1,0 +1,14 @@
+{
+  "key": "22f182837c7529dc054376cf15ecdc0d",
+  "feature": "clothes",
+  "inputs": {
+    "__feature": "clothes",
+    "garmentCategory": "full_body"
+  },
+  "taskId": "KAPH4INOfEoyvqu3os3rmIh-cmXLipEyZ_BY2SrZYS2CCjuk0tO0L7Qk5-Ln8vcoGi4M447Ki6l9hDTl1ySvww",
+  "unitsSpent": 2,
+  "elapsedMs": 9307,
+  "polls": 6,
+  "createdAt": "2026-08-30T17:32:22.689Z",
+  "imagePath": "/fixtures/22f182837c7529dc054376cf15ecdc0d.jpg"
+}
