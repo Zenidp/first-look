@@ -1,5 +1,8 @@
 # Shooting and sourcing guide
 
+> Generating these with an image model instead of a camera?
+> Copy-paste prompts with these constraints already baked in: **`IMAGE-PROMPTS.md`**.
+
 Exactly what images this app needs, what the API accepts, and where each file
 goes. Every limit below was measured against the live API, not copied from the
 docs — see `FINDINGS.md` §2 for the raw evidence.

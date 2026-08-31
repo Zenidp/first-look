@@ -1,6 +1,7 @@
 # Nusantara reference library
 
 > Shooting spec, the full slot table and where files go: **`docs/ASSETS.md`**.
+> Prompts for generating them with an image model: **`docs/IMAGE-PROMPTS.md`**.
 
 Perfect Corp's catalogues contain no kebaya, no hijab, and nothing Indonesian
 at all — 3 wedding makeup looks and 4 wedding gowns, every one of them Western

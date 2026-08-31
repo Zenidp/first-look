@@ -13,3 +13,4 @@ Shoot at 1500px or more on the long side. The app downscales to the API's
 1024px limit but never upscales, and the makeup endpoints reject small faces.
 
 Full spec, including every error code these guard against: docs/ASSETS.md
+Generating them with Gemini instead of a camera: docs/IMAGE-PROMPTS.md
