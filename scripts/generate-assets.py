@@ -176,14 +176,19 @@ GARMENTS = {
         "Arranged flat.",
     "baju-kurung-minang":
         "A Minangkabau bridal outfit: a loose long-sleeved tunic in deep red silk with heavy gold "
-        "songket weaving at the cuffs and hem, paired with a matching red and gold songket wrap "
-        "skirt, arranged flat.",
+        "songket weaving at the cuffs and hem, closed across the front with a solid unbroken front "
+        "panel and no opening, so the torso is fully covered from the neckline to the hip, paired "
+        "with a matching floor-length red and gold songket wrap skirt. Arranged flat.",
     "payas-agung-bali":
-        "A Balinese payas agung bridal costume: a fitted gold brocade bodice wrap in gold and "
-        "white, with a gold songket kamen wrap skirt in deep gold and red, arranged flat.",
+        "A Balinese payas agung bridal costume: a fitted gold brocade bodice in gold and white that "
+        "wraps closed across the chest and stomach with a solid unbroken front and no opening or "
+        "exposed midriff, worn with a floor-length gold songket kamen wrap skirt in deep gold and "
+        "red. Arranged flat.",
     "baju-bodo-bugis":
-        "A Bugis baju bodo: a loose short-sleeved square-cut blouse in translucent crimson silk "
-        "gauze, paired with a woven sarong in deep red and gold stripes, arranged flat.",
+        "A Bugis baju bodo: a loose short-sleeved square-cut blouse in crimson silk, opaque and "
+        "closed all the way round with a solid unbroken front so the torso is fully covered to "
+        "below the hip, worn over a floor-length woven sarong in deep red and gold stripes. "
+        "Arranged flat.",
     "ulos-batak":
         "A Batak bridal outfit: a fitted dark navy and gold brocade blouse paired with a handwoven "
         "ulos cloth in deep red, black and gold with traditional geometric stripe patterns, "

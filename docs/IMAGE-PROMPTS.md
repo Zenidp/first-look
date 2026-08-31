@@ -205,6 +205,11 @@ These feed `cloth-v4`, which composites the garment onto her real photo.
 > wrong in ways an MUA notices immediately. The bride is the face that sells;
 > these are pattern sources.
 
+> **Every garment description must say the front is closed.** cloth-v4 reads
+> the reference literally: a kebaya laid out open — the natural way to show the
+> lace — composited onto the bride as an open jacket over a bare midriff.
+> Measured, then fixed, on all eight. See `FINDINGS.md` §2b.
+
 **Shared instruction — prepend to each:**
 ```
 Photorealistic e-commerce product photograph of a traditional Indonesian
@@ -219,38 +224,45 @@ Then the garment itself:
 
 **`kebaya-jawa-klasik.jpg`**
 ```
-A classic Javanese bridal kebaya: a long-sleeved fitted blouse in ivory lace
-with dense floral embroidery, paired below with a batik sarong in traditional
-sogan brown and cream parang or truntum motif, arranged flat with the kebaya
-above and the sarong spread below it.
+A classic Javanese bridal kebaya worn as a complete modest outfit: a
+long-sleeved fitted blouse in ivory lace with dense floral embroidery,
+fastened CLOSED at the front edge to edge with no opening and no exposed
+midriff, layered over an opaque ivory inner camisole so the torso is fully
+covered, paired below with a floor-length batik wrap skirt in traditional
+sogan brown and cream parang motif. Arranged flat with the closed kebaya
 ```
 
 **`kebaya-sunda-siger.jpg`**
 ```
-A Sundanese bridal kebaya: a long-sleeved white lace blouse with fine floral
-embroidery and a slightly longer front panel, paired with a gold-threaded batik
-sarong in cream and gold, arranged flat.
+A Sundanese bridal kebaya worn as a complete modest outfit: a long-sleeved
+white lace blouse with fine floral embroidery, fastened CLOSED at the front
+with no opening and no exposed midriff, layered over an opaque white inner
+camisole so the torso is fully covered, paired with a floor-length
+gold-threaded batik wrap skirt in cream and gold.
 ```
 
 **`baju-kurung-minang.jpg`**
 ```
 A Minangkabau bridal outfit: a loose long-sleeved tunic in deep red silk with
-heavy gold songket weaving at the cuffs and hem, paired with a matching red and
-gold songket wrap skirt, arranged flat.
+heavy gold songket weaving at the cuffs and hem, closed across the front with
+a solid unbroken front panel and no opening, so the torso is fully covered
+from the neckline to the hip, paired
 ```
 
 **`payas-agung-bali.jpg`**
 ```
-A Balinese payas agung bridal costume: a fitted gold brocade bodice wrap in
-gold and white, with a gold songket kamen wrap skirt in deep gold and red,
-arranged flat.
+A Balinese payas agung bridal costume: a fitted gold brocade bodice in gold
+and white that wraps closed across the chest and stomach with a solid unbroken
+front and no opening or exposed midriff, worn with a floor-length gold songket
+kamen wrap skirt in deep gold and
 ```
 
 **`baju-bodo-bugis.jpg`**
 ```
-A Bugis baju bodo: a loose short-sleeved square-cut blouse in translucent
-crimson silk gauze, paired with a woven sarong in deep red and gold stripes,
-arranged flat.
+A Bugis baju bodo: a loose short-sleeved square-cut blouse in crimson silk,
+opaque and closed all the way round with a solid unbroken front so the torso
+is fully covered to below the hip, worn over a floor-length woven sarong in
+deep red and gold stripes.
 ```
 
 **`ulos-batak.jpg`**

@@ -148,6 +148,56 @@ fallback path. A silent failure here costs units and trust at the same time.
 
 ---
 
+## 2b. cloth-v4 reads a garment reference literally, including what it omits
+
+Measured 31 Aug 2026 across all eight garments in the Nusantara library.
+
+A flat-lay reference photographed with the front **open** — the natural way to
+lay out a kebaya so the lace is visible — is not interpreted as "a kebaya". It
+is interpreted as *this exact garment, open*. The result composited onto the
+bride was an open jacket over a bare midriff: not how the outfit is worn, and
+unusable in a bridal product.
+
+The same failure hit the Minangkabau outfit, whose prompt described "a loose
+tunic" without saying the front was closed.
+
+**The fix is in the reference prompt, not the API call.** Every garment prompt
+now states the front is closed, over an opaque inner layer where the tradition
+has one, with the torso covered. `docs/IMAGE-PROMPTS.md` carries the wording.
+
+### What is verified
+
+All eight garments composite correctly onto the bride's real photo, preserving
+her face, background, pose and crop:
+
+| Reference | Result |
+|---|---|
+| Kebaya Jawa klasik | lace kebaya over cream inner layer, batik parang wrap skirt |
+| Kebaya Sunda | closed white lace over inner layer, gold batik skirt |
+| Baju kurung Minang | solid red tunic, gold songket cuffs and skirt |
+| Payas agung Bali | wrapped gold brocade bodice, songket kamen |
+| Baju bodo Bugis | square-cut crimson blouse, striped sarong |
+| Ulos Batak | navy-gold brocade blouse, ulos-striped skirt |
+| **Kebaya hijab modern** | hijab covering hair and chest, ivory lace, long skirt |
+| **Gaun syar'i Aceh** | long hijab, maroon gown, gold embroidery, full coverage |
+
+The last two matter most: **the hijab path works through `clothes`**, which is
+what §1 predicted after the `scarf` endpoint turned out to be a scene
+generator. Muslim bridal looks are reachable, just not through the endpoint
+whose name suggests it.
+
+### Bride photo angles, verified
+
+`face-right.jpg` and `face-left.jpg` were checked for the anatomical swap that
+would corrupt the three-photo diagnostics. They are correct as named: a subject
+turning to their own left presents their **right** side to the camera and their
+nose points to frame-right, which is what `face-right.jpg` shows.
+
+Confirmed functionally — hair type detection accepted the set in front, right,
+left order and returned `2A to 2B, Slight to Medium Wavy` in 7.5s.
+
+---
+
 ## 3. A failed AI task still costs units
 
 From the endpoint descriptions, verbatim:

@@ -1,0 +1,14 @@
+{
+  "key": "41df453167d85a3987d6efaead7c7bad",
+  "feature": "clothes",
+  "inputs": {
+    "__feature": "clothes",
+    "garmentCategory": "full_body"
+  },
+  "taskId": "H7wt9WCwWmC9T5fKFIAfZ3SYbjgyyyn1GQ9A1t5AXilMPEWD6zWT6qD96j2wzESbGi4M447Ki6l9hDTl1ySvww",
+  "unitsSpent": 2,
+  "elapsedMs": 10891,
+  "polls": 7,
+  "createdAt": "2026-08-31T04:43:51.137Z",
+  "imagePath": "/fixtures/41df453167d85a3987d6efaead7c7bad.jpg"
+}
