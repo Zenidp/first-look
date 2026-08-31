@@ -178,15 +178,28 @@ Record in Bahasa or English, but subtitle in English. Judges are American.
 
 | Date | Session summary | State at end |
 |---|---|---|
-| Sun 30 Aug 2026 | Read the live docs down to the raw OpenAPI bundles (`docs.perfectcorp.com/_bundle/reference/<api>.json` — far more reliable than the rendered pages). Scaffolded Next.js 16.3.3 + TS + Tailwind. Built a generic Perfect Corp client, a feature registry, the fixture cache, `/api/hair-tryon`, `/api/hair-templates`, and `/test`. **Fired one real hair try-on end to end: HTTP 200, 7.4s of polling over 5 polls, 2 units.** Second identical call served from cache in 4ms for 0 units. | Day 1 goal met. Auth, upload, task, poll and cache all proven against the live API. Not yet done: git commit, Vercel deploy, look builder. |
+| Sun 30 Aug 2026 | Read the docs down to the raw OpenAPI bundles (`docs.perfectcorp.com/_bundle/reference/<api>.json` — far more reliable than the rendered pages). Scaffolded Next.js 16.3.3 + TS + Tailwind. Built the Perfect Corp client, feature registry and fixture cache. **One real hair try-on end to end: HTTP 200, 7.4s over 5 polls, 2 units.** Repeat call served from cache in 4ms for 0 units. | Day 1 goal met: auth, upload, task, poll and cache proven live. |
+| Mon 31 Aug 2026 | Audited all 29 APIs and confirmed every registered version is the newest. Generalised to `/api/tryon/[feature]` + `/api/templates/[feature]` + `/api/features`, **30 features registered**. Mirrored 10 makeup pattern catalogues (4,458 patterns). Proved 7 of 9 request families live. **Found the `styled` fashion family is generative, not a try-on** — and turned that into the prewedding concept generator (`/prewedding`, 8 concepts, 3 verified). Wrote `docs/FINDINGS.md` and `scripts/smoke.sh` (18/18, zero units). Built the empty Nusantara reference library. Shipped: 11 commits to GitHub, deployed to Vercel, git auto-deploy verified. ~32 units spent in total. | **Deployed and auto-deploying.** Day 2 work done. |
 
-| Mon 31 Aug 2026 | Audited all 29 APIs against their raw OpenAPI bundles and confirmed every registered version is the newest one. Replaced the single hair route with a generic `/api/tryon/[feature]` + `/api/templates/[feature]` + `/api/features` covering **30 registered features**. Mirrored the 10 makeup pattern catalogues (4,458 patterns) into `public/patterns/`. Proved six of the nine request families live: hybrid, template, jewelry, preset, styled, detect. **Discovered the `styled` fashion family is generative, not a try-on.** Spent 12 units. | Registry complete and building clean. Still uncommitted, still not deployed. |
+### Where to pick up (Day 3, Tue 1 Sep)
 
-| Mon 31 Aug 2026 (cont.) | Wrote `docs/FINDINGS.md` — the measured behaviours, error tolerances, licensing position and the prewedding-generator idea. Proved the `garment` family: **cloth-v4 with a custom reference composites a gown onto her real photo — the kebaya path works.** Built the Nusantara reference library (`src/lib/references.ts`, `/api/references`, `public/references/`): 13 declared slots for kebaya, hijab and regional makeup, images deliberately not included, credit + licence required before a slot goes live. Spent 8 units (2 clothes, 6 on makeupTransfer rejections). | Kebaya/hijab route proven. Library structure ready and empty. Still uncommitted, still not deployed. |
+Per section 9, Day 3 is **Hair Readiness + shared look board, then feature freeze.**
+Day 4 is video, project page and submission only — no new code.
 
-| Mon 31 Aug 2026 (3) | Built the **prewedding concept generator** on the generative family — `src/lib/concepts.ts`, `/api/concepts`, `/prewedding`. Proved the mechanic: the `style` hint drives the entire scene while the required reference image is nearly inert, so concepts ship with a self-made neutral swatch and no third-party imagery. 3 of 8 concepts verified visually. Wrote `scripts/smoke.sh`: **18/18 passing against the production build in offline mode, zero units.** Reference library parked at the user's request. Spent 6 units. | Ready for a first commit. Not yet on GitHub or Vercel. |
+Ready to build on:
+- All four diagnostics are registered and the JSON result path is proven live —
+  `hairLengthDetection` returned `{"hair_length":{"term":"ear length"}}` in 5.8s.
+- **Hair type and frizziness need exactly 3 photos** (front, right, left);
+  length and density need 1. Full diagnostic sweep costs 7 units per bride.
+- The readiness verdict is our own rule layer over those four values plus the
+  wedding-date delta. Section 6 says keep the rules transparent and explainable.
 
-| Mon 31 Aug 2026 (4) | Shipped. 10 commits pushed to **github.com/Zenidp/first-look** (private — the committed fixtures derive from a Perfect Corp template thumbnail, see `fixtures/README.md`). Deployed to Vercel at **https://first-look-five.vercel.app**, env vars set, `PERFECTCORP_OFFLINE=1` scoped to Preview so preview deploys can never bill. Git auto-deploy connected. Two bugs found only by testing in production: `MissingApiKey` pointed at the wrong file, and malformed bodies returned 500 instead of 400. Both fixed and verified live. Fixture replay confirmed in production at 0 units / 3ms. | Deployed and auto-deploying. Day 3 is Hair Readiness + shared look board; Day 4 is video and write-up only. |
+Two things deliberately left undone:
+1. **Fixtures must be regenerated** from a photo you own before the repo goes
+   public or the demo is filmed — see `fixtures/README.md`. This is why the repo
+   is private.
+2. **`public/references/` is empty** — 13 declared slots for kebaya, hijab and
+   regional makeup, parked until you source the images.
 
 ### Deploy facts
 
