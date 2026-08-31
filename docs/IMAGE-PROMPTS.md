@@ -16,6 +16,15 @@ Using a synthetic bride removes two real problems at once: nobody's consent is
 needed, and the fixtures become safe to commit and safe to show in the demo
 video. That is strictly better than photographing a real person for this.
 
+> The demo bride in Part 1 is described as European, a deliberate marketing
+> call by the project owner. Worth re-examining before the submission: CONTEXT
+> §2 frames the problem as brides working from Pinterest screenshots of *other
+> people's faces*, and the product's answer is seeing the look on her own. A
+> demo bride who does not resemble the target customer weakens that argument in
+> front of judges scoring Concept, and the buyer is an Indonesian MUA. The
+> reference libraries in Parts 2 and 3 stay Indonesian regardless — see the note
+> under Part 2 for why that costs nothing.
+
 ### What it does not solve
 
 **1. Identity consistency across four photos.**
@@ -83,10 +92,11 @@ background, text overlays, watermarks, split or collage layouts.
 This one sets the identity. Everything else references it.
 
 ```
-Photorealistic head-and-shoulders portrait of a 27-year-old Indonesian woman
-looking straight into the camera. Warm light brown skin, dark brown eyes, dark
-brown hair pulled back smoothly and completely away from her face, forehead and
-temples fully exposed, both ears visible, no strands falling near the eyes.
+Photorealistic head-and-shoulders portrait of a beautiful 27-year-old European
+woman looking straight into the camera. Fair skin with a light natural flush,
+blue-grey eyes, light brown hair pulled back smoothly and completely away from
+her face, forehead and temples fully exposed, both ears visible, no strands
+falling near the eyes. Symmetrical features, high cheekbones, clear complexion.
 Bare face, no makeup. Calm closed-mouth expression, lips relaxed and fully
 visible. Both eyes wide open and clearly visible.
 
@@ -173,9 +183,10 @@ wearing, and a bulky outfit confuses the silhouette.
 Only if rings, bracelets or nails appear in the demo.
 
 ```
-Photorealistic close-up of a young Indonesian woman's hands resting on a plain
-light grey surface, palms down, fingers spread slightly apart and fully
-visible, short natural bare nails, no rings, no bracelets, no nail polish.
+Photorealistic close-up of a young European woman's fair-skinned hands resting
+on a plain light grey surface, palms down, fingers spread slightly apart and
+fully visible, short natural bare nails, no rings, no bracelets, no nail
+polish.
 Soft even lighting, sharp focus, high resolution.
 ```
 
@@ -184,6 +195,15 @@ Soft even lighting, sharp focus, high resolution.
 ## Part 2 — Garment references (8 slots)
 
 These feed `cloth-v4`, which composites the garment onto her real photo.
+
+> **Why these still describe Indonesian models while the bride in Part 1 does
+> not.** The reference model never appears in the output. `cloth-v4` transfers
+> only the garment onto the bride's photo, and `mu-transfer` transfers only the
+> makeup — verified on both. So changing the reference model's appearance buys
+> nothing visible to a viewer, while costing accuracy: a kebaya or a paes ageng
+> rendered on a Northern European face is the kind of detail an image model gets
+> wrong in ways an MUA notices immediately. The bride is the face that sells;
+> these are pattern sources.
 
 **Shared instruction — prepend to each:**
 ```
