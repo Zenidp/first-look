@@ -186,6 +186,16 @@ Record in Bahasa or English, but subtitle in English. Judges are American.
 
 | Mon 31 Aug 2026 (3) | Built the **prewedding concept generator** on the generative family — `src/lib/concepts.ts`, `/api/concepts`, `/prewedding`. Proved the mechanic: the `style` hint drives the entire scene while the required reference image is nearly inert, so concepts ship with a self-made neutral swatch and no third-party imagery. 3 of 8 concepts verified visually. Wrote `scripts/smoke.sh`: **18/18 passing against the production build in offline mode, zero units.** Reference library parked at the user's request. Spent 6 units. | Ready for a first commit. Not yet on GitHub or Vercel. |
 
+| Mon 31 Aug 2026 (4) | Shipped. 10 commits pushed to **github.com/Zenidp/first-look** (private — the committed fixtures derive from a Perfect Corp template thumbnail, see `fixtures/README.md`). Deployed to Vercel at **https://first-look-five.vercel.app**, env vars set, `PERFECTCORP_OFFLINE=1` scoped to Preview so preview deploys can never bill. Git auto-deploy connected. Two bugs found only by testing in production: `MissingApiKey` pointed at the wrong file, and malformed bodies returned 500 instead of 400. Both fixed and verified live. Fixture replay confirmed in production at 0 units / 3ms. | Deployed and auto-deploying. Day 3 is Hair Readiness + shared look board; Day 4 is video and write-up only. |
+
+### Deploy facts
+
+- Repo `Zenidp/first-look`, **private**. Vercel GitHub App was granted access manually; `vercel git connect` cannot do that for a private repo on its own.
+- Production alias `https://first-look-five.vercel.app`.
+- Vercel env: `PERFECTCORP_API_KEY` on Production/Preview/Development, `PERFECTCORP_OFFLINE=1` on Preview only.
+- Vercel's runtime filesystem is read-only, so the deployed app **replays** fixtures and never writes new ones. A cache miss in production still runs a real, billable call — that is intended, but it means the demo should only walk paths that already have fixtures.
+- `npm run smoke` needs a running server and `PHOTO=<a jpg>`; it spends nothing when `PERFECTCORP_OFFLINE=1`.
+
 ### Verified API facts (do not re-derive)
 
 - Auth is **`Authorization: Bearer <API_KEY>`** only. No token exchange, no expiry. The console's "secret key" is a 1024-bit RSA **public** key for the legacy `/s2s/v1.0/client/auth` flow and is unused here — it is not a secret.
