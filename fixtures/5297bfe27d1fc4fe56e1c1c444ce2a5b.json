@@ -1,0 +1,17 @@
+{
+  "key": "5297bfe27d1fc4fe56e1c1c444ce2a5b",
+  "feature": "eyeColor",
+  "inputs": {
+    "__feature": "eyeColor",
+    "effect": {
+      "intensity": 75,
+      "enlargement": 0
+    }
+  },
+  "taskId": "MSGyCent4kTQgREgVjdgTDRbRbiIDg_oXOwHAbjckrLbqxZqBDGD4TVOFk85hME-VpxHkJSkA18S52AlMVbJHA",
+  "unitsSpent": 1,
+  "elapsedMs": 5755,
+  "polls": 4,
+  "createdAt": "2026-08-31T07:11:29.587Z",
+  "imagePath": "/fixtures/5297bfe27d1fc4fe56e1c1c444ce2a5b.jpg"
+}

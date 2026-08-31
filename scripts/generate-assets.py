@@ -109,6 +109,14 @@ job("face-front-hairdown", "bride", "input/face-front-hairdown.jpg",
     "forehead, temples and the skin beside both eyes stay completely clear. " + BASE,
     ref="input/face-front.jpg")
 
+job("face-front-smile", "bride", "input/face-front-smile.jpg",
+    "Using the woman in the reference image, keep her face, skin tone, hair and hairstyle "
+    "exactly the same. Same studio, same lighting, same plain light grey background, same "
+    "black sleeveless top, same framing and head position. "
+    "Change only her expression: she now smiles openly with her lips parted, showing a full "
+    "row of upper front teeth clearly and unobstructed. Eyes open. " + BASE,
+    ref="input/face-front.jpg")
+
 job("face-right", "bride", "input/face-right.jpg",
     "THREE-QUARTER VIEW. The woman is photographed from the side, not facing the camera. "
     "Her whole head and body are rotated about 45 degrees so that her nose points towards "
@@ -214,6 +222,83 @@ job("gaun-syari-aceh", "garment", "public/references/gaun-syari-aceh.jpg",
     "completely. She stands facing the camera, full body in frame, head to below the feet, nothing "
     "cropped. Plain seamless white background, even studio lighting, sharp focus, high resolution. "
     "Exactly one person. No text, no watermark.")
+
+# --- Hand shots for ring and bracelet ---------------------------------------
+# The generic two-hand photo fails both: ring VTO answered "Hand pose should be
+# correct" and bracelet "Wrist size should fit in range". One hand, and the
+# wrist inside the frame at a usable size, are what these need.
+job("hand-nails", "bride", "input/hand-nails.jpg",
+    "Photorealistic macro close-up of the fingers of ONE single left hand of a young "
+    "European woman with fair skin, back of the hand towards the camera, fingers held "
+    "together and pointing up, cropped so that only the fingers from the middle knuckles "
+    "upwards fill the entire frame. The FINGERNAILS are large and dominant in the image, "
+    "each nail clearly visible, medium length, natural bare nails with no polish and no "
+    "rings. Plain seamless light grey background, soft even studio lighting, sharp focus, "
+    "high resolution. Only one hand, no face, no text, no watermark.", aspect="3:4")
+
+job("hand-ring", "bride", "input/hand-ring.jpg",
+    "Photorealistic close-up of ONE single left hand of a young European woman with fair "
+    "skin, back of the hand towards the camera, held upright with the fingers pointing "
+    "gently upwards and slightly spread apart, all four fingers and the thumb fully visible "
+    "and unobstructed, the wrist included at the bottom of the frame. Short natural bare "
+    "nails, no rings, no bracelets, no nail polish. The hand fills most of the frame. "
+    "Plain seamless light grey background, soft even studio lighting, no harsh shadows, "
+    "sharp focus, high resolution. Only one hand in the image, no second hand, no face, "
+    "no text, no watermark.", aspect="3:4")
+
+job("hand-bracelet", "bride", "input/hand-bracelet.jpg",
+    "Photorealistic close-up of ONE single left forearm and hand of a young European woman "
+    "with fair skin, the arm held UPRIGHT and VERTICAL, rising from the bottom of the frame, "
+    "with the BACK OF THE HAND and the front of the wrist facing the camera straight on. "
+    "The fingers point upwards, relaxed and slightly apart. The WRIST is centred in the "
+    "frame, facing the camera directly rather than edge-on, unobstructed, with several "
+    "centimetres of bare forearm below it. No sleeve, no watch, no bracelet, no rings, no "
+    "nail polish. Plain seamless light grey background, soft even studio lighting, sharp "
+    "focus, high resolution. Only one arm in the image, no second hand, no face, no text, "
+    "no watermark.", aspect="3:4")
+
+
+# --- Jewellery product shots (for the 2D VTO suite) -------------------------
+# These endpoints take a product cut-out, not a worn photo. Background removal
+# is automatic, but a clean isolated product on white gives the segmenter the
+# easiest job.
+JEWELLERY_BASE = (
+    "Photorealistic e-commerce product photograph of a single piece of bridal jewellery, "
+    "centred on a plain seamless pure white background, shot straight on, the entire item "
+    "inside the frame with nothing cropped, even diffuse studio lighting, no harsh shadows "
+    "and no reflections on the background, metal and stones sharply in focus, high "
+    "resolution. No person, no hand, no model, no mannequin, no box, no props, no text, "
+    "no watermark. "
+)
+
+JEWELLERY = {
+    "earring-gold-drop":
+        "A single gold bridal drop earring: an ornate filigree gold stud at the top with a "
+        "teardrop pendant hanging below, set with small white pearls, shown upright and "
+        "isolated.",
+    "necklace-gold-collar":
+        "A gold bridal collar necklace: a wide ornate filigree gold necklace set with small "
+        "white pearls and clear stones, laid out open in a horseshoe shape so the whole "
+        "necklace is visible.",
+    "ring-gold-solitaire":
+        "A gold bridal solitaire ring: a polished yellow gold band with a single round "
+        "brilliant-cut diamond in a raised setting, shown upright from the front.",
+    "bracelet-gold-cuff":
+        "A gold bridal bracelet: an ornate filigree yellow gold cuff set with small white "
+        "pearls, shown from the front as an open circle.",
+}
+for jid, desc in JEWELLERY.items():
+    job(jid, "jewellery", f"public/references/{jid}.jpg", JEWELLERY_BASE + desc, aspect="1:1")
+
+
+job("lens-hazel", "jewellery", "public/references/lens-hazel.jpg",
+    "Photorealistic extreme close-up product photograph of a single coloured contact lens "
+    "iris pattern, shown as a perfect circle filling the frame, centred, with a solid black "
+    "pupil in the middle. The iris is a warm hazel-green with fine radiating fibre detail and "
+    "a darker limbal ring around the outer edge. Plain white background outside the circle. "
+    "Sharp focus, high resolution, even lighting. No eye, no eyelashes, no skin, no face, "
+    "no text, no watermark.", aspect="1:1")
+
 
 # --- Part 3: regional makeup references ------------------------------------
 MAKEUPS = {
@@ -332,7 +417,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("ids", nargs="*", help="asset ids to generate")
     ap.add_argument("--all", action="store_true")
-    ap.add_argument("--group", choices=["bride", "garment", "makeup"])
+    ap.add_argument("--group", choices=["bride", "garment", "makeup", "jewellery"])
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--force", action="store_true", help="regenerate even if the file exists")
     args = ap.parse_args()

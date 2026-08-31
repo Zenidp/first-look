@@ -1,0 +1,66 @@
+{
+  "key": "7398d74462e5114e5b8704496149dd7b",
+  "feature": "nailColor",
+  "inputs": {
+    "__feature": "nailColor",
+    "effectType": "nail_polish",
+    "effects": [
+      {
+        "sub_type": "color",
+        "finger": "thumb",
+        "color": "#B0303F",
+        "texture": "cream",
+        "transparency": 0,
+        "reflection": 55,
+        "contrast": 50,
+        "roughness": 25
+      },
+      {
+        "sub_type": "color",
+        "finger": "index",
+        "color": "#B0303F",
+        "texture": "cream",
+        "transparency": 0,
+        "reflection": 55,
+        "contrast": 50,
+        "roughness": 25
+      },
+      {
+        "sub_type": "color",
+        "finger": "middle",
+        "color": "#B0303F",
+        "texture": "cream",
+        "transparency": 0,
+        "reflection": 55,
+        "contrast": 50,
+        "roughness": 25
+      },
+      {
+        "sub_type": "color",
+        "finger": "ring",
+        "color": "#B0303F",
+        "texture": "cream",
+        "transparency": 0,
+        "reflection": 55,
+        "contrast": 50,
+        "roughness": 25
+      },
+      {
+        "sub_type": "color",
+        "finger": "pinky",
+        "color": "#B0303F",
+        "texture": "cream",
+        "transparency": 0,
+        "reflection": 55,
+        "contrast": 50,
+        "roughness": 25
+      }
+    ]
+  },
+  "taskId": "ymzOFsrHpZ8m3Zc6YIjGEK6ZfPmzbG6aAgpg0EFz7UL5xSdtzoFfuO9uq1wWznGshpZSolVOo8yK-Jv-JaJSWQ",
+  "unitsSpent": 1,
+  "elapsedMs": 7750,
+  "polls": 5,
+  "createdAt": "2026-08-31T07:15:11.329Z",
+  "imagePath": "/fixtures/7398d74462e5114e5b8704496149dd7b.jpg"
+}

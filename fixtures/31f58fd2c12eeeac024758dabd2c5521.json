@@ -1,0 +1,50 @@
+{
+  "key": "31f58fd2c12eeeac024758dabd2c5521",
+  "feature": "makeupCustom",
+  "inputs": {
+    "__feature": "makeupCustom",
+    "effects": [
+      {
+        "category": "lip_color",
+        "shape": {
+          "name": "plump"
+        },
+        "morphology": {
+          "fullness": 20,
+          "wrinkless": 10
+        },
+        "style": {
+          "type": "full"
+        },
+        "palettes": [
+          {
+            "color": "#A32638",
+            "texture": "gloss",
+            "colorIntensity": 85,
+            "gloss": 60,
+            "transparencyIntensity": 25
+          }
+        ]
+      },
+      {
+        "category": "blush",
+        "pattern": {
+          "name": "1color1"
+        },
+        "palettes": [
+          {
+            "color": "#E08A8A",
+            "texture": "matte",
+            "colorIntensity": 55
+          }
+        ]
+      }
+    ]
+  },
+  "taskId": "mSp-h-QpQK0tkEXUgQNvqeVw_HmKtExH8Qh9UHSsrNmLRyoiPR8JpVySdaV1pTxGd-BTT-LvvMAmKHuvXEbI5Q",
+  "unitsSpent": 1,
+  "elapsedMs": 7485,
+  "polls": 5,
+  "createdAt": "2026-08-31T07:14:48.861Z",
+  "imagePath": "/fixtures/31f58fd2c12eeeac024758dabd2c5521.jpg"
+}

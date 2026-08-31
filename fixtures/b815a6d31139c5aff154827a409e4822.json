@@ -1,0 +1,13 @@
+{
+  "key": "b815a6d31139c5aff154827a409e4822",
+  "feature": "earrings",
+  "inputs": {
+    "__feature": "earrings"
+  },
+  "taskId": "nWO6ZTSs_D5YLAvMshCHPpis7tmWgDZfCKt8_YvdJEoitqzD5Ig5dCYxwvfDKdr6rsVEnq3ffBAO2Lf_ZLul6Q",
+  "unitsSpent": 1,
+  "elapsedMs": 6008,
+  "polls": 4,
+  "createdAt": "2026-08-31T07:04:11.879Z",
+  "imagePath": "/fixtures/b815a6d31139c5aff154827a409e4822.jpg"
+}

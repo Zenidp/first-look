@@ -34,7 +34,15 @@ export type Region =
   | "Nasional";
 
 /** Which registry feature this reference can be fed to. */
-export type ReferenceUse = "clothes" | "makeupTransfer" | "hairStyle";
+export type ReferenceUse =
+  | "clothes"
+  | "makeupTransfer"
+  | "hairStyle"
+  | "earrings"
+  | "necklace"
+  | "ring"
+  | "bracelet"
+  | "eyeColor";
 
 export type ReferenceItem = {
   id: string;
@@ -174,6 +182,50 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
     label: "Makeup pengantin Betawi",
     region: "Betawi",
     use: "makeupTransfer",
+    credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
+    license: "AI-generated for this project; no third-party rights",
+  },
+  // ---- Product shots for the 2D VTO suite and the lens effect --------------
+  // Not regional: these are generic bridal pieces used to prove the endpoints.
+  {
+    id: "earring-gold-drop",
+    label: "Anting emas menjuntai",
+    region: "Nasional",
+    use: "earrings",
+    credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
+    license: "AI-generated for this project; no third-party rights",
+  },
+  {
+    id: "necklace-gold-collar",
+    label: "Kalung emas kolar",
+    region: "Nasional",
+    use: "necklace",
+    credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
+    license: "AI-generated for this project; no third-party rights",
+  },
+  {
+    id: "ring-gold-solitaire",
+    label: "Cincin emas solitaire",
+    region: "Nasional",
+    use: "ring",
+    credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
+    license: "AI-generated for this project; no third-party rights",
+    notes: "Needs a single-hand photo with the wrist in frame — see input/hand-ring.jpg.",
+  },
+  {
+    id: "bracelet-gold-cuff",
+    label: "Gelang emas",
+    region: "Nasional",
+    use: "bracelet",
+    credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
+    license: "AI-generated for this project; no third-party rights",
+    notes: "Needs the wrist facing the camera, arm vertical — see input/hand-bracelet.jpg.",
+  },
+  {
+    id: "lens-hazel",
+    label: "Lensa hazel",
+    region: "Nasional",
+    use: "eyeColor",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
     license: "AI-generated for this project; no third-party rights",
   },

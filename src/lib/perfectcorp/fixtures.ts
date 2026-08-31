@@ -80,7 +80,7 @@ export async function readFixture(key: string): Promise<Fixture | null> {
 export async function writeFixture(
   meta: Omit<Fixture, "imagePath">,
   resultUrl?: string,
-): Promise<Fixture> {
+): Promise<Fixture & { persisted: boolean }> {
   const fixture: Fixture = resultUrl
     ? { ...meta, imagePath: `/fixtures/${meta.key}.jpg` }
     : { ...meta };
@@ -101,10 +101,14 @@ export async function writeFixture(
       JSON.stringify(fixture, null, 2) + "\n",
     );
   } catch (err) {
+    // Expected on Vercel, whose runtime filesystem is read-only. The caller
+    // must not advertise `imagePath` in that case — nothing was written there,
+    // and the browser would show a broken image.
     console.warn(`[fixtures] could not persist ${meta.key}:`, err);
+    return { ...fixture, imagePath: undefined, persisted: false };
   }
 
-  return fixture;
+  return { ...fixture, persisted: true };
 }
 
 /** `PERFECTCORP_LIVE=1` forces a real call even when a fixture exists. */

@@ -1,0 +1,13 @@
+{
+  "key": "c8bad1128180cda41ab852f4a5cd6277",
+  "feature": "ring",
+  "inputs": {
+    "__feature": "ring"
+  },
+  "taskId": "_3rRp-FhhNR-QykYXgL5iOTU2mMAKTdstT50eYCL6nCuRHDpqYc0ij9xJ1qHX6XqrsVEnq3ffBAO2Lf_ZLul6Q",
+  "unitsSpent": 1,
+  "elapsedMs": 4243,
+  "polls": 3,
+  "createdAt": "2026-08-31T07:05:52.947Z",
+  "imagePath": "/fixtures/c8bad1128180cda41ab852f4a5cd6277.jpg"
+}

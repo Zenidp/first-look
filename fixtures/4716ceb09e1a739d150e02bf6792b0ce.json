@@ -1,0 +1,17 @@
+{
+  "key": "4716ceb09e1a739d150e02bf6792b0ce",
+  "feature": "teethWhitening",
+  "inputs": {
+    "__feature": "teethWhitening",
+    "effect": {
+      "whitening_intensity": 80
+    },
+    "index": 0
+  },
+  "taskId": "joD87IpEmgJlrkwzeg0aemtJk_Bk8SxErnMG0zBkUFOOU_pkw-oSX6teJyYoVcjvwVfS_epIBFSx1oEPCgxctQ",
+  "unitsSpent": 1,
+  "elapsedMs": 5753,
+  "polls": 4,
+  "createdAt": "2026-08-31T07:12:14.686Z",
+  "imagePath": "/fixtures/4716ceb09e1a739d150e02bf6792b0ce.jpg"
+}

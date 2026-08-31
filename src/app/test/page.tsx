@@ -42,6 +42,48 @@ type Result = {
   key: string;
 };
 
+/**
+ * Effect-driven features need a nested payload the UI cannot reasonably ask a
+ * user to type. These are the shapes verified against the live API on 31 Aug
+ * 2026 — the schema's own examples, which are stricter than they look:
+ * lip_color rejects the request unless `morphology` and `style` are present.
+ */
+const EFFECT_DEFAULTS: Record<string, Record<string, unknown>> = {
+  teethWhitening: { effect: { whitening_intensity: 80 }, index: 0 },
+  eyeColor: { effect: { intensity: 75, enlargement: 0 } },
+  nailColor: {
+    effectType: "nail_polish",
+    effects: ["thumb", "index", "middle", "ring", "pinky"].map((finger) => ({
+      sub_type: "color",
+      finger,
+      color: "#B0303F",
+      texture: "cream",
+      transparency: 0,
+      reflection: 55,
+      contrast: 50,
+      roughness: 25,
+    })),
+  },
+  makeupCustom: {
+    effects: [
+      {
+        category: "lip_color",
+        shape: { name: "plump" },
+        morphology: { fullness: 20, wrinkless: 10 },
+        style: { type: "full" },
+        palettes: [
+          { color: "#A32638", texture: "gloss", colorIntensity: 85, gloss: 60, transparencyIntensity: 25 },
+        ],
+      },
+      {
+        category: "blush",
+        pattern: { name: "1color1" },
+        palettes: [{ color: "#E08A8A", texture: "matte", colorIntensity: 55 }],
+      },
+    ],
+  },
+};
+
 export default function TestPage() {
   const [features, setFeatures] = useState<FeatureInfo[]>([]);
   const [presets, setPresets] = useState<string[]>([]);
@@ -107,6 +149,8 @@ export default function TestPage() {
     setError("");
     setPreset("");
     setReferenceId("");
+    setPhotos([]);
+    setPreviews([]);
   }
 
   // The one genuine external sync: fetch the catalogue for the chosen feature.
@@ -126,16 +170,20 @@ export default function TestPage() {
     return () => { cancelled = true; };
   }, [featureId, features]);
 
-  const pickPhotos = useCallback(async (files: FileList) => {
+  // One slot at a time. A multi-file picker returns files in the browser's own
+  // order — alphabetical, so face-left lands before face-right — and the
+  // diagnostics require front, right, left exactly. Wrong order returns
+  // error_face_angle_invalid after the units are already charged.
+  const pickPhotoAt = useCallback(async (index: number, file: File) => {
     setError("");
     try {
-      const prepared = await Promise.all(Array.from(files).slice(0, needPhotos).map(prepareImage));
-      setPhotos(prepared);
-      setPreviews(prepared.map((f) => URL.createObjectURL(f)));
+      const prepared = await prepareImage(file);
+      setPhotos((prev) => { const next = [...prev]; next[index] = prepared; return next; });
+      setPreviews((prev) => { const next = [...prev]; next[index] = URL.createObjectURL(prepared); return next; });
     } catch {
-      setError("Could not read those images.");
+      setError("Could not read that image.");
     }
-  }, [needPhotos]);
+  }, []);
 
   async function pickReference(file: File) {
     try {
@@ -148,7 +196,7 @@ export default function TestPage() {
   }
 
   async function run() {
-    if (!feature || photos.length !== needPhotos) return;
+    if (!feature || !photosReady) return;
     setBusy(true);
     setError("");
     setResult(null);
@@ -165,9 +213,11 @@ export default function TestPage() {
         options.garmentCategory = garmentCategory;
       }
       if (featureId === "hairStyle" && keepColor) options.hairColor = "src";
+      if (feature.kind === "effects") Object.assign(options, EFFECT_DEFAULTS[featureId] ?? {});
 
       const body = new FormData();
-      for (const p of photos) body.append("photo", p);
+      // Slot order is the wire order.
+      for (let i = 0; i < needPhotos; i++) body.append("photo", photos[i]);
       if (reference) body.append("reference", reference);
       else if (referenceId) body.append("referenceId", referenceId);
       body.append("options", JSON.stringify(options));
@@ -184,6 +234,11 @@ export default function TestPage() {
     }
   }
 
+  // Every slot filled — a sparse array would silently drop a photo.
+  const photosReady =
+    photos.length >= needPhotos &&
+    Array.from({ length: needPhotos }, (_, i) => photos[i]).every(Boolean);
+
   const groups = [...new Set(features.map((f) => f.group))];
   const categories = ["All", ...new Set(templates.map((t) => t.category_name))];
   const shown = category === "All" ? templates : templates.filter((t) => t.category_name === category);
@@ -191,13 +246,16 @@ export default function TestPage() {
 
   const wantsReference =
     feature && ["reference", "garment", "styled", "jewelry"].includes(feature.kind);
+  // eyeColor is the one effects feature that also needs a reference (the lens).
+  const wantsLens = featureId === "eyeColor";
   const canRun =
     !!feature &&
-    photos.length === needPhotos &&
+    photosReady &&
     !busy &&
     (feature.kind !== "preset" || !!preset) &&
     (!feature.hasTemplates || feature.kind === "hybrid" ? true : !feature.hasTemplates || !!templateId) &&
-    (!wantsReference || !!reference || !!referenceId || feature.kind === "hybrid");
+    (!wantsReference || !!reference || !!referenceId || feature.kind === "hybrid") &&
+    (!wantsLens || !!reference || !!referenceId);
 
   return (
     <main className="mx-auto max-w-md p-5 font-sans">
@@ -232,6 +290,12 @@ export default function TestPage() {
             {feature.note && <> — {feature.note}</>}
           </p>
         )}
+        {feature?.kind === "effects" && (
+          <p className="mt-2 rounded-lg bg-neutral-100 p-2 text-xs text-neutral-600">
+            Sends a verified default effect payload. Needs a photo that actually
+            shows the target: open smile for teeth, close-up fingernails for nails.
+          </p>
+        )}
         {feature?.generative && (
           <p className="mt-2 rounded-lg bg-amber-50 p-2 text-xs text-amber-800">
             Generates a brand-new scene instead of editing her photo — different
@@ -242,26 +306,38 @@ export default function TestPage() {
 
       <section className="mt-5">
         <label className="block text-sm font-medium">
-          {needPhotos === 3 ? "Three photos: front, right, left" : "Bride's photo"}
+          {needPhotos === 3 ? "Three photos, one slot each" : "Bride's photo"}
         </label>
-        <input
-          type="file"
-          accept="image/*"
-          multiple={needPhotos > 1}
-          className="mt-2 w-full text-sm"
-          onChange={(e) => e.target.files && pickPhotos(e.target.files)}
-        />
-        {previews.length > 0 && (
-          <div className="mt-2 flex gap-2">
-            {previews.map((p) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={p} src={p} alt="" className="w-full rounded-lg" />
-            ))}
-          </div>
+        {needPhotos === 3 && (
+          <p className="mt-1 text-xs text-neutral-500">
+            The order matters and the API cannot infer it. Put each photo in its own
+            slot — a wrong order returns <code>error_face_angle_invalid</code> after
+            the units are already spent.
+          </p>
         )}
-        {needPhotos === 3 && photos.length > 0 && photos.length !== 3 && (
-          <p className="mt-1 text-xs text-amber-700">Selected {photos.length} of 3.</p>
-        )}
+        <div className="mt-2 space-y-3">
+          {Array.from({ length: needPhotos }, (_, i) => (
+            <div key={i}>
+              {needPhotos === 3 && (
+                <span className="block text-xs font-medium text-neutral-700">
+                  {["1. Front (head straight, within 10°)",
+                    "2. Right side (turned more than 15°)",
+                    "3. Left side (turned more than 15°)"][i]}
+                </span>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                className="mt-1 w-full text-sm"
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) pickPhotoAt(i, f); }}
+              />
+              {previews[i] && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={previews[i]} alt="" className="mt-1 w-24 rounded-lg" />
+              )}
+            </div>
+          ))}
+        </div>
       </section>
 
       {feature?.kind === "preset" && (
@@ -307,7 +383,7 @@ export default function TestPage() {
         </section>
       )}
 
-      {wantsReference && (
+      {(wantsReference || wantsLens) && (
         <section className="mt-5">
           <label className="block text-sm font-medium">
             Reference {feature?.group === "Jewellery" ? "product photo" : "photo"}

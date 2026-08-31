@@ -198,6 +198,71 @@ left order and returned `2A to 2B, Slight to Medium Wavy` in 7.5s.
 
 ---
 
+## 2c. Every remaining feature, and what each one refuses
+
+Measured 31 Aug 2026. All now working; each needed a photo the earlier set did
+not contain, which is the pattern worth remembering — **these endpoints fail on
+the subject, not the format.**
+
+| Feature | First failure | Fix |
+|---|---|---|
+| Ring | `Hand pose should be correct` | One hand, upright, back to camera, wrist in frame |
+| Bracelet | `Wrist size should fit in range`, then `Wrist should be in the correct pose` | Arm **vertical**, wrist facing the camera rather than edge-on |
+| Nail | `error_nail_too_small` | Macro crop where the nails dominate the frame |
+| Teeth whitening | `error_no_teeth` | An **open smile**. The default bride photo has a closed mouth |
+| Custom makeup | `400 InvalidParameters` | `lip_color` also requires `morphology` and `style`, not just `palettes` |
+
+Earrings, necklace and eye colour lens worked first time.
+
+Only the makeup failure was free: it was rejected at creation (HTTP 400). The
+other four were engine content errors on an accepted task, so they were billed.
+Four photos and one payload shape cost about 5 units to discover.
+
+### Verified payload shapes
+
+```
+teethWhitening  { effect: { whitening_intensity: 0-100 }, index: 0 }
+eyeColor        { effect: { intensity: 1-100, enlargement: 0-100 } } + lens reference
+nailColor       { effect_type: "nail_polish",
+                  effects: [ { sub_type, finger, color, texture,
+                               transparency, reflection, contrast, roughness } x5 ] }
+makeupCustom    { effects: [ { category: "lip_color", shape, morphology, style, palettes },
+                             { category: "blush", pattern, palettes } ] }
+```
+
+---
+
+## 2d. Two bugs that only appear in production
+
+**A live call on Vercel returned a broken image.** The runtime filesystem is
+read-only, so `writeFixture` could not mirror the result, but the route still
+advertised the local `/fixtures/<key>.jpg` path — a file that was never
+written. Every live call in production rendered a broken image while reporting
+success. The response now falls back to the upstream URL when the mirror fails.
+
+**A multi-file picker returns files in the browser's order, not yours.** The
+three-photo diagnostics require front, right, left. A file dialog sorts
+alphabetically, so `face-left` arrived before `face-right` and the API answered
+`error_face_angle_invalid` — after charging. The UI now has one labelled slot
+per photo, and slot order is wire order.
+
+Neither reproduces locally: the first needs a read-only filesystem, the second
+needs a real file dialog.
+
+---
+
+## 2e. Do not re-encode a photo that already meets the spec
+
+The upload helper pushed every file through a canvas, even when it was already
+jpg and within 1024px. Same visible image, different bytes — and the fixture
+cache is keyed on a hash of those bytes, so **every upload through the UI missed
+the cache and made a billable call**, including for looks already cached.
+
+A conforming file now passes through untouched. The same photo that built the
+kebaya fixture replays in 11ms for 0 units.
+
+---
+
 ## 3. A failed AI task still costs units
 
 From the endpoint descriptions, verbatim:

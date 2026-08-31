@@ -193,7 +193,11 @@ export async function POST(request: Request, ctx: RouteContext<"/api/tryon/[feat
     return NextResponse.json({
       feature,
       source: "live" as const,
-      imageUrl: fixture.imagePath,
+      // On a read-only filesystem (Vercel) nothing was mirrored locally, so
+      // point at the upstream URL instead. It expires in 2 hours, which is
+      // fine for the immediate response.
+      imageUrl: fixture.persisted ? fixture.imagePath : result.url,
+      cached: fixture.persisted,
       data: result.data,
       upstreamUrl: result.url,
       unitsSpent: result.unitsSpent,
