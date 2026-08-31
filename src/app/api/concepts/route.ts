@@ -41,7 +41,12 @@ export async function POST(request: Request) {
   const startedAt = Date.now();
 
   try {
-    const form = await request.formData();
+    let form: FormData;
+    try {
+      form = await request.formData();
+    } catch {
+      return bad("expected multipart/form-data with a 'photo' field", "BadRequestBody");
+    }
 
     const photo = form.get("photo");
     if (!(photo instanceof File)) return bad("a 'photo' is required", "MissingPhoto");

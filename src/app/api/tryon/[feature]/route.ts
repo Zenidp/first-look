@@ -44,7 +44,14 @@ export async function POST(request: Request, ctx: RouteContext<"/api/tryon/[feat
   const f = getFeature(feature);
 
   try {
-    const form = await request.formData();
+    // A request with no body at all throws here rather than returning an empty
+    // form, which would surface as a 500 for what is really a malformed request.
+    let form: FormData;
+    try {
+      form = await request.formData();
+    } catch {
+      return bad("expected multipart/form-data with a 'photo' field", "BadRequestBody");
+    }
 
     const photos = form.getAll("photo").filter((v): v is File => v instanceof File);
     if (photos.length === 0) return bad("at least one 'photo' is required", "MissingPhoto");
