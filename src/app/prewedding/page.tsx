@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { prepareImage } from "@/lib/prepare-image";
+
 type Concept = {
   id: string;
   label: string;
@@ -20,24 +22,6 @@ type Generated = {
   pollMs?: number;
   totalMs: number;
 };
-
-/** Downscale to the API limit: jpeg, long side <= 1024px. */
-async function toApiSpecJpeg(file: File): Promise<File> {
-  const bitmap = await createImageBitmap(file);
-  const scale = Math.min(1, 1024 / Math.max(bitmap.width, bitmap.height));
-  const w = Math.round(bitmap.width * scale);
-  const h = Math.round(bitmap.height * scale);
-  const canvas = document.createElement("canvas");
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("canvas unavailable");
-  ctx.drawImage(bitmap, 0, 0, w, h);
-  bitmap.close();
-  const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/jpeg", 0.92));
-  if (!blob) throw new Error("jpeg encode failed");
-  return new File([blob], "photo.jpg", { type: "image/jpeg" });
-}
 
 export default function PreweddingPage() {
   const [concepts, setConcepts] = useState<Concept[]>([]);
@@ -65,7 +49,7 @@ export default function PreweddingPage() {
   async function pick(file: File) {
     setError("");
     try {
-      const prepared = await toApiSpecJpeg(file);
+      const prepared = await prepareImage(file);
       setPhoto(prepared);
       setPreview(URL.createObjectURL(prepared));
       setResults([]);
