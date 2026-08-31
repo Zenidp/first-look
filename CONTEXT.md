@@ -194,12 +194,20 @@ Ready to build on:
 - The readiness verdict is our own rule layer over those four values plus the
   wedding-date delta. Section 6 says keep the rules transparent and explainable.
 
-Two things deliberately left undone:
-1. **Fixtures must be regenerated** from a photo you own before the repo goes
-   public or the demo is filmed — see `fixtures/README.md`. This is why the repo
-   is private.
-2. **`public/references/` is empty** — 13 declared slots for kebaya, hijab and
-   regional makeup, parked until you source the images.
+Both earlier blockers are now cleared:
+1. ~~Fixtures must be regenerated~~ — **done.** Every Perfect Corp–derived
+   fixture is deleted. What remains comes from a **synthetic bride** generated
+   with Gemini (`scripts/generate-assets.py`, sources in git-ignored `input/`).
+   No third-party imagery, no outstanding consent. **The repo can go public:**
+   `gh repo edit Zenidp/first-look --visibility public --accept-visibility-change-consequences`
+2. ~~`public/references/` is empty~~ — **done.** All 13 slots filled and live in
+   production. Verified end to end: the Javanese kebaya composites onto the
+   synthetic bride's photo with her face, background and pose intact.
+
+Still open: **the five regional makeup references need an MUA to confirm they
+are recognisably correct and not generic.** Paes ageng and suntiang are the ones
+to check. A wrong region is worse than a missing one — clear the `credit` field
+on any that fail and the slot hides itself.
 
 **`docs/ASSETS.md` is the shooting and sourcing spec for both** — exact framing,
 measured face-size limits, the 13 filenames, and where each file goes.
