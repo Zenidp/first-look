@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { FEATURES, FEATURE_IDS, GARMENT_CATEGORIES, HAIR_COLOR_PRESETS, STYLE_HINTS } from "@/lib/perfectcorp/features";
 import { forceLive, offline } from "@/lib/perfectcorp/fixtures";
+import { supabaseEnabled } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 
@@ -13,6 +14,10 @@ export function GET() {
   return NextResponse.json({
     count: FEATURE_IDS.length,
     mode: offline() ? "offline" : forceLive() ? "force-live" : "cache-first",
+    // Whether results can be cached anywhere but this machine's disk. False in
+    // production means every look is billed again on every visit, so it is
+    // worth being able to see at a glance.
+    sharedCache: supabaseEnabled(),
     features: FEATURE_IDS.map((id) => ({
       id,
       ...FEATURES[id],
