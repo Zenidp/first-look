@@ -78,6 +78,38 @@ end;
 $$;
 
 -- ---------------------------------------------------------------------------
+-- Pending tasks: video generation that outlives a single request.
+--
+-- A 5-second clip takes ~62 seconds to render, and a serverless function may be
+-- capped at 60. So video is created in one request and polled in another, which
+-- means the identity needed to file the result — its cache key, what it cost —
+-- has to survive between them. Serverless invocations share no memory, so it
+-- lives here.
+--
+-- Rows are deleted once the task reaches a terminal state. Anything still
+-- present after an hour was abandoned; sweep it with:
+--   delete from public.pending_tasks where created_at < now() - interval '1 hour';
+-- ---------------------------------------------------------------------------
+create table if not exists public.pending_tasks (
+  task_id    text primary key,
+  -- The fixture key this result will be filed under, computed at creation from
+  -- the inputs. Kept server-side so a client cannot redirect a result onto
+  -- someone else's cache entry.
+  key        text not null,
+  feature    text not null,
+  inputs     jsonb not null default '{}'::jsonb,
+  media_type text check (media_type in ('image', 'video')),
+  -- Video does not bill a flat rate: 1/2/3 units per second by resolution, so
+  -- the real figure is computed at creation and carried, not re-derived.
+  units      integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+alter table public.pending_tasks enable row level security;
+
+create index if not exists pending_tasks_created_idx on public.pending_tasks (created_at);
+
+-- ---------------------------------------------------------------------------
 -- Look boards: the artefact she sends to her MUA.
 --
 -- Fixture keys are content-addressed and stable, so a board is just the recipe

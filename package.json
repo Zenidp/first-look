@@ -10,7 +10,8 @@
     "smoke": "./scripts/smoke.sh",
     "dev:offline": "PERFECTCORP_OFFLINE=1 next dev",
     "start:offline": "PERFECTCORP_OFFLINE=1 next start",
-    "check:supabase": "node --env-file=.env.local scripts/check-supabase.ts"
+    "check:supabase": "node --env-file=.env.local scripts/check-supabase.ts",
+    "setup:supabase": "node --env-file=.env.local scripts/setup-supabase.ts"
   },
   "dependencies": {
     "next": "16.3.3",

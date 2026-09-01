@@ -125,6 +125,79 @@ export async function putMedia(
   }
 }
 
+// --- pending tasks ----------------------------------------------------------
+
+export type PendingTask = {
+  task_id: string;
+  key: string;
+  feature: string;
+  inputs: Record<string, unknown>;
+  media_type: "image" | "video" | null;
+  units: number;
+};
+
+/**
+ * Parks the identity of a task that will outlive this request.
+ *
+ * Video takes ~62s for a 5-second clip against a function budget that may be
+ * 60, so it is created in one request and polled in another. The cache key and
+ * the real unit cost are computed at creation and stored here rather than
+ * handed to the client, so a caller cannot file a result under someone else's
+ * key or under-report what it cost.
+ *
+ * Returns false when there is no database, which is the caller's signal to fall
+ * back to creating and polling inside one request.
+ */
+export async function putPendingTask(task: PendingTask): Promise<boolean> {
+  const cfg = config();
+  if (!cfg) return false;
+  try {
+    const res = await fetch(`${cfg.url}/rest/v1/pending_tasks?on_conflict=task_id`, {
+      method: "POST",
+      headers: headers(cfg.key, {
+        "Content-Type": "application/json",
+        Prefer: "resolution=merge-duplicates,return=minimal",
+      }),
+      body: JSON.stringify(task),
+    });
+    if (!res.ok) throw new Error(`${res.status} ${await res.text()}`);
+    return true;
+  } catch (err) {
+    console.warn("[supabase] pending task write failed:", err);
+    return false;
+  }
+}
+
+export async function getPendingTask(taskId: string): Promise<PendingTask | null> {
+  const cfg = config();
+  if (!cfg) return null;
+  try {
+    const res = await fetch(
+      `${cfg.url}/rest/v1/pending_tasks?task_id=eq.${encodeURIComponent(taskId)}&select=*&limit=1`,
+      { headers: headers(cfg.key), cache: "no-store" },
+    );
+    if (!res.ok) return null;
+    const rows = (await res.json()) as PendingTask[];
+    return rows[0] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** Called once a task reaches a terminal state, success or failure. */
+export async function dropPendingTask(taskId: string): Promise<void> {
+  const cfg = config();
+  if (!cfg) return;
+  try {
+    await fetch(`${cfg.url}/rest/v1/pending_tasks?task_id=eq.${encodeURIComponent(taskId)}`, {
+      method: "DELETE",
+      headers: headers(cfg.key),
+    });
+  } catch {
+    // A stray row is swept by age; losing this delete costs nothing.
+  }
+}
+
 // --- usage ledger -----------------------------------------------------------
 
 /**
