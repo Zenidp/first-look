@@ -47,9 +47,11 @@ used the hair-down template `female_s_wave_brunette`, which composited fine and
 then made the earrings impossible because the waves covered both ears. The
 recipe now uses an updo. See `docs/FINDINGS.md` §8b.
 
-## Superseded, but kept
+## Tried and rejected, but kept
 
-`9233763a…mp4` is the first outfit clip, generated with a prompt that asked her
-to turn from side to side. It pushed in hard enough to nearly crop her shoes, so
-the recipe now uses a calmer prompt and `e5f37b09…mp4` instead. Kept because it
-was paid for and because FINDINGS §9b cites the comparison.
+`e5f37b09…mp4` is an outfit clip generated with a "stands still, minimal motion"
+prompt. It keeps the feet in frame where the one in use nearly crops them, which
+is why it was briefly adopted — but watched rather than compared frame by frame,
+it looks wrong, and it carries twice the frame-to-frame change of the clip it
+replaced. The recipe uses `9233763a…mp4` again. Kept because it was paid for and
+because FINDINGS §9b cites the comparison.

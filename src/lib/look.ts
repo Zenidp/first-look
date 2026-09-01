@@ -92,21 +92,25 @@ export const BEAUTY_VIDEO_NEGATIVE =
   "extra hands, warping jewellery, camera zoom, cuts, text, watermark";
 
 /**
- * The outfit clip asks for very little movement, and that is a measured choice
- * rather than a timid one.
+ * The outfit clip asks for a turn rather than an expression: the whole point of
+ * animating a full-body frame is watching the kain and the kebaya move, and
+ * there is no usable face at this scale to animate anyway (see the recipe).
  *
- * The first version asked her to "turn slowly from side to side" and to keep
- * the full body in frame. It pushed in hard enough to nearly crop her shoes —
- * and hem length and footwear are part of what an outfit decision turns on, so
- * losing them at the end of the clip costs more here than anywhere else.
+ * A "stands still, minimal motion" variant was tried and reverted. It kept the
+ * feet in frame where this one nearly crops them — but it looked wrong, and the
+ * numbers agree: it carries roughly twice this clip's frame-to-frame change
+ * (9.98 vs 4.84 mean, 16.31 vs 7.05 peak). Asking for less movement did not get
+ * less movement; it got the model inventing motion and warping the subject to
+ * fill five seconds.
  *
- * Asking for minimal motion instead does not stop the push-in — nothing tried
- * has — but it reduces it enough that the feet stay in frame for all five
- * seconds. FINDINGS §9a.
+ * The lesson is about how to judge a clip, not about prompts. Two still frames
+ * cannot show motion quality, and that is all the first review of it looked at.
+ * FINDINGS §9b.
  */
 export const OUTFIT_VIDEO_PROMPT =
-  "The bride stands still and breathes gently, the batik kain settling softly " +
-  "around her. Minimal motion, soft studio light.";
+  "The bride turns slowly from side to side. The lace kebaya and the batik " +
+  "skirt move naturally with her, the fabric catching soft studio light. " +
+  "Full body stays in frame.";
 
 export const OUTFIT_VIDEO_NEGATIVE =
   "changing outfit, changing background, cropping the body, distorted face, " +

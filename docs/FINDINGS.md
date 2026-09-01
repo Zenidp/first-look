@@ -729,26 +729,49 @@ had nearly cropped her shoes. That matters more here than on the half-body
 clip: hem length and footwear are part of what a bridal outfit decision turns
 on, and the end of the clip loses them.
 
-### 9b. Negative prompts do not steer the camera. The motion *description* does
+### 9b. Asking for less motion produced more of it — and two stills cannot tell you
 
 Measured 1 Sep 2026, third video run, on the same still.
 
-| Prompt | Camera | Feet at the last frame |
+The hypothesis was that a calmer prompt would tame the camera push-in. On
+framing alone it appeared to work:
+
+| Prompt | Feet at the last frame |
+|---|---|
+| "turns slowly from side to side… **full body stays in frame**" | nearly cropped |
+| "**stands still and breathes gently**… minimal motion" | still in frame |
+
+That was reviewed by comparing the first and last frame, the recipe was switched
+to the calmer prompt — and on watching it, the clip was obviously worse. It was
+reverted.
+
+**The numbers say why.** Mean absolute frame-to-frame change, on downscaled
+greyscale:
+
+| Clip | Mean | Peak |
 |---|---|---|
-| "turns slowly from side to side… **full body stays in frame**" + `camera zoom` negated | pushes in hard | **nearly cropped** |
-| "**stands still and breathes gently**… minimal motion" | pushes in gently | **still in frame** |
+| "turns slowly" | **4.84** | 7.05 |
+| "stands still, minimal motion" | **9.98** | 16.31 |
 
-Both runs negated `camera zoom` and `cropping the body`. The negative prompt did
-nothing either time. What changed the framing was **how much movement the
-positive prompt asked for** — a subject described as turning gets a camera that
-moves with her; a subject described as still gets one that nearly holds.
+The clip that asked for *minimal motion* carries **twice the pixel churn**.
+Asking for less movement did not get less movement — it got the model inventing
+motion and warping the subject to fill five seconds. A body genuinely turning
+moves coherently; a body told to hold still gets animated anyway, incoherently.
 
-So the lever is the motion description, not the negatives. This is not a fix —
-the second clip still drifts — but it is enough to keep the hem and the shoes
-for all five seconds, which is exactly what an outfit clip exists to show. The
-outfit recipe now uses the calmer prompt.
+### The methodological lesson, which is the more useful one
 
-**The still remains the record of the hem.** "Gentler" is not "stable".
+**Two still frames cannot show motion quality.** Framing, identity drift and
+cropping are all visible in a first-and-last comparison; smoothness, warping and
+uncanniness are not, and they are what makes a clip unusable. Reviewing a video
+by its endpoints measures the one axis that is easiest to see and misses the one
+that matters.
+
+Frame-to-frame difference is cheap, needs no model, and would have caught this
+before the recipe was changed. Use it, or watch the clip. Preferably both.
+
+The camera push-in itself remains unsolved after three runs, with `camera zoom`
+negated every time. **Negative prompts do not appear to constrain camera motion
+at all**, and the still remains the record of the hem.
 
 ### Latency varies more than the first measurement suggested
 
