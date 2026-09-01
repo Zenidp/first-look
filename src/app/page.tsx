@@ -1,69 +1,70 @@
-import Image from "next/image";
+import Link from "next/link";
 
+/**
+ * Landing.
+ *
+ * CONTEXT §8 asks for one sentence, one upload, nothing else. The wedding-date
+ * field named there belongs to Hair Readiness, which is deferred — so it is not
+ * here. An input that collects something nothing uses is worse than a missing
+ * one: it promises a feature that will not answer.
+ */
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-5 py-16">
+      <p className="text-xs font-medium uppercase tracking-widest text-rose-700">First Look</p>
+
+      <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-4xl">
+        Lihat look pengantinmu
+        <br />
+        sebelum bayar trial.
+      </h1>
+
+      <p className="mt-5 max-w-lg text-base leading-7 text-zinc-600">
+        Trial makeup pengantin di Jakarta menghabiskan uang dan setengah hari, dan
+        sering berakhir dengan look yang tidak dia mau. Susun dulu di sini — makeup,
+        sanggul, kebaya, kalung dan anting, semuanya di{" "}
+        <strong className="font-semibold text-zinc-900">satu foto wajahnya sendiri</strong>,
+        bukan screenshot wajah orang lain.
+      </p>
+
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Link
+          href="/look"
+          className="rounded-lg bg-zinc-900 px-5 py-3 text-sm font-medium text-white hover:bg-zinc-800"
+        >
+          Mulai susun look
+        </Link>
+        <Link
+          href="/prewedding"
+          className="rounded-lg border border-zinc-300 px-5 py-3 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+        >
+          Konsep prewedding
+        </Link>
+      </div>
+
+      <dl className="mt-14 grid gap-6 border-t border-zinc-200 pt-8 sm:grid-cols-3">
+        <div>
+          <dt className="text-sm font-medium text-zinc-900">Satu foto, bukan kolase</dt>
+          <dd className="mt-1 text-xs leading-5 text-zinc-500">
+            Tiap pilihan ditumpuk ke foto yang sama, jadi hasilnya satu foto asli —
+            wajah, latar dan potongannya tetap miliknya.
+          </dd>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div>
+          <dt className="text-sm font-medium text-zinc-900">Nusantara, bukan katalog Barat</dt>
+          <dd className="mt-1 text-xs leading-5 text-zinc-500">
+            Kebaya Jawa, Sunda, Minang, Bali, Bugis, Batak dan dua look hijab — tidak
+            ada satu pun di katalog bawaan.
+          </dd>
         </div>
-      </main>
-    </div>
+        <div>
+          <dt className="text-sm font-medium text-zinc-900">Bisa digerakkan</dt>
+          <dd className="mt-1 text-xs leading-5 text-zinc-500">
+            Look yang sudah jadi bisa diubah jadi klip 5 detik — untuk melihat
+            jatuhnya kain, bukan cuma diamnya.
+          </dd>
+        </div>
+      </dl>
+    </main>
   );
 }
