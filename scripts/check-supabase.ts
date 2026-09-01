@@ -13,6 +13,9 @@
  * kind of credential escapes.
  */
 
+// Marks the file a module, which is what permits the top-level await below.
+export {};
+
 const url = process.env.SUPABASE_URL?.trim().replace(/\/$/, "");
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
 
