@@ -272,7 +272,7 @@ export default function TestPage() {
         <select
           value={featureId}
           onChange={(e) => changeFeature(e.target.value)}
-          className="mt-2 w-full rounded-lg border border-neutral-300 p-2 text-sm"
+          className="mt-2 w-full rounded-lg border border-neutral-300 bg-white p-2 text-sm text-neutral-900"
         >
           {groups.map((g) => (
             <optgroup key={g} label={g}>
@@ -362,7 +362,7 @@ export default function TestPage() {
           <select
             value={preset}
             onChange={(e) => setPreset(e.target.value)}
-            className="mt-2 w-full rounded-lg border border-neutral-300 p-2 text-sm"
+            className="mt-2 w-full rounded-lg border border-neutral-300 bg-white p-2 text-sm text-neutral-900"
           >
             <option value="">Choose…</option>
             {presets.map((p) => <option key={p} value={p}>{p}</option>)}
@@ -376,7 +376,7 @@ export default function TestPage() {
           <select
             value={gender}
             onChange={(e) => setGender(e.target.value)}
-            className="mt-2 w-full rounded-lg border border-neutral-300 p-2 text-sm"
+            className="mt-2 w-full rounded-lg border border-neutral-300 bg-white p-2 text-sm text-neutral-900"
           >
             <option value="female">female</option>
             <option value="male">male</option>
@@ -390,7 +390,7 @@ export default function TestPage() {
           <select
             value={garmentCategory}
             onChange={(e) => setGarmentCategory(e.target.value)}
-            className="mt-2 w-full rounded-lg border border-neutral-300 p-2 text-sm"
+            className="mt-2 w-full rounded-lg border border-neutral-300 bg-white p-2 text-sm text-neutral-900"
           >
             {["full_body", "upper_body", "lower_body", "outer", "shoes", "auto"].map((c) => (
               <option key={c} value={c}>{c}</option>
@@ -457,7 +457,7 @@ export default function TestPage() {
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="mt-2 w-full rounded-lg border border-neutral-300 p-2 text-sm"
+              className="mt-2 w-full rounded-lg border border-neutral-300 bg-white p-2 text-sm text-neutral-900"
             >
               {categories.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>

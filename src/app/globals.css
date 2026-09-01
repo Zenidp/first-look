@@ -3,6 +3,28 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /*
+   * This app is light-only on purpose, and the declaration matters as much as
+   * the palette.
+   *
+   * Every screen written for this project — /look, /test, /prewedding — styles
+   * itself with light-mode colours (text-zinc-900 on white) and carries no
+   * `dark:` variants at all. The create-next-app boilerplate below used to flip
+   * --background to near-black whenever the OS was in dark mode, which left
+   * near-black text on a near-black page and, worse, made every native <select>
+   * popup unreadable: the options inherited the near-white --foreground while
+   * the browser painted the popup on a light surface. Grey on white.
+   *
+   * Stating `color-scheme: light` is what actually fixes the native controls —
+   * dropdown popups, scrollbars, focus rings are painted by the browser, not by
+   * Tailwind, and without this they follow the OS instead of the page.
+   *
+   * There is also a product reason not to theme this: it is a bridal look
+   * board. Re-tinting a page where the whole point is judging the colour of
+   * makeup, gold and lace would misrepresent the thing being sold.
+   */
+  color-scheme: light;
 }
 
 @theme inline {
@@ -10,13 +32,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
