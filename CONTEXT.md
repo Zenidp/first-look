@@ -184,26 +184,26 @@ Record in Bahasa or English, but subtitle in English. Judges are American.
 | Mon 31 Aug 2026 (pm) | Generated the whole asset set with Gemini via `scripts/generate-assets.py`: a **synthetic bride** (10 photos) and **18 reference images**. Cleared both licensing blockers. **Every one of the 30 features now tested end to end**, with 18 fixtures banking 28 units of results. Fixed five bugs, three of which only appear in production. | **Everything works. Ready for Day 3.** |
 | Tue 1 Sep 2026 (am) | **The composite look and the video.** Verified the video API against its OpenAPI bundle and registered it (31 features). Added `input/half-body.jpg` — the only framing that can carry a whole look chain. Built `/api/look/compose`, which chains five try-ons so each result feeds the next, and `/look`, the look board that runs it and animates the result. Extracted `perfectcorp/run.ts` so the chain and the single-feature route share one billing guard. 19 units spent. | One real photo of the whole look, plus a 5s clip. Both replay for 0 units. |
 | Tue 1 Sep 2026 (pm) | **From "it works" to "someone can use it".** Guided crop with an overlay that *defines* the face size (no face detection, so no billed guesses), EXIF fixed only when it needs fixing so conforming photos stay byte-identical. Look builder: she picks makeup, hair, busana and perhiasan herself, and impossible combinations are refused in the UI rather than discovered by paying. Chain orchestrated per-step from the browser, resumable after a failure, engine errors translated to Indonesian. Supabase layer for a cache that survives a read-only production filesystem. Real landing page. 0 units spent. | The demo path is still free end to end, in production. Supabase is written but unverified — needs credentials. |
+| Tue 1 Sep 2026 (eve) | **Shared cache wired and proven.** Supabase applied via the Management API (no CLI, no dependency, one authenticated fetch), env vars set on Vercel, and the credit leak closed: a result never committed to git is served by production for 0 units. Video split into create-and-poll so a 62s render is not hostage to a 60s function limit — verified live. Found that negative prompts never steered the camera; the motion description does, which recovered the hem and shoes in the outfit clip. 6 units spent. | Production is genuinely usable by a stranger. Only Hair Readiness is left. |
 
 ### Where to pick up
 
-**One thing is blocked on the operator, and it is the credit saver.**
-`src/lib/supabase.ts` and `supabase/schema.sql` are written and committed but
-have never run against a real project. To finish that:
+**The shared cache is live, and the credit leak is closed.** Proven in
+production 1 Sep: a `hairColor` result generated locally and never committed to
+git is served by the deployment for 0 units, straight from Supabase Storage.
+`GET /api/features` reports `sharedCache: true`.
 
-1. Create a Supabase project.
-2. Run `supabase/schema.sql` in its SQL editor.
-3. Create a **public** Storage bucket named `fixtures`.
-4. Put `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `.env.local` **and** in
-   the Vercel project's environment variables, then redeploy.
+Setup is one command if it ever has to be rebuilt:
 
-`GET /api/features` reports `sharedCache: true` once it is wired. Until then the
-app runs exactly as before — the layer is inert, not broken.
+```bash
+npm run setup:supabase   # applies supabase/schema.sql, creates the public bucket
+npm run check:supabase   # verifies table, storage, public read, usage ledger
+```
 
-**Why it matters more than it looks.** Vercel's filesystem is read-only, so
-production can read the fixtures committed to git but can never write a new one.
-Every look a real bride builds is billed again, in full, every time anyone
-builds it. The committed fixtures cover the demo; nothing covers a real user.
+Both need `SUPABASE_ACCESS_TOKEN` in `.env.local`. That token is **setup-only
+and account-level admin — it must never go to Vercel.** Only `SUPABASE_URL` and
+`SUPABASE_SERVICE_ROLE_KEY` belong there, and both are already set for
+production, preview and development.
 
 **Hair Readiness is still the one feature left**, and section 6 calls it the
 differentiator to protect above everything else. It was deferred deliberately —
