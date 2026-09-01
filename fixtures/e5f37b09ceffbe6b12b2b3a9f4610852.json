@@ -1,0 +1,18 @@
+{
+  "key": "e5f37b09ceffbe6b12b2b3a9f4610852",
+  "feature": "imageToVideo",
+  "inputs": {
+    "prompt": "The bride stands still and breathes gently, the batik kain settling softly around her. Minimal motion, soft studio light.",
+    "duration": 5,
+    "__feature": "imageToVideo",
+    "resolution": "480",
+    "negativePrompt": "changing outfit, changing background, cropping the body, distorted face, extra limbs, camera zoom, cuts, text, watermark"
+  },
+  "mediaType": "video",
+  "taskId": "amZ8OsAf1am_Lu4xCJFsyuGkheP-WO_LBfmw6kTpsiTm5eLoMFAz6PRyChqcciWiBoxz1_QbpFfF8xD5jzJlbw",
+  "unitsSpent": 5,
+  "elapsedMs": 0,
+  "polls": 0,
+  "createdAt": "2026-09-01T15:59:56.079Z",
+  "imagePath": "/fixtures/e5f37b09ceffbe6b12b2b3a9f4610852.mp4"
+}

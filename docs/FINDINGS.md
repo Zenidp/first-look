@@ -722,10 +722,58 @@ can never be composited onto a full-body frame in the first place. The outfit
 is all there is to animate, which is exactly why the clip should be sold as the
 outfit rather than as her.
 
-**The camera push-in is now confirmed twice.** This run asked for "Full body
-stays in frame" in the prompt and listed both `cropping the body` and
-`camera zoom` as negative prompts. It pushed in anyway, and the last frame has
-nearly cropped her shoes. That matters more here than on the half-body clip:
-hem length and footwear are part of what a bridal outfit decision turns on, and
-the end of the clip loses them. **Treat the framing of the final second as
-unreliable, and keep the still as the record of the hem.**
+**The camera push-in is now confirmed three times.** The second run asked for
+"Full body stays in frame" in the prompt and listed both `cropping the body`
+and `camera zoom` as negative prompts. It pushed in anyway, and the last frame
+had nearly cropped her shoes. That matters more here than on the half-body
+clip: hem length and footwear are part of what a bridal outfit decision turns
+on, and the end of the clip loses them.
+
+### 9b. Negative prompts do not steer the camera. The motion *description* does
+
+Measured 1 Sep 2026, third video run, on the same still.
+
+| Prompt | Camera | Feet at the last frame |
+|---|---|---|
+| "turns slowly from side to side… **full body stays in frame**" + `camera zoom` negated | pushes in hard | **nearly cropped** |
+| "**stands still and breathes gently**… minimal motion" | pushes in gently | **still in frame** |
+
+Both runs negated `camera zoom` and `cropping the body`. The negative prompt did
+nothing either time. What changed the framing was **how much movement the
+positive prompt asked for** — a subject described as turning gets a camera that
+moves with her; a subject described as still gets one that nearly holds.
+
+So the lever is the motion description, not the negatives. This is not a fix —
+the second clip still drifts — but it is enough to keep the hem and the shoes
+for all five seconds, which is exactly what an outfit clip exists to show. The
+outfit recipe now uses the calmer prompt.
+
+**The still remains the record of the hem.** "Gentler" is not "stable".
+
+### Latency varies more than the first measurement suggested
+
+Three 480p/5s renders: **61.6s, 51.9s, ~38s**. Budget the top of that range
+rather than the average — and note that with create-and-poll split across
+requests (section 9c) the figure stops mattering for the function limit and only
+affects how long she waits.
+
+### 9c. Video cannot be created and polled in one request
+
+At 61.6s worst case against a serverless function budget that may be 60, the
+blocking route was one second of variance from failing in production — on the
+feature that closes the demo.
+
+`POST /api/video` creates and returns; `GET /api/video/<taskId>` reads the
+outcome later. Measured: **create returns in 2s**, polling reports `running`
+three times, success at ~38s.
+
+This needs somewhere to keep the task's identity between two requests, because
+serverless invocations share no memory. The cache key and the real unit cost are
+computed at creation and parked server-side — never handed to the client, since
+video does not bill a flat rate and a caller that could name its own key could
+file a result over someone else's cache entry.
+
+One trap: **Postgres `jsonb` normalises key order**, so a parked `inputs` object
+returns with its keys rearranged. Same keys, same values, different
+serialisation. Harmless here only because the key is stored rather than
+recomputed from it.

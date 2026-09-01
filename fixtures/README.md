@@ -46,3 +46,10 @@ Three more are a dead branch, kept because they were paid for: the first run
 used the hair-down template `female_s_wave_brunette`, which composited fine and
 then made the earrings impossible because the waves covered both ears. The
 recipe now uses an updo. See `docs/FINDINGS.md` §8b.
+
+## Superseded, but kept
+
+`9233763a…mp4` is the first outfit clip, generated with a prompt that asked her
+to turn from side to side. It pushed in hard enough to nearly crop her shoes, so
+the recipe now uses a calmer prompt and `e5f37b09…mp4` instead. Kept because it
+was paid for and because FINDINGS §9b cites the comparison.

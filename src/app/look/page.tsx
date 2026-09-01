@@ -560,7 +560,7 @@ export default function LookPage() {
           <p className="mt-2 text-xs leading-5 text-zinc-500">
             {framing === "beauty"
               ? "Klip ini menangkap suasananya, bukan detail produknya — perhiasan halus bisa bergeser bentuknya saat dianimasikan."
-              : "Perhatikan jatuhnya bahan, bukan wajahnya: di jarak seluruh badan wajah digambar ulang oleh model. Kameranya juga cenderung maju sendiri sampai kadang memotong sepatu, jadi patokan panjang kain tetap fotonya."}
+              : "Perhatikan jatuhnya bahan, bukan wajahnya: di jarak seluruh badan wajah digambar ulang oleh model dan bisa bergeser. Kameranya juga masih maju sedikit sendiri, jadi patokan pasti panjang kain tetap fotonya."}
           </p>
         </section>
       )}
