@@ -135,16 +135,19 @@ expect_status "video rejects an out-of-range duration" 400 \
 expect_status "video rejects an unknown resolution" 400 \
   -X POST "$BASE/api/tryon/imageToVideo" -F "photo=@$PHOTO" -F 'options={"resolution":"4k"}'
 
-# The demo path itself: the five-step chain has to replay entirely from
-# fixtures. If this stops passing, the deployed demo would start billing.
-chain=$(curl -s --max-time 60 -X POST "$BASE/api/look/compose" \
-  -F "photo=@$ROOT/public/demo/half-body.jpg" -F 'recipe=jawa-klasik')
-verdict=$(echo "$chain" | python3 -c "
-import json,sys
+# The demo path itself. Both looks have to replay entirely from fixtures — if
+# either stops passing, the deployed demo starts billing mid-judging.
+check_chain() {  # name, recipe, photo, expected stage count
+  local name="$1" recipe="$2" photo="$3" want="$4"
+  local body verdict
+  body=$(curl -s --max-time 60 -X POST "$BASE/api/look/compose" \
+    -F "photo=@$ROOT/public/demo/$photo" -F "recipe=$recipe")
+  verdict=$(echo "$body" | WANT="$want" python3 -c "
+import json,os,sys
 try: d=json.load(sys.stdin)
 except Exception: print('ERROR'); raise SystemExit
 stages=d.get('stages') or []
-if (len(stages)==5 and d.get('unitsSpent')==0
+if (len(stages)==int(os.environ['WANT']) and d.get('unitsSpent')==0
         and all(s.get('source')=='fixture' for s in stages)):
     print('OK')
 elif d.get('code')=='OfflineCacheMiss':
@@ -153,13 +156,16 @@ else:
     print('ERROR')
 " 2>/dev/null)
 
-case "$verdict" in
-  OK)   ok "the whole look chain replays from cache for 0 units" ;;
-  SKIP) printf '  \033[33mSKIP\033[0m %s\n' \
-          "look chain replay — no fixtures for public/demo/half-body.jpg"
-        skip=$((skip+1)) ;;
-  *)    bad "look chain replay" "$(echo "$chain" | head -c 200)" ;;
-esac
+  case "$verdict" in
+    OK)   ok "$name replays from cache for 0 units" ;;
+    SKIP) printf '  \033[33mSKIP\033[0m %s\n' "$name — no fixtures for public/demo/$photo"
+          skip=$((skip+1)) ;;
+    *)    bad "$name" "$(echo "$body" | head -c 200)" ;;
+  esac
+}
+
+check_chain "beauty look (5 layers)" jawa-klasik        half-body.jpg 5
+check_chain "outfit look (1 layer)"  jawa-klasik-outfit full-body.jpg 1
 
 printf '\n\033[1m%d passed, %d failed, %d skipped\033[0m\n' "$pass" "$fail" "$skip"
 [ "$fail" -eq 0 ] || exit 1

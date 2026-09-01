@@ -53,23 +53,77 @@ export type LookStep = {
 export type LookRecipe = {
   id: string;
   label: string;
-  /** Which file in input/ this recipe is built for. */
+  /** One line on what this look is for, shown above it. */
+  blurb: string;
+  /** Served from public/demo/ so the browser uploads byte-identical bytes. */
   photo: string;
   steps: LookStep[];
+  /**
+   * Motion prompt for this look.
+   *
+   * These strings are part of the fixture key. Editing one by a single
+   * character is a cache miss and a real 5-unit call, so treat them as data
+   * rather than copy, and change them only alongside a regenerated fixture.
+   */
+  video: { prompt: string; negativePrompt: string };
 };
 
 /**
- * The demo recipe. Every reference here is self-made (see FINDINGS section 7 —
+ * Motion prompts.
+ *
+ * Kept deliberately small. The endpoint runs the prompt through Gemini and
+ * re-emits it as English, and its own guidance is that short prompts work
+ * best; a long one competes with the image rather than describing it. Anything
+ * asking for a change of clothing, setting or framing would also undo the
+ * try-ons that produced the still.
+ *
+ * Neither of these actually stops the camera pushing in. Measured twice, on
+ * both framings, with `camera zoom` in the negative prompt both times — the
+ * clip zooms anyway. The negatives are kept because they do constrain the
+ * subject (outfit, background, hairstyle), just not the camera. FINDINGS §9.
+ */
+const BEAUTY_VIDEO_PROMPT =
+  "The bride smiles gently and turns her head slightly toward the camera. " +
+  "Subtle natural motion, soft studio light, the fabric and earrings catching " +
+  "the light. The camera holds still.";
+
+const BEAUTY_VIDEO_NEGATIVE =
+  "changing outfit, changing background, changing hairstyle, distorted face, " +
+  "extra hands, warping jewellery, camera zoom, cuts, text, watermark";
+
+/**
+ * The outfit clip asks for a turn rather than an expression: the whole point of
+ * animating a full-body frame is watching the kain and the kebaya move, and
+ * there is no usable face at this scale to animate anyway (see the recipe).
+ */
+const OUTFIT_VIDEO_PROMPT =
+  "The bride turns slowly from side to side. The lace kebaya and the batik " +
+  "skirt move naturally with her, the fabric catching soft studio light. " +
+  "Full body stays in frame.";
+
+const OUTFIT_VIDEO_NEGATIVE =
+  "changing outfit, changing background, cropping the body, distorted face, " +
+  "extra limbs, camera zoom, cuts, text, watermark";
+
+/**
+ * The demo recipes. Every reference here is self-made (see FINDINGS section 7 —
  * Perfect Corp's own sample imagery may not be redistributed), and the two
  * template ids are real ids rather than titles: the Wedding look shown as
  * "Ethereal" in the catalogue is `all_ethereal`, and passing the title returns
  * InvalidTemplate.
+ *
+ * There are two, and they answer different questions rather than competing.
+ * See the note on the second one.
  */
 export const LOOK_RECIPES: LookRecipe[] = [
   {
     id: "jawa-klasik",
-    label: "Kebaya Jawa klasik",
+    label: "Beauty look",
+    blurb:
+      "Kebaya, sanggul, makeup, kalung dan anting ditumpuk di satu foto yang sama. " +
+      "Wajahnya yang jadi subjek.",
     photo: "half-body.jpg",
+    video: { prompt: BEAUTY_VIDEO_PROMPT, negativePrompt: BEAUTY_VIDEO_NEGATIVE },
     steps: [
       {
         feature: "clothes",
@@ -114,6 +168,39 @@ export const LOOK_RECIPES: LookRecipe[] = [
       },
     ],
   },
+
+  /**
+   * The outfit, on the full-body frame. One step, not five — and that is not a
+   * simplification, it is the 128px face minimum from FINDINGS §8a showing up
+   * from the other side. A full-body frame puts the face at ~75px, so makeup,
+   * hair and jewellery are all rejected on it. The garment is the only thing
+   * that can be composited here, so the garment is the only thing to animate.
+   *
+   * Which turns out to be the right clip anyway. Measured 1 Sep 2026: the lace,
+   * the batik parang motif, the hem and the silhouette all survive the
+   * generative pass and stay readable end to end, so this is how a bride sees
+   * the way a kebaya actually moves. The face does not survive as well — at
+   * ~65px after the 480p downscale it gets re-synthesised, and drifts off her
+   * by the last frame. Hence the labelling in the UI: this clip is the outfit,
+   * not her.
+   */
+  {
+    id: "jawa-klasik-outfit",
+    label: "Bajunya, saat dipakai",
+    blurb:
+      "Kebaya dan kain di seluruh badan, lalu digerakkan — untuk melihat jatuhnya " +
+      "bahan, panjang kain dan siluetnya.",
+    photo: "full-body.jpg",
+    video: { prompt: OUTFIT_VIDEO_PROMPT, negativePrompt: OUTFIT_VIDEO_NEGATIVE },
+    steps: [
+      {
+        feature: "clothes",
+        label: "Kebaya",
+        referenceId: "kebaya-jawa-klasik",
+        options: { garmentCategory: "full_body" },
+      },
+    ],
+  },
 ];
 
 export function getRecipe(id: string): LookRecipe | undefined {
@@ -132,20 +219,3 @@ export const DETAIL_STEPS: LookStep[] = [
   { feature: "bracelet", label: "Gelang", referenceId: "bracelet-gold-cuff" },
 ];
 
-/**
- * Default motion prompt for the finished look.
- *
- * Kept deliberately small. The endpoint runs the prompt through Gemini and
- * re-emits it as English, and its own guidance is that short prompts work
- * best; a long one competes with the image rather than describing it. Anything
- * asking for a change of clothing, setting or framing would also undo the five
- * try-ons that produced the still.
- */
-export const DEFAULT_VIDEO_PROMPT =
-  "The bride smiles gently and turns her head slightly toward the camera. " +
-  "Subtle natural motion, soft studio light, the fabric and earrings catching " +
-  "the light. The camera holds still.";
-
-export const DEFAULT_VIDEO_NEGATIVE =
-  "changing outfit, changing background, changing hairstyle, distorted face, " +
-  "extra hands, warping jewellery, camera zoom, cuts, text, watermark";
