@@ -1,0 +1,18 @@
+{
+  "key": "9233763af7d97fcbfc7df55e01b98fea",
+  "feature": "imageToVideo",
+  "inputs": {
+    "__feature": "imageToVideo",
+    "resolution": "480",
+    "duration": 5,
+    "prompt": "The bride turns slowly from side to side. The lace kebaya and the batik skirt move naturally with her, the fabric catching soft studio light. Full body stays in frame.",
+    "negativePrompt": "changing outfit, changing background, cropping the body, distorted face, extra limbs, camera zoom, cuts, text, watermark"
+  },
+  "mediaType": "video",
+  "taskId": "_OXjppxTPcl8os4kgo15i1OJlD6qJzzKaC1up6hYjQu7xOCRgJfM7QWJ-e_fN7yIBoxz1_QbpFfF8xD5jzJlbw",
+  "unitsSpent": 5,
+  "elapsedMs": 51899,
+  "polls": 31,
+  "createdAt": "2026-09-01T07:23:47.408Z",
+  "imagePath": "/fixtures/9233763af7d97fcbfc7df55e01b98fea.mp4"
+}

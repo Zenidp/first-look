@@ -689,3 +689,43 @@ what was actually asked for:
 Neither is a defect for a mood clip, but it does mean the video must never be
 presented as a record of the specific product she picked. The still is the
 artefact; the video is the feeling.
+
+### 9a. Full-body video works, and it is the better clip for judging a garment
+
+Measured 1 Sep 2026, second video run: `full-body.jpg` + kebaya jawa klasik
+(an existing fixture, so the still cost 0) animated at 480p/5s for 5 units.
+51.9s over 31 polls — consistent with the 61.6s half-body run.
+
+**The garment survives well.** The lace pattern on the kebaya, the batik parang
+motif on the kain, the hem length and the silhouette are all still readable and
+consistent from the first frame to the last. For a bride deciding whether a
+kebaya suits her, seeing the fabric move is worth more than seeing it still, and
+this is the only way to get it.
+
+**The face does not survive as well.** At full-body framing the head is roughly
+75px in the source and about 65px after the 480p downscale, so the model
+re-synthesises it rather than preserving it. It stays a plausible, similar
+woman — centre-parted bun, same colouring — but by the last frame the jaw is
+rounder and the features have softened. It is not grotesque; it is simply no
+longer reliably *her*.
+
+So the two framings are not competing, they are for different questions:
+
+| Source | What the clip is for | What it cannot do |
+|---|---|---|
+| `half-body` composite | The beauty look — makeup, sanggul, perhiasan, on her face | Show the skirt, hem or silhouette |
+| `full-body` + garment | The outfit — drape, movement, hem, silhouette | Carry makeup, hair or jewellery; hold facial identity |
+
+The second row's exclusions are not a video limitation, they are section 8a
+again: a ~75px face is under the 128px minimum, so makeup, hair and jewellery
+can never be composited onto a full-body frame in the first place. The outfit
+is all there is to animate, which is exactly why the clip should be sold as the
+outfit rather than as her.
+
+**The camera push-in is now confirmed twice.** This run asked for "Full body
+stays in frame" in the prompt and listed both `cropping the body` and
+`camera zoom` as negative prompts. It pushed in anyway, and the last frame has
+nearly cropped her shoes. That matters more here than on the half-body clip:
+hem length and footwear are part of what a bridal outfit decision turns on, and
+the end of the clip loses them. **Treat the framing of the final second as
+unreliable, and keep the still as the record of the hem.**
