@@ -82,12 +82,12 @@ export type LookRecipe = {
  * clip zooms anyway. The negatives are kept because they do constrain the
  * subject (outfit, background, hairstyle), just not the camera. FINDINGS §9.
  */
-const BEAUTY_VIDEO_PROMPT =
+export const BEAUTY_VIDEO_PROMPT =
   "The bride smiles gently and turns her head slightly toward the camera. " +
   "Subtle natural motion, soft studio light, the fabric and earrings catching " +
   "the light. The camera holds still.";
 
-const BEAUTY_VIDEO_NEGATIVE =
+export const BEAUTY_VIDEO_NEGATIVE =
   "changing outfit, changing background, changing hairstyle, distorted face, " +
   "extra hands, warping jewellery, camera zoom, cuts, text, watermark";
 
@@ -96,12 +96,12 @@ const BEAUTY_VIDEO_NEGATIVE =
  * animating a full-body frame is watching the kain and the kebaya move, and
  * there is no usable face at this scale to animate anyway (see the recipe).
  */
-const OUTFIT_VIDEO_PROMPT =
+export const OUTFIT_VIDEO_PROMPT =
   "The bride turns slowly from side to side. The lace kebaya and the batik " +
   "skirt move naturally with her, the fabric catching soft studio light. " +
   "Full body stays in frame.";
 
-const OUTFIT_VIDEO_NEGATIVE =
+export const OUTFIT_VIDEO_NEGATIVE =
   "changing outfit, changing background, cropping the body, distorted face, " +
   "extra limbs, camera zoom, cuts, text, watermark";
 
