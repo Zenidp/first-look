@@ -192,6 +192,45 @@ export type PollResult = {
   polls: number;
 };
 
+export type TaskCheck =
+  | { status: "running" }
+  | { status: "success"; url?: string; data?: Record<string, unknown> };
+
+/**
+ * One status read, no waiting.
+ *
+ * Video needs this. A 5-second clip takes about 62 seconds to render, which is
+ * longer than a serverless function may be allowed to live, so the task is
+ * created in one request and checked in later ones. Everything else still uses
+ * pollTask, which loops on top of this.
+ *
+ * Throws PerfectCorpError when the task itself failed, so both callers get the
+ * same treatment for a genuine engine error.
+ */
+export async function checkTask(feature: FeatureId, taskId: string): Promise<TaskCheck> {
+  const f = FEATURES[feature];
+  const body = await call<TaskStatusResponse>(`/s2s/${f.version}/task/${f.task}/${taskId}`);
+  const { task_status, error, error_message } = body.data;
+
+  if (task_status === "success") {
+    const url = resultUrl(body.data.results);
+    // Diagnostics legitimately have no URL, so only try-ons may complain.
+    if (!url && !f.returnsJson) {
+      throw new PerfectCorpError("Task succeeded but no result URL", "NoResultUrl");
+    }
+    // Only diagnostics carry a meaningful payload. For try-ons the bag holds
+    // nothing but the URL, and storing it would bloat every fixture with a
+    // signed link that dies in two hours anyway.
+    return { status: "success", url, data: f.returnsJson ? firstResult(body.data.results) : undefined };
+  }
+
+  if (task_status === "error") {
+    throw new PerfectCorpError(error_message || error || "AI task failed", error || "TaskError");
+  }
+
+  return { status: "running" };
+}
+
 /**
  * Poll until success or error. Polling is free, but abandoning a running task
  * is not: the docs warn that an unpolled task can expire and still be charged.
@@ -204,33 +243,16 @@ export async function pollTask(feature: FeatureId, taskId: string): Promise<Poll
   let polls = 0;
 
   for (;;) {
-    const body = await call<TaskStatusResponse>(`/s2s/${f.version}/task/${f.task}/${taskId}`);
+    const check = await checkTask(feature, taskId);
     polls += 1;
-    const { task_status, error, error_message } = body.data;
 
-    if (task_status === "success") {
-      const url = resultUrl(body.data.results);
-      // Diagnostics legitimately have no URL, so only try-ons may complain.
-      if (!url && !f.returnsJson) {
-        throw new PerfectCorpError("Task succeeded but no result URL", "NoResultUrl");
-      }
-      // Only diagnostics carry a meaningful payload. For try-ons the bag holds
-      // nothing but the URL, and storing it would bloat every fixture with a
-      // signed link that dies in two hours anyway.
-      const data = f.returnsJson ? firstResult(body.data.results) : undefined;
-      return { url, data, elapsedMs: Date.now() - startedAt, polls };
-    }
-
-    if (task_status === "error") {
-      throw new PerfectCorpError(
-        error_message || error || "AI task failed",
-        error || "TaskError",
-      );
+    if (check.status === "success") {
+      return { url: check.url, data: check.data, elapsedMs: Date.now() - startedAt, polls };
     }
 
     if (Date.now() - startedAt > timeoutMs) {
       throw new PerfectCorpError(
-        `Task ${taskId} still ${task_status} after ${timeoutMs / 1000}s`,
+        `Task ${taskId} still running after ${timeoutMs / 1000}s`,
         "PollTimeout",
       );
     }

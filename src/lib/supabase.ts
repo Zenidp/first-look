@@ -129,8 +129,21 @@ export async function putMedia(
 
 export type PendingTask = {
   task_id: string;
+  /**
+   * The fixture key, computed once at creation and stored — never recomputed
+   * from `inputs` on the way back.
+   *
+   * That distinction matters more than it looks. Postgres `jsonb` normalises
+   * key order, so `inputs` returns with its keys rearranged: it round-trips the
+   * same keys and values, but not the same serialisation. Deriving a cache key
+   * from it after a round trip would be asking for a hash that quietly differs
+   * from the one the result was filed under. (fixtureKey sorts its params, so
+   * it would in fact survive — but relying on that is a trap for whoever edits
+   * it next.)
+   */
   key: string;
   feature: string;
+  /** Diagnostic metadata only. See the note on `key`. */
   inputs: Record<string, unknown>;
   media_type: "image" | "video" | null;
   units: number;

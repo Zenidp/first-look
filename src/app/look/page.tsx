@@ -45,6 +45,41 @@ import { GUIDES, type Framing } from "@/lib/photo";
 
 type Photo = { file: File; url: string; demo: boolean };
 
+type VideoState = { url?: string; error?: string; units?: number };
+
+/**
+ * Waits out a render that outlives the request that started it.
+ *
+ * Abandoning a running task is not free — the docs warn that an unpolled task
+ * can expire and still be charged — so this keeps asking rather than giving up
+ * early. Five minutes is generous against a measured 62 seconds, and the
+ * interval matches the server's own 1.5s polling cadence.
+ */
+async function pollVideo(taskId: string): Promise<VideoState> {
+  const deadline = Date.now() + 300_000;
+
+  while (Date.now() < deadline) {
+    await new Promise((r) => setTimeout(r, 3000));
+
+    let res: Response;
+    try {
+      res = await fetch(`/api/video/${encodeURIComponent(taskId)}`);
+    } catch {
+      continue; // A dropped poll is not a failed render. Ask again.
+    }
+
+    const data = await res.json();
+    if (!res.ok) return { error: explain(data.code, data.error) };
+    if (data.status === "success") return { url: data.url, units: data.unitsSpent };
+  }
+
+  return {
+    error:
+      "Videonya belum selesai setelah lima menit. Unitnya sudah terpakai — " +
+      "coba lagi nanti, hasilnya akan langsung muncul kalau sudah jadi.",
+  };
+}
+
 const DETAILS = [
   { feature: "ring", label: "Cincin", photo: "/demo/hand-ring.jpg", referenceId: "ring-gold-solitaire" },
   { feature: "bracelet", label: "Gelang", photo: "/demo/hand-bracelet.jpg", referenceId: "bracelet-gold-cuff" },
@@ -84,7 +119,7 @@ export default function LookPage() {
   const [running, setRunning] = useState(false);
   const [finalUrl, setFinalUrl] = useState("");
 
-  const [video, setVideo] = useState<{ url?: string; error?: string; units?: number } | null>(null);
+  const [video, setVideo] = useState<VideoState | null>(null);
   const [videoBusy, setVideoBusy] = useState(false);
   const [details, setDetails] = useState<Record<string, string>>({});
 
@@ -204,13 +239,22 @@ export default function LookPage() {
           negativePrompt: framing === "beauty" ? BEAUTY_VIDEO_NEGATIVE : OUTFIT_VIDEO_NEGATIVE,
         }),
       );
-      const res = await fetch("/api/tryon/imageToVideo", { method: "POST", body });
+      const res = await fetch("/api/video", { method: "POST", body });
       const data = await res.json();
-      setVideo(
-        res.ok && data.imageUrl
-          ? { url: data.imageUrl, units: data.unitsSpent }
-          : { error: explain(data.code, data.error) },
-      );
+
+      if (!res.ok) {
+        setVideo({ error: explain(data.code, data.error) });
+        return;
+      }
+
+      // A cache hit, or a deployment with nowhere to park the task, answers
+      // immediately. Otherwise the render outlives the request and is polled.
+      if (data.status === "success") {
+        setVideo({ url: data.url, units: data.unitsSpent });
+        return;
+      }
+
+      setVideo(await pollVideo(data.taskId));
     } catch (err) {
       setVideo({ error: err instanceof Error ? err.message : "Gagal membuat video." });
     } finally {
