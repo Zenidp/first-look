@@ -46,6 +46,17 @@ export type RunInput = {
   photos: RunPhoto[];
   reference?: RunPhoto;
   options: Record<string, unknown>;
+  /**
+   * Whether the caller needs the result bytes, not just its URL.
+   *
+   * Only the look chain does, to feed one step into the next. A single try-on
+   * does not: the browser loads the image from the URL itself. That distinction
+   * is worth a flag because since the shared cache landed, a hit may live in
+   * Supabase rather than on disk — and fetching it back is a real network round
+   * trip. Measured: a cache hit that pulled the bytes needlessly took 4.1s
+   * against ~50ms for one that did not.
+   */
+  needBytes?: boolean;
 };
 
 export type RunOutcome = {
@@ -137,10 +148,10 @@ export async function runFeature(input: RunInput): Promise<RunOutcome> {
         key,
         mediaUrl: cached.imagePath,
         mediaType,
-        // Read the mirrored bytes back so a chained step can feed them onward
-        // without a second call. Missing file is not fatal: the caller only
-        // needs bytes when it is chaining.
-        bytes: (await readFixtureMedia(cached)) ?? undefined,
+        // Only fetched when the caller is chaining. A missing body is not
+        // fatal — compose reports ChainBroken rather than silently dropping a
+        // layer, and a single try-on never looks at this.
+        bytes: input.needBytes ? ((await readFixtureMedia(cached)) ?? undefined) : undefined,
         data: cached.data,
         unitsSpent: 0,
         unitsSavedByCache: cached.unitsSpent,

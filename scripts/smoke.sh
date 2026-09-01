@@ -97,8 +97,13 @@ expect_status "unknown concept is 404" 404 \
   -X POST "$BASE/api/concepts" -F "photo=@$PHOTO" -F 'conceptId=nope'
 
 head "Credit safety (requires PERFECTCORP_OFFLINE=1)"
+# This preset is RESERVED as the uncached probe: never generate a fixture for
+# it, locally or in Supabase, or this check silently becomes a cache hit and
+# stops testing anything. A bridal app has no use for denim-blue hair, which is
+# what makes it a safe choice.
 expect_status "cache miss refuses to spend (409)" 409 \
-  -X POST "$BASE/api/tryon/hairColor" -F "photo=@$PHOTO" -F 'options={"preset":"Ash Gray"}'
+  -X POST "$BASE/api/tryon/hairColor" -F "photo=@$PHOTO" \
+  -F 'options={"preset":"Midnight Blue/Denim Blue"}'
 
 head "Fixture replay (the demo-day path)"
 replay=$(curl -s --max-time 30 -X POST "$BASE/api/tryon/hairStyle" \

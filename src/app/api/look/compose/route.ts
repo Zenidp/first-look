@@ -74,6 +74,9 @@ export async function POST(request: Request) {
         photos: [current],
         reference,
         options,
+        // The chain composites each result onto the next, so it is the one
+        // caller that genuinely needs the bytes back.
+        needBytes: true,
       });
 
       unitsSpent += outcome.unitsSpent;
