@@ -199,6 +199,7 @@ export type PollResult = {
  */
 export async function pollTask(feature: FeatureId, taskId: string): Promise<PollResult> {
   const f = FEATURES[feature];
+  const timeoutMs = f.pollTimeoutMs ?? POLL_TIMEOUT_MS;
   const startedAt = Date.now();
   let polls = 0;
 
@@ -227,9 +228,9 @@ export async function pollTask(feature: FeatureId, taskId: string): Promise<Poll
       );
     }
 
-    if (Date.now() - startedAt > POLL_TIMEOUT_MS) {
+    if (Date.now() - startedAt > timeoutMs) {
       throw new PerfectCorpError(
-        `Task ${taskId} still ${task_status} after ${POLL_TIMEOUT_MS / 1000}s`,
+        `Task ${taskId} still ${task_status} after ${timeoutMs / 1000}s`,
         "PollTimeout",
       );
     }
@@ -238,13 +239,20 @@ export async function pollTask(feature: FeatureId, taskId: string): Promise<Poll
   }
 }
 
+/**
+ * `units` overrides the registry figure. Only video needs it: its cost is
+ * per-second and per-resolution rather than flat, so a 1080p 10s clip bills 30
+ * units against a registry entry that says 5. Reporting the registry number
+ * there would understate the spend by 6x.
+ */
 export async function runTask(
   feature: FeatureId,
   payload: Record<string, unknown>,
+  units?: number,
 ): Promise<PollResult & { taskId: string; unitsSpent: number }> {
   const taskId = await createTask(feature, payload);
   const result = await pollTask(feature, taskId);
-  return { ...result, taskId, unitsSpent: FEATURES[feature].units };
+  return { ...result, taskId, unitsSpent: units ?? FEATURES[feature].units };
 }
 
 /** Free. Used to populate the style picker. */

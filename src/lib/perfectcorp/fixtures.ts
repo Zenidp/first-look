@@ -15,6 +15,7 @@ import type { FeatureId } from "./features";
  *
  *   fixtures/<key>.json          metadata, committed to git
  *   public/fixtures/<key>.jpg    the image, committed to git, served statically
+ *   public/fixtures/<key>.mp4    …or the clip, for the video feature
  *
  * Both are committed on purpose: on Vercel the filesystem is read-only at
  * runtime, so cache WRITES only happen on your machine. Reads work everywhere.
@@ -30,8 +31,14 @@ export type Fixture = {
   feature: FeatureId;
   /** Task inputs, with file_ids stripped — they are not reproducible. */
   inputs: Record<string, unknown>;
-  /** Try-ons: the mirrored image. Diagnostics have none. */
+  /**
+   * Try-ons: the mirrored result, served from /public. Diagnostics have none.
+   * Named `imagePath` because 18 fixtures were written with that key before
+   * video existed; it now also carries .mp4 paths. `mediaType` disambiguates.
+   */
   imagePath?: string;
+  /** Absent on every fixture written before the video feature — read as "image". */
+  mediaType?: "image" | "video";
   /** Diagnostics: the attribute payload, stored verbatim. */
   data?: Record<string, unknown>;
   taskId: string;
@@ -73,27 +80,39 @@ export async function readFixture(key: string): Promise<Fixture | null> {
 }
 
 /**
- * Downloads the result image and writes both files. Best-effort: on a
- * read-only filesystem the live result is still returned to the caller, the
- * call just does not get memoised.
+ * Downloads the result and writes both files. Best-effort: on a read-only
+ * filesystem the live result is still returned to the caller, the call just
+ * does not get memoised.
+ *
+ * Returns the downloaded bytes when it has them, even if persisting failed.
+ * The look chain feeds each step's output into the next step's input, and it
+ * needs those exact bytes — refetching the result URL later is not an option,
+ * it expires in 2 hours.
  */
 export async function writeFixture(
   meta: Omit<Fixture, "imagePath">,
   resultUrl?: string,
-): Promise<Fixture & { persisted: boolean }> {
+): Promise<Fixture & { persisted: boolean; bytes?: Uint8Array }> {
+  const ext = meta.mediaType === "video" ? "mp4" : "jpg";
   const fixture: Fixture = resultUrl
-    ? { ...meta, imagePath: `/fixtures/${meta.key}.jpg` }
+    ? { ...meta, imagePath: `/fixtures/${meta.key}.${ext}` }
     : { ...meta };
 
-  try {
-    await mkdir(FIXTURE_DIR, { recursive: true });
+  let bytes: Uint8Array | undefined;
 
+  try {
+    // Download before touching the filesystem, so a read-only mount still
+    // yields the bytes the caller needs to chain onwards.
     if (resultUrl) {
-      await mkdir(IMAGE_DIR, { recursive: true });
       const res = await fetch(resultUrl);
       if (!res.ok) throw new Error(`result download failed: ${res.status}`);
-      const bytes = new Uint8Array(await res.arrayBuffer());
-      await writeFile(path.join(IMAGE_DIR, `${meta.key}.jpg`), bytes);
+      bytes = new Uint8Array(await res.arrayBuffer());
+    }
+
+    await mkdir(FIXTURE_DIR, { recursive: true });
+    if (bytes) {
+      await mkdir(IMAGE_DIR, { recursive: true });
+      await writeFile(path.join(IMAGE_DIR, `${meta.key}.${ext}`), bytes);
     }
 
     await writeFile(
@@ -105,10 +124,21 @@ export async function writeFixture(
     // must not advertise `imagePath` in that case — nothing was written there,
     // and the browser would show a broken image.
     console.warn(`[fixtures] could not persist ${meta.key}:`, err);
-    return { ...fixture, imagePath: undefined, persisted: false };
+    return { ...fixture, imagePath: undefined, persisted: false, bytes };
   }
 
-  return { ...fixture, persisted: true };
+  return { ...fixture, persisted: true, bytes };
+}
+
+/** Reads a mirrored result back off disk. Used to chain one step into the next. */
+export async function readFixtureMedia(fixture: Fixture): Promise<Uint8Array | null> {
+  if (!fixture.imagePath) return null;
+  const ext = fixture.mediaType === "video" ? "mp4" : "jpg";
+  try {
+    return new Uint8Array(await readFile(path.join(IMAGE_DIR, `${fixture.key}.${ext}`)));
+  } catch {
+    return null;
+  }
 }
 
 /** `PERFECTCORP_LIVE=1` forces a real call even when a fixture exists. */

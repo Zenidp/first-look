@@ -1,0 +1,15 @@
+{
+  "key": "883e0260aefb01e3fb336c12d83e0b99",
+  "feature": "makeupLook",
+  "inputs": {
+    "__feature": "makeupLook",
+    "templateId": "all_ethereal"
+  },
+  "mediaType": "image",
+  "taskId": "GjxkBD5RGwDRtvWFmjF4kn1HteExqT0ILxiQZsxV54pDeSPaKaCnvnmwuyRjajyouyBH_FgJk-JlI_0-tmBVQg",
+  "unitsSpent": 2,
+  "elapsedMs": 5798,
+  "polls": 4,
+  "createdAt": "2026-09-01T04:14:10.704Z",
+  "imagePath": "/fixtures/883e0260aefb01e3fb336c12d83e0b99.jpg"
+}

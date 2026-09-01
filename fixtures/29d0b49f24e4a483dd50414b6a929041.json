@@ -1,0 +1,18 @@
+{
+  "key": "29d0b49f24e4a483dd50414b6a929041",
+  "feature": "imageToVideo",
+  "inputs": {
+    "__feature": "imageToVideo",
+    "resolution": "480",
+    "duration": 5,
+    "prompt": "The bride smiles gently and turns her head slightly toward the camera. Subtle natural motion, soft studio light, the fabric and earrings catching the light. The camera holds still.",
+    "negativePrompt": "changing outfit, changing background, changing hairstyle, distorted face, extra hands, warping jewellery, camera zoom, cuts, text, watermark"
+  },
+  "mediaType": "video",
+  "taskId": "h1-vVSQgO4YSFGzPM9xZur59K848U6mR-M-NaRn07GUUmxQ4xqd-W8TDH1PlsAA8Boxz1_QbpFfF8xD5jzJlbw",
+  "unitsSpent": 5,
+  "elapsedMs": 61614,
+  "polls": 36,
+  "createdAt": "2026-09-01T04:35:30.858Z",
+  "imagePath": "/fixtures/29d0b49f24e4a483dd50414b6a929041.mp4"
+}

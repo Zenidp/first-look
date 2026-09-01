@@ -1,0 +1,15 @@
+{
+  "key": "e5a73c2c93453f17e72bd50dc6fc7479",
+  "feature": "hairStyle",
+  "inputs": {
+    "__feature": "hairStyle",
+    "templateId": "female_s_wave_brunette"
+  },
+  "mediaType": "image",
+  "taskId": "Vb3q4RBR31w_qsIbJlPkRBbl6R1byFGM1XhBKH_9xQNtkDJi9kgpKtyeY0ZJgyPrAO6h9Y273R6RR5V6m9KYNQ",
+  "unitsSpent": 2,
+  "elapsedMs": 6086,
+  "polls": 4,
+  "createdAt": "2026-09-01T04:14:02.347Z",
+  "imagePath": "/fixtures/e5a73c2c93453f17e72bd50dc6fc7479.jpg"
+}

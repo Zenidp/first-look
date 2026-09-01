@@ -181,11 +181,32 @@ Record in Bahasa or English, but subtitle in English. Judges are American.
 | Sun 30 Aug 2026 | Read the docs down to the raw OpenAPI bundles (`docs.perfectcorp.com/_bundle/reference/<api>.json` — far more reliable than the rendered pages). Scaffolded Next.js 16.3.3 + TS + Tailwind. Built the Perfect Corp client, feature registry and fixture cache. **One real hair try-on end to end: 7.4s over 5 polls, 2 units.** Repeat call served from cache in 4ms for 0 units. | Day 1 goal met: auth, upload, task, poll and cache proven live. |
 | Mon 31 Aug 2026 (am) | Audited all 29 APIs, every registered version confirmed newest. Generalised to `/api/tryon/[feature]` + `/api/templates/[feature]` + `/api/features`, **30 features registered**. Mirrored 10 makeup pattern catalogues (4,458 patterns). **Found the `styled` fashion family is generative, not a try-on** — turned that into the prewedding concept generator. Wrote `docs/FINDINGS.md` and `scripts/smoke.sh` (18/18, zero units). Shipped to GitHub and Vercel, git auto-deploy verified. | Deployed and auto-deploying. |
 | Mon 31 Aug 2026 (pm) | Generated the whole asset set with Gemini via `scripts/generate-assets.py`: a **synthetic bride** (10 photos) and **18 reference images**. Cleared both licensing blockers. **Every one of the 30 features now tested end to end**, with 18 fixtures banking 28 units of results. Fixed five bugs, three of which only appear in production. | **Everything works. Ready for Day 3.** |
+| Tue 1 Sep 2026 (am) | **The composite look and the video.** Verified the video API against its OpenAPI bundle and registered it (31 features). Added `input/half-body.jpg` — the only framing that can carry a whole look chain. Built `/api/look/compose`, which chains five try-ons so each result feeds the next, and `/look`, the look board that runs it and animates the result. Extracted `perfectcorp/run.ts` so the chain and the single-feature route share one billing guard. 19 units spent. | One real photo of the whole look, plus a 5s clip. Both replay for 0 units. |
 
-### Where to pick up (Day 3, Tue 1 Sep)
+### Where to pick up
 
-Per section 9, Day 3 is **Hair Readiness + shared look board, then feature
-freeze.** Day 4 is video, project page and submission only — no new code.
+**Hair Readiness is the one thing left, and it is the differentiator section 6
+says to protect above everything else.** The shared look board is done — it is
+`/look`, and it turned out to be the composite chain. Day 4 stays sacred:
+video, project page, submission, no new code.
+
+The landing page (`src/app/page.tsx`) is still the Next.js boilerplate.
+
+#### The composite look chain — done 1 Sep
+
+- `/look` runs five try-ons in sequence, each against the previous result, and
+  ends with **one real photograph** of kebaya + sanggul + makeup + kalung +
+  anting. Not a collage: every layer is a true try-on against the real frame.
+- Then it animates that photo — 5s, 480p, 5 units, ~62s to generate.
+- **The whole demo path replays for 0 units**, verified with
+  `PERFECTCORP_OFFLINE=1`: the five-step chain finishes in 85ms, the video and
+  both detail tiles come straight from fixtures.
+- Ring and bracelet cannot join the chain — they are macro hand shots, and no
+  try-on composites one photo into another. They sit beside the look as tiles.
+- Demo photos ship in `public/demo/` rather than git-ignored `input/`, because
+  the browser must upload byte-identical bytes or every fixture misses.
+
+Everything measured is in `FINDINGS.md` §8 (chaining) and §9 (video).
 
 #### What is done and proven
 
@@ -194,8 +215,10 @@ freeze.** Day 4 is video, project page and submission only — no new code.
   filesystem. That is the demo path.
 - **Synthetic bride** in git-ignored `input/`: `face-front` (hair up),
   `face-front-hairdown`, `face-front-smile`, `face-right`, `face-left`,
-  `full-body`, `hands`, `hand-ring`, `hand-bracelet`, `hand-nails`.
-  Which photo you use is not interchangeable — see below.
+  `half-body`, `full-body`, `hands`, `hand-ring`, `hand-bracelet`,
+  `hand-nails`. Which photo you use is not interchangeable — see below.
+  Three of them are also copied to `public/demo/` so the deployed app can
+  upload the exact bytes the fixtures were built from.
 - **18 references** in `public/references/`: 8 Nusantara garments (incl. 2 hijab
   looks), 5 regional makeup, 4 jewellery products, 1 contact lens.
 - No third-party imagery anywhere. **The repo can go public:**
@@ -256,6 +279,14 @@ features reject the wrong subject outright after charging.
 | Eye Colour Lens | `face-front` | `lens-hazel` |
 | Custom Makeup | `face-front` | — |
 | Hair Type (3 photos) | `face-front-hairdown`, `face-right`, `face-left` | — |
+| **Composite look chain** | `half-body` | kebaya + updo + `all_ethereal` + kalung + anting |
+| **Look → Video** | the chain's output | — (prompt only, 480p/5s) |
+
+**`half-body` is not an extra angle, it is a requirement.** A whole look chain
+needs one frame that satisfies two opposing constraints: a face wide enough for
+makeup and jewellery (≥128px) and a torso for the kebaya. `full-body` puts the
+face at ~75px and fails the first; `face-front` has no torso and fails the
+second. Waist-up is the only frame that carries both. FINDINGS §8a.
 
 Slot order is wire order for the three-photo diagnostics, and it is now part of
 the cache key, so a swapped order is no longer silently answered from cache.
@@ -279,7 +310,8 @@ the cache key, so a swapped order is no longer silently answered from cache.
 - Rate limit 250 requests / 300s, per key *and* per IP. Aim for ≤5 QPS.
 - Image specs: jpg/jpeg only, <10MB, long side ≤1024px, face width ≥128px, single face, frontal, **shoulders visible**. Downscaling happens in the browser (canvas) to avoid a `sharp` dependency.
 - Abandoning a running task can still be charged — always poll to a terminal state.
-- **Only two APIs have multiple versions**: hair style (v1.0 → v2.0 → **v2.1**) and clothes (V2.0 → V3.0 → **V4.0**). Every other endpoint is single-version, so "use the latest" is already settled everywhere else.
+- **Only two APIs have multiple versions**: hair style (v1.0 → v2.0 → **v2.1**) and clothes (V2.0 → V3.0 → **V4.0**). Every other endpoint is single-version, so "use the latest" is already settled everywhere else. That audit covered the 29 try-on and diagnostic APIs; **Image to Video also ships two versions**, and the newer one is 3x cheaper — FINDINGS §9.
+- **Video is the only feature that does not bill a flat rate.** 1/2/3 units per *second* at 480/720/1080, so a clip costs 5 to 30 units depending on two dropdowns. `videoUnits()` computes it; `FEATURES.imageToVideo.units` is only the 480p/5s floor.
 - **cloth-v4 dropped `template_id`.** The outfit catalogue (250 items) only works on the older V2.0 `cloth` endpoint. Both are registered: `clothes` (V4, reference only) and `clothesTemplates` (V2.0, catalogue).
 - **The `styled` family — scarf, hat, shoes, bag — generates a whole new scene** rather than editing her photo. Measured, not documented. Keep it off the look board.
 - Nine distinct request shapes, not one. See the family table at the top of `features.ts`; the 2D jewellery suite needs `source_info` and `object_infos` *in addition to* the flat file ids.
@@ -297,3 +329,8 @@ the cache key, so a swapped order is no longer silently answered from cache.
 | Hair length detection | 5.8s | 4 |
 | Hair colour | 4.2s | 3 |
 | Scarf (generative) | 12.8s | 9 |
+| **Image to Video, 480p 5s** | **61.6s** | 36 |
+
+Video is roughly 5x the slowest compositing call, so it carries its own
+`pollTimeoutMs: 300_000` — the shared 90s default would have failed a task that
+was working fine.

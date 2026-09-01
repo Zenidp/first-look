@@ -14,6 +14,7 @@
 #
 set -uo pipefail
 
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BASE="${BASE:-http://localhost:3000}"
 PHOTO="${PHOTO:-}"
 pass=0
@@ -60,7 +61,7 @@ print('OK' if ($expr) else 'ASSERT')
 }
 
 head "Metadata routes (no upstream call, no units)"
-expect_json "feature registry has 30 features" "d['count']==30" "$BASE/api/features"
+expect_json "feature registry has 31 features" "d['count']==31" "$BASE/api/features"
 expect_json "every feature has an endpoint path" \
   "all(f['endpoint'].startswith('/s2s/') for f in d['features'])" "$BASE/api/features"
 expect_json "hair style pinned to v2.1" \
@@ -72,11 +73,15 @@ expect_json "generative family flagged" \
   "$BASE/api/features"
 expect_json "8 prewedding concepts" "len(d['concepts'])==8" "$BASE/api/concepts"
 expect_json "reference library reports slots" \
-  "d['readyCount']+d['pendingCount']==13" "$BASE/api/references"
+  "d['readyCount']+d['pendingCount']==18" "$BASE/api/references"
+expect_json "video registered, and priced per second not per call" \
+  "any(f['id']=='imageToVideo' and f['task']=='image-to-video/youcam' for f in d['features'])" \
+  "$BASE/api/features"
 
 head "Pages render"
 expect_status "/ responds"           200 "$BASE/"
 expect_status "/test responds"       200 "$BASE/test"
+expect_status "/look responds"       200 "$BASE/look"
 expect_status "/prewedding responds" 200 "$BASE/prewedding"
 
 head "Input guards (rejected before any upload or billing)"
@@ -116,6 +121,44 @@ case "$verdict" in
           "fixture replay — PHOTO does not match any cached fixture (expected after regenerating)"
         skip=$((skip+1)) ;;
   *)    bad "fixture replay" "$(echo "$replay" | head -c 200)" ;;
+esac
+
+head "Composite look chain"
+expect_status "compose without a recipe is 400" 400 \
+  -X POST "$BASE/api/look/compose" -F "photo=@$PHOTO"
+expect_status "compose with an unknown recipe is 400" 400 \
+  -X POST "$BASE/api/look/compose" -F "photo=@$PHOTO" -F 'recipe=nope'
+expect_status "compose rejects an unknown feature in steps" 400 \
+  -X POST "$BASE/api/look/compose" -F "photo=@$PHOTO" -F 'steps=[{"feature":"notAFeature"}]'
+expect_status "video rejects an out-of-range duration" 400 \
+  -X POST "$BASE/api/tryon/imageToVideo" -F "photo=@$PHOTO" -F 'options={"duration":7}'
+expect_status "video rejects an unknown resolution" 400 \
+  -X POST "$BASE/api/tryon/imageToVideo" -F "photo=@$PHOTO" -F 'options={"resolution":"4k"}'
+
+# The demo path itself: the five-step chain has to replay entirely from
+# fixtures. If this stops passing, the deployed demo would start billing.
+chain=$(curl -s --max-time 60 -X POST "$BASE/api/look/compose" \
+  -F "photo=@$ROOT/public/demo/half-body.jpg" -F 'recipe=jawa-klasik')
+verdict=$(echo "$chain" | python3 -c "
+import json,sys
+try: d=json.load(sys.stdin)
+except Exception: print('ERROR'); raise SystemExit
+stages=d.get('stages') or []
+if (len(stages)==5 and d.get('unitsSpent')==0
+        and all(s.get('source')=='fixture' for s in stages)):
+    print('OK')
+elif d.get('code')=='OfflineCacheMiss':
+    print('SKIP')      # fixtures were regenerated from a different photo
+else:
+    print('ERROR')
+" 2>/dev/null)
+
+case "$verdict" in
+  OK)   ok "the whole look chain replays from cache for 0 units" ;;
+  SKIP) printf '  \033[33mSKIP\033[0m %s\n' \
+          "look chain replay — no fixtures for public/demo/half-body.jpg"
+        skip=$((skip+1)) ;;
+  *)    bad "look chain replay" "$(echo "$chain" | head -c 200)" ;;
 esac
 
 printf '\n\033[1m%d passed, %d failed, %d skipped\033[0m\n' "$pass" "$fail" "$skip"

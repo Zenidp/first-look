@@ -5,16 +5,10 @@ import { NextResponse } from "next/server";
 
 import { getFeature, isFeatureId, type FeatureId } from "@/lib/perfectcorp/features";
 import { REFERENCE_LIBRARY } from "@/lib/references";
-import { PerfectCorpError, runTask, uploadImage } from "@/lib/perfectcorp/client";
-import { buildPayload, cacheableOptions, PayloadError } from "@/lib/perfectcorp/payload";
-import {
-  fixtureKey,
-  forceLive,
-  hashBytes,
-  offline,
-  readFixture,
-  writeFixture,
-} from "@/lib/perfectcorp/fixtures";
+import { PerfectCorpError } from "@/lib/perfectcorp/client";
+import { PayloadError } from "@/lib/perfectcorp/payload";
+import { forceLive, offline } from "@/lib/perfectcorp/fixtures";
+import { OfflineCacheMiss, runFeature } from "@/lib/perfectcorp/run";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -126,109 +120,42 @@ export async function POST(request: Request, ctx: RouteContext<"/api/tryon/[feat
       return bad("reference image exceeds the 10 MB limit", "FileTooLarge");
     }
 
-    // Validate the option set first, ahead of the cache and the offline gate.
-    // An invalid request should report as invalid whatever the cache state is;
-    // answering "offline cache miss" to a request that was missing `gender`
-    // sends you chasing the wrong problem. buildPayload is pure, so a throwaway
-    // call with placeholder ids costs nothing.
-    buildPayload(feature, {
-      srcFileIds: Array.from({ length: photos.length }, (_, i) => `pending-${i}`),
-      refFileId: refBytes ? "pending-ref" : undefined,
+    const outcome = await runFeature({
+      feature,
+      photos: photos.map((p, i) => ({
+        bytes: photoBytes[i],
+        name: p.name || `photo-${i}.jpg`,
+      })),
+      reference: refBytes ? { bytes: refBytes, name: refName } : undefined,
       options,
     });
 
-    const identity = cacheableOptions(feature, options);
-    const imageHashes = photoBytes.map(hashBytes);
-    if (refBytes) imageHashes.push(hashBytes(refBytes));
-
-    // fixtureKey sorts the hashes, which is fine when the photos are
-    // interchangeable. They are not for the three-photo diagnostics: the API
-    // reads them as front, right, left and answers differently if they are
-    // swapped, so front/right/left and front/left/right must not collide on
-    // one cache entry. Fold the order into the identity for those features
-    // only, leaving every other fixture key untouched.
-    if (expected > 1) {
-      identity.__photoOrder = photoBytes.map(hashBytes).join(",");
-    }
-
-    const key = fixtureKey(feature, identity, imageHashes);
-
-    // --- cache first, before spending anything ------------------------------
-    if (!forceLive()) {
-      const cached = await readFixture(key);
-      if (cached) {
-        return NextResponse.json({
-          feature,
-          source: "fixture" as const,
-          imageUrl: cached.imagePath,
-          data: cached.data,
-          unitsSpent: 0,
-          unitsSavedByCache: cached.unitsSpent,
-          originallyTookMs: cached.elapsedMs,
-          totalMs: Date.now() - startedAt,
-          key,
-        });
-      }
-    }
-
-    if (offline()) {
-      return bad(
-        "PERFECTCORP_OFFLINE=1 and no fixture exists for these inputs. No credits were spent.",
-        "OfflineCacheMiss",
-        409,
-      );
-    }
-
-    // --- live ----------------------------------------------------------------
-    const srcFileIds: string[] = [];
-    for (let i = 0; i < photos.length; i++) {
-      srcFileIds.push(await uploadImage(photoBytes[i], photos[i].name || `photo-${i}.jpg`));
-    }
-    const refFileId = refBytes
-      ? await uploadImage(refBytes, refName)
-      : undefined;
-
-    // Throws PayloadError before any billable call if the inputs are wrong.
-    const payload = buildPayload(feature, { srcFileIds, refFileId, options });
-
-    const result = await runTask(feature, payload);
-
-    const fixture = await writeFixture(
-      {
-        key,
-        feature,
-        inputs: identity,
-        data: result.data,
-        taskId: result.taskId,
-        unitsSpent: result.unitsSpent,
-        elapsedMs: result.elapsedMs,
-        polls: result.polls,
-        createdAt: new Date().toISOString(),
-      },
-      result.url,
-    );
-
     return NextResponse.json({
       feature,
-      source: "live" as const,
-      // On a read-only filesystem (Vercel) nothing was mirrored locally, so
-      // point at the upstream URL instead. It expires in 2 hours, which is
-      // fine for the immediate response.
-      imageUrl: fixture.persisted ? fixture.imagePath : result.url,
-      cached: fixture.persisted,
-      data: result.data,
-      upstreamUrl: result.url,
-      unitsSpent: result.unitsSpent,
-      taskId: result.taskId,
-      pollMs: result.elapsedMs,
-      polls: result.polls,
+      source: outcome.source,
+      imageUrl: outcome.mediaUrl,
+      mediaType: outcome.mediaType,
+      data: outcome.data,
+      unitsSpent: outcome.unitsSpent,
+      unitsSavedByCache: outcome.unitsSavedByCache,
+      ...(outcome.source === "fixture"
+        ? { originallyTookMs: outcome.elapsedMs }
+        : {
+            cached: outcome.persisted,
+            taskId: outcome.taskId,
+            pollMs: outcome.elapsedMs,
+            polls: outcome.polls,
+          }),
       totalMs: Date.now() - startedAt,
-      key,
+      key: outcome.key,
     });
   } catch (err) {
     if (err instanceof PayloadError) {
       // Caught before the billable call — worth saying so.
       return bad(`${err.message} (no credits spent)`, err.code);
+    }
+    if (err instanceof OfflineCacheMiss) {
+      return bad(err.message, err.code, 409);
     }
     if (err instanceof PerfectCorpError) {
       console.error(`[tryon/${feature}] ${err.code}: ${err.message}`);

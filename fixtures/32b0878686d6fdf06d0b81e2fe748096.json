@@ -1,0 +1,16 @@
+{
+  "key": "32b0878686d6fdf06d0b81e2fe748096",
+  "feature": "hairStyle",
+  "inputs": {
+    "__feature": "hairStyle",
+    "templateId": "female_casual_updo",
+    "hairColor": "src"
+  },
+  "mediaType": "image",
+  "taskId": "jD6unu0-aIw-ujVCW3g1gFowqQ3bQCNptlaKcJCVhIw_GC3LiHeV78c8AyyljCrmAO6h9Y273R6RR5V6m9KYNQ",
+  "unitsSpent": 2,
+  "elapsedMs": 5819,
+  "polls": 4,
+  "createdAt": "2026-09-01T04:31:42.114Z",
+  "imagePath": "/fixtures/32b0878686d6fdf06d0b81e2fe748096.jpg"
+}

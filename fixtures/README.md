@@ -1,8 +1,9 @@
 # Fixture cache
 
 Every successful Perfect Corp task is memoised here as JSON, with the result
-image mirrored to `public/fixtures/<key>.jpg`. The image is downloaded rather
-than linked because the upstream result URL expires after 2 hours.
+mirrored to `public/fixtures/<key>.jpg` — or `.mp4` for the video feature, which
+is what `mediaType` on the fixture distinguishes. The result is downloaded
+rather than linked because the upstream URL expires after 2 hours.
 
 - Read on every request, so a repeat call costs 0 units instead of 1–2.
 - Written only on a writable filesystem. Vercel's runtime is read-only, so the
@@ -33,3 +34,15 @@ npm run dev                     # then walk each look at /test
 
 Use `input/face-front.jpg` for makeup, hair and jewellery, and
 `input/full-body.jpg` for outfits. Full spec: `docs/ASSETS.md`.
+
+## Chain fixtures
+
+Six of these belong to the composite look at `/look`, where each step's output
+is the next step's input. They are keyed on the bytes of the previous stage, so
+they only replay in sequence and only from `public/demo/half-body.jpg` — an
+upload of a re-encoded copy misses all six and bills the chain live.
+
+Three more are a dead branch, kept because they were paid for: the first run
+used the hair-down template `female_s_wave_brunette`, which composited fine and
+then made the earrings impossible because the waves covered both ears. The
+recipe now uses an updo. See `docs/FINDINGS.md` §8b.

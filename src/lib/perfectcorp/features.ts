@@ -29,6 +29,7 @@
 //  preset    src + preset (no reference image at all)         [hair colour]
 //  effects   src + caller-supplied effects/effect payload     [makeup, nails…]
 //  detect    src only; returns JSON attributes, not an image  [diagnostics]
+//  video     src + resolution + dst_duration + prompt         [image-to-video]
 //
 // !! BEHAVIOURAL WARNING, measured 31 Aug 2026, documented nowhere upstream:
 // the `styled` family (scarf, hat, shoes, bag) does NOT composite onto the
@@ -49,11 +50,12 @@ export type RequestKind =
   | "jewelry"
   | "preset"
   | "effects"
-  | "detect";
+  | "detect"
+  | "video";
 
 export type Feature = {
   label: string;
-  group: "Hair" | "Makeup" | "Jewellery" | "Fashion" | "Diagnostics";
+  group: "Hair" | "Makeup" | "Jewellery" | "Fashion" | "Diagnostics" | "Video";
   kind: RequestKind;
   /** Path after /s2s/<version>/task/ */
   task: string;
@@ -65,6 +67,13 @@ export type Feature = {
   sourcePhotos?: 1 | 3;
   /** Result is JSON attributes rather than an image. */
   returnsJson?: boolean;
+  /** Result is an mp4 rather than a jpg. Changes what the fixture cache writes. */
+  returnsVideo?: boolean;
+  /**
+   * Poll budget, when the default 90s is not enough. Video generation is an
+   * order of magnitude slower than every compositing call on the platform.
+   */
+  pollTimeoutMs?: number;
   /** True when the endpoint invents a new scene instead of editing her photo. */
   generative?: boolean;
   /** Short note surfaced in the UI and in the API index. */
@@ -329,6 +338,39 @@ const FEATURE_TABLE = {
     note: "GENERATIVE — new scene, not her photo. `gender` required.",
   },
 
+  // ======================= VIDEO ===========================================
+  // Verified 1 Sep 2026 against docs.perfectcorp.com/_bundle/reference/
+  // ai_video_generator.json. Two engines exist and they are NOT the same deal:
+  //
+  //   V1.0  POST /s2s/v2.0/task/image-to-video          template_id + dst_duration
+  //         Catalogue of ~950 templates, listed free. Every one of them is a
+  //         novelty: Puppy Love, Jump for Joy, Superhero, Slow Waltz — the
+  //         categories are Animal, Portrait, Transform and Dance. Nothing
+  //         bridal. And it bills 3 units PER SECOND (std) or 6 (pro), so the
+  //         shortest clip is 15 units.
+  //
+  //   V2.0  POST /s2s/v2.0/task/image-to-video/youcam   free-form `prompt`
+  //         1/2/3 units per second at 480/720/1080. A 5s 480p clip is 5 units,
+  //         three times cheaper than V1, and the prompt can actually describe a
+  //         bride rather than picking the least wrong novelty template.
+  //
+  // V2 is registered; V1 is deliberately not. See docs/FINDINGS.md section 9.
+  imageToVideo: {
+    label: "Look → Video",
+    group: "Video",
+    kind: "video",
+    task: "image-to-video/youcam",
+    version: "v2.0",
+    // Billing is per second and per resolution tier, so this is only the cost
+    // of the default (480p, 5s). videoUnits() computes the real figure.
+    units: 5,
+    returnsVideo: true,
+    // Generative video is far slower than the 12.8s scarf, itself the slowest
+    // compositing call measured. 90s would time out on a task that is fine.
+    pollTimeoutMs: 300_000,
+    note: "V2.0 engine. Animates the finished look board photo. Input needs an aspect ratio between 1:2.5 and 2.5:1 and a long side under 4096px — every fixture in this project is 747x1024, so it qualifies.",
+  },
+
   // ======================= DIAGNOSTICS (Hair Readiness) ====================
   hairTypeDetection: {
     label: "Hair Type",
@@ -410,6 +452,31 @@ export const STYLE_HINTS: Partial<Record<FeatureId, readonly string[]>> = {
   shoes: ["random", "style_minimalist", "style_bohemian", "style_cottagecore", "style_french_elegance", "style_retro_fashion"],
   hat: ["random", "style_sporty_casual", "style_urban_fashion", "style_vacation_casual", "style_warm_cozy", "style_bohemian"],
 };
+
+// --- video ------------------------------------------------------------------
+
+export const VIDEO_RESOLUTIONS = ["480", "720", "1080"] as const;
+export const VIDEO_DURATIONS = [5, 10] as const;
+
+export type VideoResolution = (typeof VIDEO_RESOLUTIONS)[number];
+export type VideoDuration = (typeof VIDEO_DURATIONS)[number];
+
+/** Units per second of output, by resolution tier. From the spec's own table. */
+const VIDEO_UNITS_PER_SECOND: Record<VideoResolution, number> = {
+  "480": 1,
+  "720": 2,
+  "1080": 3,
+};
+
+/**
+ * Video is the only feature on the platform that does not bill a flat rate:
+ * the cost is (units per second for the tier) x duration. 480p/5s is 5 units,
+ * 1080p/10s is 30 — a 6x spread, so the caller must not be allowed to pick
+ * blind. Everything else in FEATURES has a fixed `units` and means it.
+ */
+export function videoUnits(resolution: VideoResolution, duration: VideoDuration): number {
+  return VIDEO_UNITS_PER_SECOND[resolution] * duration;
+}
 
 /** Makeup pattern catalogues mirrored into public/patterns/ (4,458 patterns). */
 export const PATTERN_CATALOGUES = [

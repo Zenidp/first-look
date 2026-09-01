@@ -16,8 +16,14 @@ Images are saved straight to where the app expects them, downscaled to the
 API's 1024px limit and written as jpg. Existing files are skipped unless you
 pass --force, so a rerun costs nothing.
 
-The bride's side angles and full-body shot are conditioned on face-front.jpg so
-the same person carries across all four; generate face-front first.
+Every other bride shot -- side angles, half-body, full-body -- is conditioned on
+face-front.jpg so the same person carries across all of them; generate
+face-front first.
+
+half-body.jpg is the one frame the composite look chain can run end to end on:
+full-body.jpg puts the face at ~75px wide, under the API's 128px minimum, so
+makeup, hair and jewellery are all rejected there, while face-front.jpg has no
+torso to dress. Waist-up carries both.
 """
 
 import argparse
@@ -156,6 +162,22 @@ job("full-body", "bride", "input/full-body.jpg",
     "flat shoes. Plain seamless light grey background. " + BASE +
     " Avoid: cropped feet, cropped head, arms pressed against the body, bulky or loose "
     "clothing, patterns, busy background, watermark.",
+    ref="input/face-front.jpg")
+
+job("half-body", "bride", "input/half-body.jpg",
+    "Using the woman in the reference image, keep her face, skin tone, hair colour and "
+    "hairstyle exactly the same: hair pulled back smoothly into a neat low bun, forehead, "
+    "temples and both ears fully exposed, neck and collarbones clear. "
+    "HALF-BODY FRAMING: the frame starts just above her head and ends just below her waist. "
+    "Head, neck, both shoulders, both upper arms, the full torso and the waistline are all "
+    "inside the frame. Her head fills roughly one quarter of the frame height. Nothing is "
+    "cropped at the sides. She stands facing the camera, upright and square, looking straight "
+    "into the camera, arms relaxed and held slightly away from her sides so the outline of "
+    "her torso is clearly readable. Calm closed-mouth expression, both eyes wide open. "
+    "She wears a plain fitted light grey scoop-neck t-shirt with no pattern, no print and no "
+    "jewellery of any kind. Plain seamless light grey background. " + BASE +
+    " Avoid: cropped head, cropped shoulders, hands raised, arms pressed against the body, "
+    "bulky or loose clothing, necklaces, earrings, patterns, busy background, watermark.",
     ref="input/face-front.jpg")
 
 job("hands", "bride", "input/hands.jpg",

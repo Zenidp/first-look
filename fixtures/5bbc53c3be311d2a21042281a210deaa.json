@@ -1,0 +1,14 @@
+{
+  "key": "5bbc53c3be311d2a21042281a210deaa",
+  "feature": "necklace",
+  "inputs": {
+    "__feature": "necklace"
+  },
+  "mediaType": "image",
+  "taskId": "VevtZd49EpJHP_TWoPEkEbrFhow7Q8f_j-EOU5u1nPu2Qdx6gf7CmeXttgg9luGXrsVEnq3ffBAO2Lf_ZLul6Q",
+  "unitsSpent": 1,
+  "elapsedMs": 2598,
+  "polls": 2,
+  "createdAt": "2026-09-01T04:31:56.682Z",
+  "imagePath": "/fixtures/5bbc53c3be311d2a21042281a210deaa.jpg"
+}

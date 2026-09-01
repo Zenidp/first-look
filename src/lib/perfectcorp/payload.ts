@@ -1,4 +1,9 @@
-import { getFeature, type FeatureId } from "./features";
+import {
+  getFeature,
+  VIDEO_DURATIONS,
+  VIDEO_RESOLUTIONS,
+  type FeatureId,
+} from "./features";
 
 /**
  * Builds the request body for a task, given uploaded file ids.
@@ -186,6 +191,49 @@ export function buildPayload(feature: FeatureId, input: BuildInput): Record<stri
       return body;
     }
 
+    // src + resolution + dst_duration, with an optional free-form prompt.
+    //
+    // Both `resolution` and `dst_duration` are required by the schema, and both
+    // are closed enums — the engine will not clamp an out-of-range value, it
+    // rejects the request. That rejection is at creation time (HTTP 400) so it
+    // is free, but validating here keeps it free even if that ever changes.
+    case "video": {
+      const resolution = str(options, "resolution") ?? "480";
+      if (!(VIDEO_RESOLUTIONS as readonly string[]).includes(resolution)) {
+        throw new PayloadError(
+          `resolution must be one of ${VIDEO_RESOLUTIONS.join(", ")}`,
+          "BadResolution",
+        );
+      }
+      const duration = options.duration ?? 5;
+      if (!(VIDEO_DURATIONS as readonly number[]).includes(duration as number)) {
+        throw new PayloadError("duration must be 5 or 10 seconds", "BadDuration");
+      }
+      const body: Record<string, unknown> = {
+        src_file_id: src,
+        model: "youcam-video-v2",
+        resolution,
+        dst_duration: duration,
+      };
+      // Capped at 1500 characters by the schema. Longer prompts are not
+      // truncated upstream, they fail validation.
+      const prompt = str(options, "prompt");
+      if (prompt) {
+        if (prompt.length > 1500) {
+          throw new PayloadError("prompt is capped at 1500 characters", "PromptTooLong");
+        }
+        body.prompt = prompt;
+      }
+      const negative = str(options, "negativePrompt");
+      if (negative) {
+        if (negative.length > 1500) {
+          throw new PayloadError("negativePrompt is capped at 1500 characters", "PromptTooLong");
+        }
+        body.negative_prompt = negative;
+      }
+      return body;
+    }
+
     // Diagnostics. Two of the four want three photos as an array.
     case "detect": {
       if (f.sourcePhotos === 3) {
@@ -213,7 +261,7 @@ export function cacheableOptions(
   const keep = [
     "templateId", "preset", "gender", "style", "garmentCategory",
     "changeShoes", "hairColor", "effectType", "effects", "effect", "index",
-    "parameter",
+    "parameter", "resolution", "duration", "prompt", "negativePrompt",
   ];
   const out: Record<string, unknown> = { __feature: feature };
   for (const k of keep) {
