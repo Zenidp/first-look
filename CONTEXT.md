@@ -118,6 +118,7 @@ Keep it boring and fast. Four days, solo.
 - Server-side route handlers for every Perfect Corp call.
 - Deploy on Vercel.
 - **Persistence: as little as possible.** A look board should be shareable via URL. Prefer encoding state in the share link or storing generated boards in a single simple table. Do not build auth, user accounts, or a dashboard. If a database is not clearly needed by end of Day 1, do not add one.
+  - **Amended 1 Sep 2026.** A database is now clearly needed, and the reason could not have been known on Day 1: Vercel's runtime filesystem is read-only, so nothing generated in production can ever be cached, and every look a real user builds is billed again in full every time. Supabase covers exactly that — a fixture cache plus a usage ledger. Still no auth, no accounts, no dashboard. The committed fixtures remain the first cache layer so the demo survives the database being absent or down.
 
 Guardrails:
 - No feature that is not visible in the demo video gets built.
@@ -182,15 +183,35 @@ Record in Bahasa or English, but subtitle in English. Judges are American.
 | Mon 31 Aug 2026 (am) | Audited all 29 APIs, every registered version confirmed newest. Generalised to `/api/tryon/[feature]` + `/api/templates/[feature]` + `/api/features`, **30 features registered**. Mirrored 10 makeup pattern catalogues (4,458 patterns). **Found the `styled` fashion family is generative, not a try-on** — turned that into the prewedding concept generator. Wrote `docs/FINDINGS.md` and `scripts/smoke.sh` (18/18, zero units). Shipped to GitHub and Vercel, git auto-deploy verified. | Deployed and auto-deploying. |
 | Mon 31 Aug 2026 (pm) | Generated the whole asset set with Gemini via `scripts/generate-assets.py`: a **synthetic bride** (10 photos) and **18 reference images**. Cleared both licensing blockers. **Every one of the 30 features now tested end to end**, with 18 fixtures banking 28 units of results. Fixed five bugs, three of which only appear in production. | **Everything works. Ready for Day 3.** |
 | Tue 1 Sep 2026 (am) | **The composite look and the video.** Verified the video API against its OpenAPI bundle and registered it (31 features). Added `input/half-body.jpg` — the only framing that can carry a whole look chain. Built `/api/look/compose`, which chains five try-ons so each result feeds the next, and `/look`, the look board that runs it and animates the result. Extracted `perfectcorp/run.ts` so the chain and the single-feature route share one billing guard. 19 units spent. | One real photo of the whole look, plus a 5s clip. Both replay for 0 units. |
+| Tue 1 Sep 2026 (pm) | **From "it works" to "someone can use it".** Guided crop with an overlay that *defines* the face size (no face detection, so no billed guesses), EXIF fixed only when it needs fixing so conforming photos stay byte-identical. Look builder: she picks makeup, hair, busana and perhiasan herself, and impossible combinations are refused in the UI rather than discovered by paying. Chain orchestrated per-step from the browser, resumable after a failure, engine errors translated to Indonesian. Supabase layer for a cache that survives a read-only production filesystem. Real landing page. 0 units spent. | The demo path is still free end to end, in production. Supabase is written but unverified — needs credentials. |
 
 ### Where to pick up
 
-**Hair Readiness is the one thing left, and it is the differentiator section 6
-says to protect above everything else.** The shared look board is done — it is
-`/look`, and it turned out to be the composite chain. Day 4 stays sacred:
-video, project page, submission, no new code.
+**One thing is blocked on the operator, and it is the credit saver.**
+`src/lib/supabase.ts` and `supabase/schema.sql` are written and committed but
+have never run against a real project. To finish that:
 
-The landing page (`src/app/page.tsx`) is still the Next.js boilerplate.
+1. Create a Supabase project.
+2. Run `supabase/schema.sql` in its SQL editor.
+3. Create a **public** Storage bucket named `fixtures`.
+4. Put `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `.env.local` **and** in
+   the Vercel project's environment variables, then redeploy.
+
+`GET /api/features` reports `sharedCache: true` once it is wired. Until then the
+app runs exactly as before — the layer is inert, not broken.
+
+**Why it matters more than it looks.** Vercel's filesystem is read-only, so
+production can read the fixtures committed to git but can never write a new one.
+Every look a real bride builds is billed again, in full, every time anyone
+builds it. The committed fixtures cover the demo; nothing covers a real user.
+
+**Hair Readiness is still the one feature left**, and section 6 calls it the
+differentiator to protect above everything else. It was deferred deliberately —
+the judgement was that a flow someone can actually use beats a half-built
+differentiator — but it is the strongest remaining candidate for any time that
+appears. It wins on **Concept**; the finished flow wins on **Progress**.
+
+Day 4 stays sacred: video, project page, submission, no new code.
 
 #### The composite look chain — done 1 Sep
 
