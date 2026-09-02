@@ -185,6 +185,7 @@ Record in Bahasa or English, but subtitle in English. Judges are American.
 | Tue 1 Sep 2026 (am) | **The composite look and the video.** Verified the video API against its OpenAPI bundle and registered it (31 features). Added `input/half-body.jpg` — the only framing that can carry a whole look chain. Built `/api/look/compose`, which chains five try-ons so each result feeds the next, and `/look`, the look board that runs it and animates the result. Extracted `perfectcorp/run.ts` so the chain and the single-feature route share one billing guard. 19 units spent. | One real photo of the whole look, plus a 5s clip. Both replay for 0 units. |
 | Tue 1 Sep 2026 (pm) | **From "it works" to "someone can use it".** Guided crop with an overlay that *defines* the face size (no face detection, so no billed guesses), EXIF fixed only when it needs fixing so conforming photos stay byte-identical. Look builder: she picks makeup, hair, busana and perhiasan herself, and impossible combinations are refused in the UI rather than discovered by paying. Chain orchestrated per-step from the browser, resumable after a failure, engine errors translated to Indonesian. Supabase layer for a cache that survives a read-only production filesystem. Real landing page. 0 units spent. | The demo path is still free end to end, in production. Supabase is written but unverified — needs credentials. |
 | Tue 1 Sep 2026 (eve) | **Shared cache wired and proven.** Supabase applied via the Management API (no CLI, no dependency, one authenticated fetch), env vars set on Vercel, and the credit leak closed: a result never committed to git is served by production for 0 units. Video split into create-and-poll so a 62s render is not hostage to a 60s function limit — verified live. Found that negative prompts never steered the camera; the motion description does, which recovered the hem and shoes in the outfit clip. 6 units spent. | Production is genuinely usable by a stranger. Only Hair Readiness is left. |
+| Wed 2 Sep 2026 | **Hair Readiness — the differentiator, built.** Three diagnostics feed a rule layer that returns ready / with-preparation / not-by-then, a month-by-month plan, and a visible "why". Density is absent and documented: it rejected every photo, frontal and three-quarter alike, with an error whose own message says both are supported. Landing page now routes into it. 7 units spent (2 length, 2 frizziness, 3 on density's three refusals). | All four screens exist. Demo path still 0 units, smoke 32/32. |
 
 ### Where to pick up
 
@@ -205,13 +206,20 @@ and account-level admin — it must never go to Vercel.** Only `SUPABASE_URL` an
 `SUPABASE_SERVICE_ROLE_KEY` belong there, and both are already set for
 production, preview and development.
 
-**Hair Readiness is still the one feature left**, and section 6 calls it the
-differentiator to protect above everything else. It was deferred deliberately —
-the judgement was that a flow someone can actually use beats a half-built
-differentiator — but it is the strongest remaining candidate for any time that
-appears. It wins on **Concept**; the finished flow wins on **Progress**.
+**Hair Readiness is done** — `/readiness`, with `src/lib/readiness.ts` holding
+the rule layer. All four screens in section 8 now exist.
 
-Day 4 stays sacred: video, project page, submission, no new code.
+**Feature work is finished. What remains is the submission**: demo video (1-3
+min), project page write-up, screenshots. No new code.
+
+For the demo, the same measured bride produces all three verdicts without any
+faking — pick "Sanggul / updo" for ready, "Gerai panjang lurus" at 6 months for
+not-by-then with alternatives and a plan, or at 12 months for with-preparation.
+
+One warning for filming: **turn off GlobalProtect and OpenVPN first.** Both
+adapters are up on the dev machine with reduced MTU, and the first load of the
+deployed site times out through them. That is the VPN, not the app — verified
+healthy from WSL, from Windows TCP, and from Windows HTTPS on the same machine.
 
 #### The composite look chain — done 1 Sep
 
