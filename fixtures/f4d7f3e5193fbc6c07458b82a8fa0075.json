@@ -1,0 +1,18 @@
+{
+  "key": "f4d7f3e5193fbc6c07458b82a8fa0075",
+  "feature": "hairLengthDetection",
+  "inputs": {
+    "__feature": "hairLengthDetection"
+  },
+  "data": {
+    "hair_length": {
+      "term": "above chest or longer"
+    },
+    "timed": 5783
+  },
+  "taskId": "jcqTRej4jsl2Qo9DFTfE8OV0s4nUfnkh3QOTp1ed-TWqHctz-ItUWycBgBW2W3MVi0R0zGmELW8ryRHCmXEjaQ",
+  "unitsSpent": 2,
+  "elapsedMs": 7453,
+  "polls": 5,
+  "createdAt": "2026-09-02T04:08:41.269Z"
+}

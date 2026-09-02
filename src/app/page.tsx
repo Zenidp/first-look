@@ -35,6 +35,12 @@ export default function Home() {
           Mulai susun look
         </Link>
         <Link
+          href="/readiness"
+          className="rounded-lg border border-zinc-300 px-5 py-3 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+        >
+          Cek kesiapan rambut
+        </Link>
+        <Link
           href="/prewedding"
           className="rounded-lg border border-zinc-300 px-5 py-3 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
         >
@@ -58,10 +64,10 @@ export default function Home() {
           </dd>
         </div>
         <div>
-          <dt className="text-sm font-medium text-zinc-900">Bisa digerakkan</dt>
+          <dt className="text-sm font-medium text-zinc-900">Bukan cuma &ldquo;kelihatannya&rdquo;</dt>
           <dd className="mt-1 text-xs leading-5 text-zinc-500">
-            Look yang sudah jadi bisa diubah jadi klip 5 detik — untuk melihat
-            jatuhnya kain, bukan cuma diamnya.
+            Juga menjawab apakah rambutnya bisa sampai ke gaya itu pada tanggal
+            pernikahannya — selagi masih ada waktu memperbaiki.
           </dd>
         </div>
       </dl>

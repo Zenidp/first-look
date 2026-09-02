@@ -1,0 +1,19 @@
+{
+  "key": "4e2607a923d48f4aa4ad839d6ad5624e",
+  "feature": "hairFrizzinessDetection",
+  "inputs": {
+    "__feature": "hairFrizzinessDetection",
+    "__photoOrder": "68983f8601e9a1a1,937a15f4a5370821,c218ed2f3c50ca44"
+  },
+  "data": {
+    "hair_frizziness": {
+      "mapping": 0,
+      "term": "Not Frizzy"
+    }
+  },
+  "taskId": "obB1zuIxvfocihJg5FyEk-y4CVKD7GbYE7y3ocmluIHJYtYzlWBj-OHZ7EOJctjrIJz2hOnDKAhh2oCXR3StjQ",
+  "unitsSpent": 2,
+  "elapsedMs": 7632,
+  "polls": 5,
+  "createdAt": "2026-09-02T04:16:10.075Z"
+}

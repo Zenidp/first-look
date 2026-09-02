@@ -82,6 +82,7 @@ head "Pages render"
 expect_status "/ responds"           200 "$BASE/"
 expect_status "/test responds"       200 "$BASE/test"
 expect_status "/look responds"       200 "$BASE/look"
+expect_status "/readiness responds"  200 "$BASE/readiness"
 expect_status "/prewedding responds" 200 "$BASE/prewedding"
 
 head "Input guards (rejected before any upload or billing)"
@@ -171,6 +172,49 @@ else:
 
 check_chain "beauty look (5 layers)" jawa-klasik        half-body.jpg 5
 check_chain "outfit look (1 layer)"  jawa-klasik-outfit full-body.jpg 1
+
+head "Hair Readiness"
+# All three diagnostics must replay from the shipped demo photos. If any starts
+# billing, the readiness demo costs 6 units per click instead of nothing.
+diag=$(curl -s --max-time 60 -X POST "$BASE/api/tryon/hairLengthDetection" \
+  -F "photo=@$ROOT/public/demo/face-front-hairdown.jpg" -F 'options={}')
+verdict=$(echo "$diag" | python3 -c "
+import json,sys
+try: d=json.load(sys.stdin)
+except Exception: print('ERROR'); raise SystemExit
+if d.get('source')=='fixture' and d.get('unitsSpent')==0 and (d.get('data') or {}).get('hair_length'):
+    print('OK')
+elif d.get('code')=='OfflineCacheMiss': print('SKIP')
+else: print('ERROR')
+" 2>/dev/null)
+case "$verdict" in
+  OK)   ok "hair length replays from cache for 0 units" ;;
+  SKIP) printf '  \033[33mSKIP\033[0m %s\n' "hair length — no fixture for the demo photo"; skip=$((skip+1)) ;;
+  *)    bad "hair length replay" "$(echo "$diag" | head -c 200)" ;;
+esac
+
+for f in hairTypeDetection hairFrizzinessDetection; do
+  body=$(curl -s --max-time 90 -X POST "$BASE/api/tryon/$f" \
+    -F "photo=@$ROOT/public/demo/face-front-hairdown.jpg" \
+    -F "photo=@$ROOT/public/demo/face-right.jpg" \
+    -F "photo=@$ROOT/public/demo/face-left.jpg" -F 'options={}')
+  verdict=$(echo "$body" | python3 -c "
+import json,sys
+try: d=json.load(sys.stdin)
+except Exception: print('ERROR'); raise SystemExit
+if d.get('source')=='fixture' and d.get('unitsSpent')==0 and d.get('data'): print('OK')
+elif d.get('code')=='OfflineCacheMiss': print('SKIP')
+else: print('ERROR')
+" 2>/dev/null)
+  case "$verdict" in
+    OK)   ok "$f replays from cache for 0 units" ;;
+    SKIP) printf '  \033[33mSKIP\033[0m %s\n' "$f — no fixture for the demo trio"; skip=$((skip+1)) ;;
+    *)    bad "$f replay" "$(echo "$body" | head -c 200)" ;;
+  esac
+done
+
+expect_status "3-photo diagnostic still rejects 1 photo" 400 \
+  -X POST "$BASE/api/tryon/hairFrizzinessDetection" -F "photo=@$PHOTO" -F 'options={}'
 
 printf '\n\033[1m%d passed, %d failed, %d skipped\033[0m\n' "$pass" "$fail" "$skip"
 [ "$fail" -eq 0 ] || exit 1

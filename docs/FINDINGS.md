@@ -800,3 +800,69 @@ One trap: **Postgres `jsonb` normalises key order**, so a parked `inputs` object
 returns with its keys rearranged. Same keys, same values, different
 serialisation. Harmless here only because the key is stored rather than
 recomputed from it.
+
+---
+
+## 10. Hair Density rejects every photo, and its own error message says it should not
+
+Measured 2 Sep 2026. Three attempts, three units, no result.
+
+| Photo sent | Angle | Result |
+|---|---|---|
+| `face-front-hairdown.jpg` | frontal | `error_face_angle_invalid` |
+| `face-front.jpg` (prompted "perfectly upright and square, no tilt, no turn") | frontal | `error_face_angle_invalid` |
+| `face-right.jpg` | ~45° three-quarter | `error_face_angle_invalid` |
+
+The message is:
+
+> The face angle is not within the supported range. For front-facing photos,
+> keep the head within 10°; for side-facing photos, use more than 15°.
+
+Both of those conditions are satisfied by the photos above, on opposite sides
+of the range, and both were rejected. Whatever the endpoint is actually
+measuring, it is not what the message describes — and the same photos are
+accepted by `hairTypeDetection`, `hairLengthDetection` and
+`hairFrizzinessDetection`, all of which returned results on this set.
+
+**Every failure was billed.** They are engine errors on accepted tasks, which is
+the pattern in section 3: only a creation-time rejection is free.
+
+### Consequence
+
+Hair Readiness runs on the three diagnostics that work — length, type and
+frizziness. Density would have contributed a "needs volume" signal and nothing
+that the other three cannot cover. `src/lib/readiness.ts` states its absence
+rather than silently omitting it.
+
+**Do not retry this without a genuinely different photo source.** Three attempts
+across the full angle range is enough evidence to stop paying for the fourth.
+
+---
+
+## 11. The diagnostic enums are in the OpenAPI bundles, and they are worth reading first
+
+All four diagnostics publish their complete result vocabulary, which the
+responses themselves only ever reveal one value at a time. Reading them cost
+nothing and prevented inventing a scale:
+
+| Feature | Bundle slug | Bands |
+|---|---|---|
+| Hair type | `ai_hair_type_detection` | 9, `1 to 2a` … `4b to 4c` |
+| Hair length | `ai_hair_length_detection` | 8, `above the ears` … `long hair` |
+| Hair density | `ai_hair_density_detection` | 4, `Extremely Low` … `High Density` |
+| Frizziness | `ai_hair_frizziness_detection` | 4, mapping 0-3, `Not Frizzy` … `Extreme Frizzy` |
+
+Note the slugs use underscores, like `ai_video_generator` in section 9 and
+unlike most other bundles.
+
+### One mismatch that would break a naive comparison
+
+**The spec says `2a to 2b`; the API returns `2A to 2B`.** Case differs between
+the documented enum and the live response, so any lookup against the band list
+has to fold case. `typeIndex()` does.
+
+The length ladder is ordered but not numeric — the endpoint returns a phrase,
+never a measurement — so turning "how long is her hair" into "how many months of
+growth" needs an estimated centimetre value per band. Those estimates are ours,
+are marked as ours in `readiness.ts`, and are why every figure the UI shows is
+phrased as an approximation.
