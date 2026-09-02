@@ -187,39 +187,81 @@ Record in Bahasa or English, but subtitle in English. Judges are American.
 | Tue 1 Sep 2026 (eve) | **Shared cache wired and proven.** Supabase applied via the Management API (no CLI, no dependency, one authenticated fetch), env vars set on Vercel, and the credit leak closed: a result never committed to git is served by production for 0 units. Video split into create-and-poll so a 62s render is not hostage to a 60s function limit — verified live. Found that negative prompts never steered the camera; the motion description does, which recovered the hem and shoes in the outfit clip. 6 units spent. | Production is genuinely usable by a stranger. Only Hair Readiness is left. |
 | Wed 2 Sep 2026 | **Hair Readiness — the differentiator, built.** Three diagnostics feed a rule layer that returns ready / with-preparation / not-by-then, a month-by-month plan, and a visible "why". Density is absent and documented: it rejected every photo, frontal and three-quarter alike, with an error whose own message says both are supported. Landing page now routes into it. 7 units spent (2 length, 2 frizziness, 3 on density's three refusals). | All four screens exist. Demo path still 0 units, smoke 32/32. |
 
-### Where to pick up
+### Where to pick up — READ THIS FIRST
 
-**The shared cache is live, and the credit leak is closed.** Proven in
-production 1 Sep: a `hairColor` result generated locally and never committed to
-git is served by the deployment for 0 units, straight from Supabase Storage.
-`GET /api/features` reports `sharedCache: true`.
+**Feature work is finished. Do not start a new feature.** All four screens in
+section 8 exist, all 31 registered APIs work, and the whole demo path replays
+for 0 units in production. What is left is the submission, and section 9 warns
+that the most common way a solo entrant loses is spending the last day coding.
 
-Setup is one command if it ever has to be rebuilt:
+#### What remains
 
-```bash
-npm run setup:supabase   # applies supabase/schema.sql, creates the public bucket
-npm run check:supabase   # verifies table, storage, public read, usage ledger
-```
+1. **Demo video, 1-3 minutes.** The Perfect Corp track requires it.
+2. **Project page write-up + screenshots** on Devpost.
+3. Submit before **Friday 4 September 00:00 WIB** (Thu 3 Sep 10:00 PDT).
 
-Both need `SUPABASE_ACCESS_TOKEN` in `.env.local`. That token is **setup-only
-and account-level admin — it must never go to Vercel.** Only `SUPABASE_URL` and
-`SUPABASE_SERVICE_ROLE_KEY` belong there, and both are already set for
-production, preview and development.
+#### The demo script, click by click
 
-**Hair Readiness is done** — `/readiness`, with `src/lib/readiness.ts` holding
-the rule layer. All four screens in section 8 now exist.
+Every step below costs **0 units** — it walks pre-cached fixtures. Verified
+against production, not just locally.
 
-**Feature work is finished. What remains is the submission**: demo video (1-3
-min), project page write-up, screenshots. No new code.
+| Screen | Do this | What it shows |
+|---|---|---|
+| `/` | — | The pitch, one sentence |
+| `/look` | "Pakai contoh" → "Susun look utuh" | Five try-ons stack onto ONE photo in ~100ms. Not a collage |
+| `/look` | "Jadikan video" | The still comes alive, 5s clip |
+| `/look` | Switch to "Seluruh badan" → "Pakai contoh" → run | The kebaya moving — what a still cannot show |
+| `/readiness` | "Pakai contoh", date **+6 months**, style **"Gerai panjang lurus"** | **Belum sampai** — with the months short, alternatives, and a plan |
+| `/readiness` | same, but date **+12 months** | **Bisa dengan persiapan** |
+| `/readiness` | same, style **"Sanggul / updo"** | **Siap** |
+| `/readiness` | "Kenapa hasilnya begini?" | The visible reasoning §6 asks for |
 
-For the demo, the same measured bride produces all three verdicts without any
-faking — pick "Sanggul / updo" for ready, "Gerai panjang lurus" at 6 months for
-not-by-then with alternatives and a plan, or at 12 months for with-preparation.
+The same measured bride produces all three verdicts. Nothing is faked.
 
-One warning for filming: **turn off GlobalProtect and OpenVPN first.** Both
-adapters are up on the dev machine with reduced MTU, and the first load of the
+**Before filming: turn off GlobalProtect and OpenVPN.** Both adapters are up on
+the dev machine with reduced MTU (1400 / 1350), and the first load of the
 deployed site times out through them. That is the VPN, not the app — verified
-healthy from WSL, from Windows TCP, and from Windows HTTPS on the same machine.
+healthy from WSL, Windows TCP and Windows HTTPS on the same machine. A 30-second
+blank screen at the top of the recording reads as a slow app.
+
+#### Hard rules for the next session
+
+- **No new features.** Section 7: nothing that is not in the demo video gets
+  built. If something looks missing, it was a decision — check FINDINGS first.
+- **Do not regenerate fixtures.** 31 fixtures hold 60 units of paid results and
+  they ARE the zero-cost demo. Changing a prompt, a template id or a photo by
+  one byte is a cache miss and a live bill.
+- **Run the guard before and after any change:**
+  `PERFECTCORP_OFFLINE=1 npm run dev` then
+  `BASE=http://localhost:3000 PHOTO=input/face-front.jpg npm run smoke`
+  → **32/32, zero units**. If that number drops, something broke the demo.
+- **Never add `Co-Authored-By` or any AI attribution to commits.** The user
+  rejected a commit over this and asked for it never to appear again.
+- Density is a dead end. Three attempts, three billed units, FINDINGS §10. Do
+  not pay for a fourth.
+
+#### Operational state
+
+- **Supabase is live** and the credit leak is closed. Proven in production: a
+  result generated locally and never committed to git is served for 0 units from
+  Supabase Storage. `GET /api/features` reports `sharedCache: true`.
+- Rebuild it, if ever needed, with `npm run setup:supabase` then
+  `npm run check:supabase`. Both need `SUPABASE_ACCESS_TOKEN` in `.env.local`.
+  **That token is setup-only, account-level admin, and must never go to Vercel.**
+  Only `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` belong there; both are
+  already set for production, preview and development.
+- Live: https://first-look-five.vercel.app — auto-deploys from `main`.
+
+#### If time genuinely remains after the submission is safe
+
+In priority order, and only then:
+
+1. Share links for a finished look board (`look_boards` table already exists in
+   the schema, unused).
+2. More Nusantara garments — the localisation story is the strongest part of
+   the concept and the library has 8 of a possible many.
+
+Neither is worth risking the deadline.
 
 #### The composite look chain — done 1 Sep
 
@@ -239,9 +281,10 @@ Everything measured is in `FINDINGS.md` §8 (chaining) and §9 (video).
 
 #### What is done and proven
 
-- **All 30 features work**, each verified by eye, not just by HTTP 200.
-- **18 fixtures** replay for 0 units, in production, on the read-only Vercel
-  filesystem. That is the demo path.
+- **All 31 features work**, each verified by eye, not just by HTTP 200.
+- **31 fixtures**, holding 60 units of paid results, replay for 0 units in
+  production on the read-only Vercel filesystem. That is the demo path, and
+  Supabase now catches anything they miss.
 - **Synthetic bride** in git-ignored `input/`: `face-front` (hair up),
   `face-front-hairdown`, `face-front-smile`, `face-right`, `face-left`,
   `half-body`, `full-body`, `hands`, `hand-ring`, `hand-bracelet`,
