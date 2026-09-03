@@ -1,0 +1,18 @@
+{
+  "key": "85b23d4423002a706bee8481886ebedb",
+  "feature": "imageToVideo",
+  "inputs": {
+    "prompt": "The groom turns slowly from side to side. The velvet beskap and the batik kain move naturally with him, the fabric catching soft studio light. Full body stays in frame.",
+    "duration": 5,
+    "__feature": "imageToVideo",
+    "resolution": "480",
+    "negativePrompt": "changing outfit, changing background, cropping the body, distorted face, changing beard, extra limbs, camera zoom, cuts, text, watermark"
+  },
+  "mediaType": "video",
+  "taskId": "yL9uXXURQJKINrqZpiPGImtfffqXuMkZ7r_ZimNMLeOlutrxQ0SjF2XqxT1zCactBoxz1_QbpFfF8xD5jzJlbw",
+  "unitsSpent": 5,
+  "elapsedMs": 0,
+  "polls": 0,
+  "createdAt": "2026-09-03T10:03:41.526Z",
+  "imagePath": "/fixtures/85b23d4423002a706bee8481886ebedb.mp4"
+}

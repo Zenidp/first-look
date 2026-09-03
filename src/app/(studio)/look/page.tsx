@@ -7,13 +7,7 @@ import PhotoCropper from "@/components/PhotoCropper";
 import StepPicker from "@/components/StepPicker";
 import { runChain, type StepState } from "@/lib/run-chain";
 import { explain } from "@/lib/errors";
-import {
-  BEAUTY_VIDEO_NEGATIVE,
-  BEAUTY_VIDEO_PROMPT,
-  LOOK_RECIPES,
-  OUTFIT_VIDEO_NEGATIVE,
-  OUTFIT_VIDEO_PROMPT,
-} from "@/lib/look";
+import { LOOK_RECIPES, VIDEO_PROMPTS } from "@/lib/look";
 import {
   OUTFIT_LIMITATION,
   SLOTS,
@@ -88,6 +82,21 @@ const DETAILS = [
 
 /** Demo photo + preselected slots per framing, derived from the recipes so
  *  there is one source of truth for the zero-unit path. */
+/**
+ * What each clip can and cannot be trusted for. Keyed by framing so a new one
+ * cannot inherit a caption written about a different photograph.
+ */
+const VIDEO_CAVEAT: Record<Framing, string> = {
+  beauty:
+    "Klip ini menangkap suasananya, bukan detail produknya — perhiasan halus bisa bergeser bentuknya saat dianimasikan.",
+  outfit:
+    "Perhatikan jatuhnya bahan, bukan wajahnya: di jarak seluruh badan wajah digambar ulang oleh model dan bisa bergeser. Kameranya juga cenderung maju sendiri sampai kadang memotong sepatu, jadi patokan panjang kain tetap fotonya.",
+  groom:
+    "Klip ini menangkap suasananya, bukan detail produknya — jenggot dan tekstur beludru bisa bergeser sedikit saat dianimasikan.",
+  groomOutfit:
+    "Perhatikan jatuhnya beskap dan kain, bukan wajahnya: di jarak seluruh badan wajah digambar ulang oleh model dan bisa bergeser. Kameranya juga cenderung maju sendiri, jadi patokan panjang kain tetap fotonya.",
+};
+
 const DEMO: Record<Framing, (typeof LOOK_RECIPES)[number]> = {
   beauty: LOOK_RECIPES.find((r) => r.id === "jawa-klasik")!,
   outfit: LOOK_RECIPES.find((r) => r.id === "jawa-klasik-outfit")!,
@@ -246,8 +255,11 @@ export default function LookPage() {
         JSON.stringify({
           resolution: "480",
           duration: 5,
-          prompt: framing === "beauty" ? BEAUTY_VIDEO_PROMPT : OUTFIT_VIDEO_PROMPT,
-          negativePrompt: framing === "beauty" ? BEAUTY_VIDEO_NEGATIVE : OUTFIT_VIDEO_NEGATIVE,
+          // Keyed by framing rather than chosen with a ternary. The ternary
+          // this replaces sent "the bride…the lace kebaya" to both groom
+          // framings and billed two clips before anyone watched one.
+          prompt: VIDEO_PROMPTS[framing].prompt,
+          negativePrompt: VIDEO_PROMPTS[framing].negativePrompt,
         }),
       );
       const res = await fetch("/api/video", { method: "POST", body });
@@ -594,11 +606,10 @@ export default function LookPage() {
               {video.units === 0 ? "Dari cache — 0 unit." : `${video.units} unit.`}
             </span>
           </div>
-          <p className="mt-2 text-xs leading-5 text-ink-faint">
-            {framing === "beauty"
-              ? "Klip ini menangkap suasananya, bukan detail produknya — perhiasan halus bisa bergeser bentuknya saat dianimasikan."
-              : "Perhatikan jatuhnya bahan, bukan wajahnya: di jarak seluruh badan wajah digambar ulang oleh model dan bisa bergeser. Kameranya juga cenderung maju sendiri sampai kadang memotong sepatu, jadi patokan panjang kain tetap fotonya."}
-          </p>
+          {/* Keyed by framing for the same reason as the prompt above: a
+              two-way ternary silently gave both groom framings the wrong
+              caption once there were four. */}
+          <p className="mt-2 text-xs leading-5 text-ink-faint">{VIDEO_CAVEAT[framing]}</p>
         </section>
       )}
 

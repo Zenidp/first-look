@@ -769,6 +769,22 @@ that matters.
 Frame-to-frame difference is cheap, needs no model, and would have caught this
 before the recipe was changed. Use it, or watch the clip. Preferably both.
 
+**It is now a script: `scripts/measure-motion.py`.** Needs `imageio-ffmpeg` and
+`numpy` in a venv (the system Python is PEP 668 managed). Reproduces the numbers
+above closely — the two clips this section is about measure 4.24/6.75 and
+9.37/16.17 against the 4.84/7.05 and 9.98/16.31 recorded here, the small offset
+being the downscale size. Read it as a comparison between clips, not an absolute.
+
+Every clip in the project, 3 Sep 2026:
+
+| Clip | Prompt shape | Mean | Peak |
+|---|---|---|---|
+| groom half-body | "smiles gently…turns **slightly**" | **1.61** | 3.92 |
+| groom full-body | "turns slowly from side to side" | 3.86 | 7.39 |
+| bride full-body | "turns slowly from side to side" | 4.24 | 6.75 |
+| bride half-body | "smiles gently…turns slightly" | 6.83 | 11.40 |
+| bride full-body (reverted) | "stands still…minimal motion" | 9.37 | 16.17 |
+
 The camera push-in itself remains unsolved after three runs, with `camera zoom`
 negated every time. **Negative prompts do not appear to constrain camera motion
 at all**, and the still remains the record of the hem.
@@ -779,6 +795,23 @@ Three 480p/5s renders: **61.6s, 51.9s, ~38s**. Budget the top of that range
 rather than the average — and note that with create-and-poll split across
 requests (section 9c) the figure stops mattering for the function limit and only
 affects how long she waits.
+
+### 9d. "Turns toward the camera" is a null instruction to a subject already facing it
+
+Measured 3 Sep 2026, on the groom's half-body composite.
+
+The bride's prompt reads "turns her head **slightly** toward the camera". The
+groom's first version dropped the word and asked him to turn "toward the
+camera" — but he is already square to it, so the instruction has nowhere to go.
+The model resolved it by turning him *away* to a near-profile, so that it had
+something to animate, and pushed in hard on the way. Restoring "slightly" put
+the composition back and took the clip from 3.63 mean frame-to-frame change to
+**1.61**, the calmest in the project.
+
+The general form: a motion prompt must describe a change the subject can
+actually undergo *from the pose in the still*. An instruction that is already
+satisfied does not produce stillness, it produces invention — the same failure
+as 9b, arrived at from the opposite direction.
 
 ### 9c. Video cannot be created and polled in one request
 

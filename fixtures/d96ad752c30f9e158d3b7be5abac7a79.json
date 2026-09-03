@@ -1,0 +1,18 @@
+{
+  "key": "d96ad752c30f9e158d3b7be5abac7a79",
+  "feature": "imageToVideo",
+  "inputs": {
+    "prompt": "The groom smiles gently and turns his head slightly toward the camera. Subtle natural motion, soft studio light, the velvet beskap catching the light. The camera holds still.",
+    "duration": 5,
+    "__feature": "imageToVideo",
+    "resolution": "480",
+    "negativePrompt": "changing outfit, changing background, changing hairstyle, changing beard, distorted face, extra hands, camera zoom, cuts, text, watermark"
+  },
+  "mediaType": "video",
+  "taskId": "MbkgAQmzp3gBfn966xZdEFo4GWOk1c7FH1za--DoVc--EJVI63PtlUXQHV8gZbbBBoxz1_QbpFfF8xD5jzJlbw",
+  "unitsSpent": 5,
+  "elapsedMs": 0,
+  "polls": 0,
+  "createdAt": "2026-09-03T10:14:16.375Z",
+  "imagePath": "/fixtures/d96ad752c30f9e158d3b7be5abac7a79.mp4"
+}

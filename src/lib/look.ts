@@ -58,15 +58,19 @@ export type LookRecipe = {
   /** Served from public/demo/ so the browser uploads byte-identical bytes. */
   photo: string;
   steps: LookStep[];
-  /**
-   * Motion prompt for this look.
-   *
-   * These strings are part of the fixture key. Editing one by a single
-   * character is a cache miss and a real 5-unit call, so treat them as data
-   * rather than copy, and change them only alongside a regenerated fixture.
-   */
-  video: { prompt: string; negativePrompt: string };
 };
+
+/*
+ * A recipe used to carry its own `video: { prompt, negativePrompt }`. It is
+ * gone, and its absence is the point.
+ *
+ * Nothing ever read it. The builder animates whatever the user composed, which
+ * is usually not a recipe at all, so the prompt has to be selected by framing —
+ * see VIDEO_PROMPTS below. Keeping a second, unread copy on each recipe meant
+ * two places could disagree about the same string, and they did: the recipes
+ * said one thing while the builder sent another, and nobody could see it
+ * because only one of the two was ever on the wire.
+ */
 
 /**
  * Motion prompts.
@@ -117,19 +121,71 @@ export const OUTFIT_VIDEO_NEGATIVE =
   "extra limbs, camera zoom, cuts, text, watermark";
 
 /**
- * The groom's clip asks for less motion than the bride's, and that is a
- * structural preference rather than a stylistic one. There is no jewellery to
- * catch the light and no veil to move here, so extra motion buys nothing while
- * widening the model's licence to redraw the face — and a beard composited one
- * step earlier is exactly the detail that drifts first.
+ * The groom's prompts.
+ *
+ * Both ask for a REAL TURN, and that is the whole point. The obvious instinct
+ * is that a groom's clip should be calmer than a bride's — no jewellery to
+ * catch the light, no veil to move — and section 9b of FINDINGS is the record
+ * of that instinct being measured and proven backwards. "Stands still…minimal
+ * motion" produced 9.98 mean frame-to-frame change against 4.84 for "turns
+ * slowly": twice the pixel churn. A body genuinely turning moves coherently; a
+ * body told to hold still gets animated anyway, incoherently, because the model
+ * has five seconds to fill either way.
+ *
+ * The first version of these two constants made exactly that mistake. They are
+ * now built on the phrasing that measured well, not on what sounds calmer.
+ *
+ * Note "slightly" in the half-body prompt, which a second attempt also had to
+ * learn. He is already square to the camera, so "turns his head toward the
+ * camera" is an instruction with nowhere to go: the model turned him away to a
+ * near-profile to have something to animate, and pushed in hard on the way.
+ * Bounding it the way the bride's prompt does took the clip from 3.63 mean
+ * frame-to-frame change to 1.61, the calmest in the project.
  */
 export const GROOM_VIDEO_PROMPT =
-  "The groom stands still and breathes gently, turning his head very slightly " +
-  "toward the camera. Minimal motion, soft studio light. The camera holds still.";
+  "The groom smiles gently and turns his head slightly toward the camera. " +
+  "Subtle natural motion, soft studio light, the velvet beskap catching the " +
+  "light. The camera holds still.";
 
 export const GROOM_VIDEO_NEGATIVE =
   "changing outfit, changing background, changing hairstyle, changing beard, " +
   "distorted face, extra hands, camera zoom, cuts, text, watermark";
+
+export const GROOM_OUTFIT_VIDEO_PROMPT =
+  "The groom turns slowly from side to side. The velvet beskap and the batik " +
+  "kain move naturally with him, the fabric catching soft studio light. " +
+  "Full body stays in frame.";
+
+export const GROOM_OUTFIT_VIDEO_NEGATIVE =
+  "changing outfit, changing background, cropping the body, distorted face, " +
+  "changing beard, extra limbs, camera zoom, cuts, text, watermark";
+
+/**
+ * The motion prompt for each framing.
+ *
+ * An exhaustive Record, deliberately, and the reason is a bug this replaces.
+ * The look builder used to choose its prompt with `framing === "beauty" ? … : …`
+ * — fine while there were two framings, and silently wrong the moment there
+ * were four: BOTH groom framings fell into the else branch and asked the model
+ * for "the bride…the lace kebaya…the batik skirt…with her" over a photograph of
+ * a man in a beskap. Two clips were rendered and billed that way before anyone
+ * watched one.
+ *
+ * As a Record keyed by Framing this cannot happen again: adding a framing
+ * without a prompt is a compile error rather than a wrong clip.
+ */
+export const VIDEO_PROMPTS: Record<
+  "beauty" | "outfit" | "groom" | "groomOutfit",
+  { prompt: string; negativePrompt: string }
+> = {
+  beauty: { prompt: BEAUTY_VIDEO_PROMPT, negativePrompt: BEAUTY_VIDEO_NEGATIVE },
+  outfit: { prompt: OUTFIT_VIDEO_PROMPT, negativePrompt: OUTFIT_VIDEO_NEGATIVE },
+  groom: { prompt: GROOM_VIDEO_PROMPT, negativePrompt: GROOM_VIDEO_NEGATIVE },
+  groomOutfit: {
+    prompt: GROOM_OUTFIT_VIDEO_PROMPT,
+    negativePrompt: GROOM_OUTFIT_VIDEO_NEGATIVE,
+  },
+};
 
 /**
  * The demo recipes. Every reference here is self-made (see FINDINGS section 7 —
@@ -149,7 +205,6 @@ export const LOOK_RECIPES: LookRecipe[] = [
       "Kebaya, sanggul, makeup, kalung dan anting ditumpuk di satu foto yang sama. " +
       "Wajahnya yang jadi subjek.",
     photo: "half-body.jpg",
-    video: { prompt: BEAUTY_VIDEO_PROMPT, negativePrompt: BEAUTY_VIDEO_NEGATIVE },
     steps: [
       {
         feature: "clothes",
@@ -217,7 +272,6 @@ export const LOOK_RECIPES: LookRecipe[] = [
       "Kebaya dan kain di seluruh badan, lalu digerakkan — untuk melihat jatuhnya " +
       "bahan, panjang kain dan siluetnya.",
     photo: "full-body.jpg",
-    video: { prompt: OUTFIT_VIDEO_PROMPT, negativePrompt: OUTFIT_VIDEO_NEGATIVE },
     steps: [
       {
         feature: "clothes",
@@ -244,7 +298,6 @@ export const LOOK_RECIPES: LookRecipe[] = [
       "Beskap, potongan rambut dan jenggot ditumpuk di satu foto yang sama — " +
       "urutan yang sama seperti look pengantin wanita.",
     photo: "groom-half-body.jpg",
-    video: { prompt: GROOM_VIDEO_PROMPT, negativePrompt: GROOM_VIDEO_NEGATIVE },
     steps: [
       {
         feature: "clothes",
@@ -277,7 +330,6 @@ export const LOOK_RECIPES: LookRecipe[] = [
       "Beskap dan kain di seluruh badan, lalu digerakkan — untuk melihat jatuhnya " +
       "bahan dan siluetnya.",
     photo: "groom-full-body.jpg",
-    video: { prompt: OUTFIT_VIDEO_PROMPT, negativePrompt: OUTFIT_VIDEO_NEGATIVE },
     steps: [
       {
         feature: "clothes",

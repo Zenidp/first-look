@@ -217,6 +217,7 @@ against production, not just locally.
 | `/readiness` | same, style **"Sanggul / updo"** | **Siap** |
 | `/readiness` | "Kenapa hasilnya begini?" | The visible reasoning §6 asks for |
 | `/look` | Switch to **"Pengantin pria"** → "Pakai contoh" → run | Beskap + potongan rambut + jenggot on one photo. A wedding is two people |
+| `/look` | Groom, "Jadikan video" | 1.61 mean frame-to-frame change — the calmest clip in the project |
 
 The same measured bride produces all three verdicts. Nothing is faked.
 
