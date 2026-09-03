@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import StudioHeader from "@/components/layout/studio-header";
 import PhotoCropper from "@/components/PhotoCropper";
 import StepPicker from "@/components/StepPicker";
 import { runChain, type StepState } from "@/lib/run-chain";
@@ -296,17 +297,11 @@ export default function LookPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:py-12">
-      <header className="mb-8">
-        <p className="text-xs font-medium uppercase tracking-widest text-rose-700">First Look</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
-          Susun look-nya
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-zinc-600">
-          Pilih makeup, rambut, busana dan perhiasannya. Semuanya ditumpuk ke satu foto
-          yang sama — jadi satu foto asli, bukan kolase — lalu bisa digerakkan jadi video.
-        </p>
-      </header>
+    <main id="konten" className="mx-auto w-full max-w-2xl px-5 py-10 sm:py-14">
+      <StudioHeader eyebrow="Look builder" title="Susun look-nya">
+        Pilih makeup, rambut, busana dan perhiasannya. Semuanya ditumpuk ke satu foto
+        yang sama — jadi satu foto asli, bukan kolase — lalu bisa digerakkan jadi video.
+      </StudioHeader>
 
       {/* --- framing ------------------------------------------------------- */}
       <div className="mb-6 grid grid-cols-2 gap-2">
@@ -315,11 +310,11 @@ export default function LookPage() {
             key={f}
             onClick={() => switchFraming(f)}
             className={`rounded-lg border px-3 py-2.5 text-left ${
-              framing === f ? "border-rose-700 bg-rose-50" : "border-zinc-300 hover:bg-zinc-50"
+              framing === f ? "border-accent bg-accent-tint" : "border-line-strong hover:bg-surface"
             }`}
           >
-            <span className="block text-sm font-medium text-zinc-900">{GUIDES[f].label}</span>
-            <span className="block text-[11px] leading-4 text-zinc-500">
+            <span className="block text-sm font-medium text-ink">{GUIDES[f].label}</span>
+            <span className="block text-[11px] leading-4 text-ink-faint">
               {f === "beauty" ? "Makeup, rambut, perhiasan" : "Busana saja"}
             </span>
           </button>
@@ -327,31 +322,31 @@ export default function LookPage() {
       </div>
 
       {framing === "outfit" && (
-        <p className="mb-6 rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-xs leading-5 text-zinc-600">
+        <p className="mb-6 rounded-lg border border-line bg-surface p-3 text-xs leading-5 text-ink-soft">
           {OUTFIT_LIMITATION}
         </p>
       )}
 
       {/* --- photo --------------------------------------------------------- */}
       <section className="mb-6">
-        <h2 className="text-sm font-medium text-zinc-900">1. Foto</h2>
+        <h2 className="text-sm font-medium text-ink">1. Foto</h2>
         <div className="mt-2 flex items-start gap-3">
           {photo ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={photo.url}
               alt="Foto pengantin"
-              className="w-24 shrink-0 rounded-lg border border-zinc-200 object-cover"
+              className="w-24 shrink-0 rounded-lg border border-line object-cover"
             />
           ) : (
-            <div className="flex h-32 w-24 shrink-0 items-center justify-center rounded-lg border border-dashed border-zinc-300 text-[11px] text-zinc-400">
+            <div className="flex h-32 w-24 shrink-0 items-center justify-center rounded-lg border border-dashed border-line-strong text-[11px] text-ink-faint">
               belum ada
             </div>
           )}
           <div className="min-w-0 flex-1">
-            <p className="text-xs leading-5 text-zinc-500">{GUIDES[framing].hint}</p>
+            <p className="text-xs leading-5 text-ink-faint">{GUIDES[framing].hint}</p>
             <div className="mt-2 flex flex-wrap gap-2">
-              <label className="cursor-pointer rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50">
+              <label className="cursor-pointer rounded-md border border-line-strong px-3 py-1.5 text-xs font-medium text-ink-soft hover:bg-surface">
                 {photo ? "Ganti foto" : "Unggah foto"}
                 <input
                   type="file"
@@ -366,13 +361,13 @@ export default function LookPage() {
               </label>
               <button
                 onClick={() => void loadDemo()}
-                className="rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+                className="rounded-md border border-line-strong px-3 py-1.5 text-xs font-medium text-ink-soft hover:bg-surface"
               >
                 Pakai contoh
               </button>
             </div>
             {photo?.demo && (
-              <p className="mt-1.5 text-[11px] text-emerald-700">
+              <p className="mt-1.5 text-[11px] text-ready">
                 Foto contoh — look ini sudah tersimpan, jadi 0 unit.
               </p>
             )}
@@ -382,7 +377,7 @@ export default function LookPage() {
 
       {/* --- slots --------------------------------------------------------- */}
       <section className="mb-6">
-        <h2 className="text-sm font-medium text-zinc-900">2. Pilihan</h2>
+        <h2 className="text-sm font-medium text-ink">2. Pilihan</h2>
         <div className="mt-1">
           {slots.map((slot) => (
             <StepPicker
@@ -403,7 +398,7 @@ export default function LookPage() {
       <button
         onClick={() => void start()}
         disabled={!canRun}
-        className="w-full rounded-lg bg-zinc-900 px-4 py-3 text-sm font-medium text-white disabled:opacity-40"
+        className="w-full rounded-lg bg-ink px-4 py-3 text-sm font-medium text-paper disabled:opacity-40"
       >
         {running
           ? "Menyusun…"
@@ -414,7 +409,7 @@ export default function LookPage() {
               : `Susun look — perkiraan ${estimate} unit`}
       </button>
       {photo && !photo.demo && chosen.length > 0 && !running && (
-        <p className="mt-2 text-center text-[11px] leading-4 text-zinc-500">
+        <p className="mt-2 text-center text-[11px] leading-4 text-ink-faint">
           Foto sendiri belum pernah diproses, jadi setiap langkah adalah panggilan
           berbayar. Sekitar {chosen.length * 8} detik.
         </p>
@@ -428,7 +423,7 @@ export default function LookPage() {
               <li
                 key={s.slot.id}
                 className={`rounded-lg border p-3 ${
-                  s.status === "failed" ? "border-rose-200 bg-rose-50" : "border-zinc-200"
+                  s.status === "failed" ? "border-late/30 bg-late-tint" : "border-line"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -436,14 +431,14 @@ export default function LookPage() {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={s.imageUrl} alt="" className="h-12 w-12 rounded object-cover" />
                   ) : (
-                    <div className="h-12 w-12 rounded bg-zinc-100" />
+                    <div className="h-12 w-12 rounded bg-surface-2" />
                   )}
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-zinc-900">
+                    <p className="text-sm font-medium text-ink">
                       {i + 1}. {s.slot.label}
-                      <span className="ml-2 font-normal text-zinc-500">{s.choice.label}</span>
+                      <span className="ml-2 font-normal text-ink-faint">{s.choice.label}</span>
                     </p>
-                    <p className="text-[11px] text-zinc-500">
+                    <p className="text-[11px] text-ink-faint">
                       {s.status === "running" && "sedang diproses…"}
                       {s.status === "idle" && "menunggu"}
                       {s.status === "skipped" && "dilewati"}
@@ -458,8 +453,8 @@ export default function LookPage() {
 
                 {s.status === "failed" && (
                   <div className="mt-2">
-                    <p className="text-xs leading-5 text-rose-800">{s.error}</p>
-                    <p className="mt-1 text-[11px] text-rose-700">
+                    <p className="text-xs leading-5 text-late">{s.error}</p>
+                    <p className="mt-1 text-[11px] text-accent">
                       {s.billed
                         ? "Langkah ini tetap terhitung unit — task sudah dibuat sebelum gagal."
                         : "Ditolak sebelum task dibuat, jadi tidak ada unit terpakai."}
@@ -468,14 +463,14 @@ export default function LookPage() {
                       <button
                         onClick={() => retryFrom(i, false)}
                         disabled={running}
-                        className="rounded-md border border-rose-300 px-3 py-1.5 text-xs font-medium text-rose-800 disabled:opacity-40"
+                        className="rounded-md border border-late/40 px-3 py-1.5 text-xs font-medium text-late disabled:opacity-40"
                       >
                         Ulangi langkah ini
                       </button>
                       <button
                         onClick={() => retryFrom(i, true)}
                         disabled={running}
-                        className="rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-700 disabled:opacity-40"
+                        className="rounded-md border border-line-strong px-3 py-1.5 text-xs font-medium text-ink-soft disabled:opacity-40"
                       >
                         Lewati, lanjut yang lain
                       </button>
@@ -485,7 +480,7 @@ export default function LookPage() {
               </li>
             ))}
           </ol>
-          <p className="mt-2 text-xs text-zinc-500">
+          <p className="mt-2 text-xs text-ink-faint">
             {spent === 0 ? "Sejauh ini 0 unit." : `Sejauh ini ${spent} unit terpakai.`}
             {failedAt >= 0 && " Lapisan yang sudah jadi tetap tersimpan."}
           </p>
@@ -495,33 +490,33 @@ export default function LookPage() {
       {/* --- result -------------------------------------------------------- */}
       {finalUrl && !running && (
         <section className="mt-6">
-          <h2 className="text-sm font-medium text-zinc-900">
+          <h2 className="text-sm font-medium text-ink">
             {failedAt >= 0 ? "Sejauh ini" : "Look utuh"}
           </h2>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={finalUrl}
             alt="Look"
-            className="mt-2 w-full rounded-xl border border-zinc-200"
+            className="mt-2 w-full rounded-xl border border-line"
           />
           <div className="mt-3 flex flex-wrap gap-2">
             <a
               href={finalUrl}
               download="first-look.jpg"
-              className="rounded-md border border-zinc-300 px-3 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+              className="rounded-md border border-line-strong px-3 py-2 text-xs font-medium text-ink-soft hover:bg-surface"
             >
               Unduh foto
             </a>
             <button
               onClick={() => void makeVideo()}
               disabled={videoBusy}
-              className="rounded-md bg-rose-700 px-3 py-2 text-xs font-medium text-white disabled:opacity-40"
+              className="rounded-md bg-accent px-3 py-2 text-xs font-medium text-paper disabled:opacity-40"
             >
               {videoBusy ? "Membuat video…" : "Jadikan video — 5 unit"}
             </button>
           </div>
           {videoBusy && (
-            <p className="mt-2 text-xs text-zinc-500">
+            <p className="mt-2 text-xs text-ink-faint">
               Video generatif jauh lebih lambat daripada try-on: sekitar satu menit untuk
               klip 5 detik.
             </p>
@@ -530,7 +525,7 @@ export default function LookPage() {
       )}
 
       {video?.error && (
-        <p className="mt-4 rounded-lg border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800">
+        <p className="mt-4 rounded-lg border border-late/30 bg-late-tint p-3 text-sm text-late">
           {video.error}
         </p>
       )}
@@ -538,7 +533,7 @@ export default function LookPage() {
         <section className="mt-6">
           <video
             src={video.url}
-            className="w-full rounded-xl border border-zinc-200"
+            className="w-full rounded-xl border border-line"
             controls
             autoPlay
             loop
@@ -549,15 +544,15 @@ export default function LookPage() {
             <a
               href={video.url}
               download="first-look.mp4"
-              className="rounded-md border border-zinc-300 px-3 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+              className="rounded-md border border-line-strong px-3 py-2 text-xs font-medium text-ink-soft hover:bg-surface"
             >
               Unduh video
             </a>
-            <span className="text-xs text-zinc-500">
+            <span className="text-xs text-ink-faint">
               {video.units === 0 ? "Dari cache — 0 unit." : `${video.units} unit.`}
             </span>
           </div>
-          <p className="mt-2 text-xs leading-5 text-zinc-500">
+          <p className="mt-2 text-xs leading-5 text-ink-faint">
             {framing === "beauty"
               ? "Klip ini menangkap suasananya, bukan detail produknya — perhiasan halus bisa bergeser bentuknya saat dianimasikan."
               : "Perhatikan jatuhnya bahan, bukan wajahnya: di jarak seluruh badan wajah digambar ulang oleh model dan bisa bergeser. Kameranya juga cenderung maju sendiri sampai kadang memotong sepatu, jadi patokan panjang kain tetap fotonya."}
@@ -566,9 +561,9 @@ export default function LookPage() {
       )}
 
       {/* --- details ------------------------------------------------------- */}
-      <section className="mt-10 border-t border-zinc-200 pt-6">
-        <h2 className="text-sm font-medium text-zinc-900">Detail tangan</h2>
-        <p className="mt-1 text-xs leading-5 text-zinc-500">
+      <section className="mt-10 border-t border-line pt-6">
+        <h2 className="text-sm font-medium text-ink">Detail tangan</h2>
+        <p className="mt-1 text-xs leading-5 text-ink-faint">
           Cincin dan gelang tidak bisa masuk ke foto yang sama — keduanya makro tangan, dan
           tidak ada try-on yang menempelkan satu foto ke foto lain. Keduanya berdiri sebagai
           tile terpisah, seperti moodboard pengantin pada umumnya.
@@ -580,22 +575,22 @@ export default function LookPage() {
               <img
                 src={details[d.feature] ?? d.photo}
                 alt={d.label}
-                className="w-full rounded-lg border border-zinc-200"
+                className="w-full rounded-lg border border-line"
               />
               <div className="mt-1.5 flex items-center justify-between gap-2">
-                <span className="text-xs font-medium text-zinc-800">{d.label}</span>
+                <span className="text-xs font-medium text-ink">{d.label}</span>
                 {details[d.feature] ? (
                   <a
                     href={details[d.feature]}
                     download={`first-look-${d.feature}.jpg`}
-                    className="text-[11px] font-medium text-rose-700"
+                    className="text-[11px] font-medium text-accent"
                   >
                     Unduh
                   </a>
                 ) : (
                   <button
                     onClick={() => void runDetail(d)}
-                    className="text-[11px] font-medium text-rose-700"
+                    className="text-[11px] font-medium text-accent"
                   >
                     Coba
                   </button>

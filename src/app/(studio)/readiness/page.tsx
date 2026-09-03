@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import StudioHeader from "@/components/layout/studio-header";
 import PhotoCropper from "@/components/PhotoCropper";
 import { explain } from "@/lib/errors";
 import {
@@ -185,24 +186,18 @@ export default function ReadinessPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:py-12">
-      <header className="mb-8">
-        <p className="text-xs font-medium uppercase tracking-widest text-rose-700">First Look</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
-          Kesiapan rambut
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-zinc-600">
-          Sanggul yang gagal di hari H biasanya bukan soal keahlian perias — biasanya soal
-          kondisi rambut yang baru ketahuan saat trial, waktu sudah terlambat diperbaiki.
-          Ini memeriksanya sekarang, saat masih bisa diapa-apakan.
-        </p>
-      </header>
+    <main id="konten" className="mx-auto w-full max-w-2xl px-5 py-10 sm:py-14">
+      <StudioHeader eyebrow="Hair readiness" title="Kesiapan rambut">
+        Sanggul yang gagal di hari H biasanya bukan soal keahlian perias — biasanya soal
+        kondisi rambut yang baru ketahuan saat trial, waktu sudah terlambat diperbaiki.
+        Ini memeriksanya sekarang, saat masih bisa diapa-apakan.
+      </StudioHeader>
 
       {/* --- photos ------------------------------------------------------- */}
       <section className="mb-8">
-        <h2 className="text-sm font-medium text-zinc-900">1. Tiga foto rambut</h2>
-        <p className="mt-1 text-xs leading-5 text-zinc-500">
-          <strong className="font-medium text-zinc-700">Rambut harus tergerai di ketiganya.</strong>{" "}
+        <h2 className="text-sm font-medium text-ink">1. Tiga foto rambut</h2>
+        <p className="mt-1 text-xs leading-5 text-ink-faint">
+          <strong className="font-medium text-ink-soft">Rambut harus tergerai di ketiganya.</strong>{" "}
           Rambut yang diikat menyembunyikan teksturnya, dan diagnosanya akan menjawab tentang
           fotonya — bukan tentang rambutnya. Terukur: foto sanggul membaca satu tingkat lebih
           lurus daripada rambut yang sama saat tergerai.
@@ -217,10 +212,10 @@ export default function ReadinessPage() {
                   <img
                     src={previews[s.key]}
                     alt={s.label}
-                    className="aspect-3/4 w-full rounded-lg border border-zinc-200 object-cover"
+                    className="aspect-3/4 w-full rounded-lg border border-line object-cover"
                   />
                 ) : (
-                  <div className="flex aspect-3/4 w-full items-center justify-center rounded-lg border border-dashed border-zinc-300 text-[11px] text-zinc-400">
+                  <div className="flex aspect-3/4 w-full items-center justify-center rounded-lg border border-dashed border-line-strong text-[11px] text-ink-faint">
                     pilih
                   </div>
                 )}
@@ -235,15 +230,15 @@ export default function ReadinessPage() {
                   }}
                 />
               </label>
-              <p className="mt-1 text-xs font-medium text-zinc-800">{s.label}</p>
-              <p className="text-[10px] leading-4 text-zinc-500">{s.hint}</p>
+              <p className="mt-1 text-xs font-medium text-ink">{s.label}</p>
+              <p className="text-[10px] leading-4 text-ink-faint">{s.hint}</p>
             </div>
           ))}
         </div>
 
         <button
           onClick={() => void loadDemo()}
-          className="mt-3 rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+          className="mt-3 rounded-md border border-line-strong px-3 py-1.5 text-xs font-medium text-ink-soft hover:bg-surface"
         >
           Pakai contoh
         </button>
@@ -252,7 +247,7 @@ export default function ReadinessPage() {
       {/* --- date and target ---------------------------------------------- */}
       <section className="mb-8 grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium text-zinc-900" htmlFor="wd">
+          <label className="block text-sm font-medium text-ink" htmlFor="wd">
             2. Tanggal pernikahan
           </label>
           <input
@@ -260,21 +255,21 @@ export default function ReadinessPage() {
             type="date"
             value={weddingDate}
             onChange={(e) => setWeddingDate(e.target.value)}
-            className="mt-2 w-full rounded-lg border border-zinc-300 bg-white p-2 text-sm text-zinc-900"
+            className="mt-2 w-full rounded-lg border border-line-strong bg-paper p-2 text-sm text-ink"
           />
           {dated && (
-            <p className="mt-1 text-xs text-zinc-500">{monthsUntil(dated)} bulan lagi.</p>
+            <p className="mt-1 text-xs text-ink-faint">{monthsUntil(dated)} bulan lagi.</p>
           )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-900" htmlFor="tg">
+          <label className="block text-sm font-medium text-ink" htmlFor="tg">
             3. Gaya yang diincar
           </label>
           <select
             id="tg"
             value={targetId}
             onChange={(e) => setTargetId(e.target.value)}
-            className="mt-2 w-full rounded-lg border border-zinc-300 bg-white p-2 text-sm text-zinc-900"
+            className="mt-2 w-full rounded-lg border border-line-strong bg-paper p-2 text-sm text-ink"
           >
             {STYLE_TARGETS.map((t) => (
               <option key={t.id} value={t.id}>
@@ -282,14 +277,14 @@ export default function ReadinessPage() {
               </option>
             ))}
           </select>
-          <p className="mt-1 text-xs leading-5 text-zinc-500">{target.why}</p>
+          <p className="mt-1 text-xs leading-5 text-ink-faint">{target.why}</p>
         </div>
       </section>
 
       <button
         onClick={() => void runDiagnostics()}
         disabled={!haveAll || !weddingDate || running}
-        className="w-full rounded-lg bg-zinc-900 px-4 py-3 text-sm font-medium text-white disabled:opacity-40"
+        className="w-full rounded-lg bg-ink px-4 py-3 text-sm font-medium text-paper disabled:opacity-40"
       >
         {running
           ? "Memeriksa…"
@@ -309,19 +304,19 @@ export default function ReadinessPage() {
               <li
                 key={s.id}
                 className={`rounded-lg border p-3 text-sm ${
-                  st.status === "failed" ? "border-amber-200 bg-amber-50" : "border-zinc-200"
+                  st.status === "failed" ? "border-prep/30 bg-prep-tint" : "border-line"
                 }`}
               >
                 <div className="flex items-center justify-between gap-3">
-                  <span className="font-medium text-zinc-900">{s.label}</span>
-                  <span className="text-xs text-zinc-500">
+                  <span className="font-medium text-ink">{s.label}</span>
+                  <span className="text-xs text-ink-faint">
                     {st.status === "running" && "memeriksa…"}
                     {st.status === "done" && (st.units === 0 ? "dari cache · 0 unit" : `${st.units} unit`)}
                     {st.status === "failed" && "gagal"}
                     {st.status === "idle" && "menunggu"}
                   </span>
                 </div>
-                {st.error && <p className="mt-1 text-xs leading-5 text-amber-900">{st.error}</p>}
+                {st.error && <p className="mt-1 text-xs leading-5 text-prep">{st.error}</p>}
               </li>
             );
           })}
@@ -329,22 +324,22 @@ export default function ReadinessPage() {
       )}
 
       {Object.keys(diagnosis).length > 0 && (
-        <dl className="mt-4 grid grid-cols-3 gap-3 rounded-lg border border-zinc-200 p-3">
+        <dl className="mt-4 grid grid-cols-3 gap-3 rounded-lg border border-line p-3">
           {[
             ["Panjang", diagnosis.lengthTerm],
             ["Tipe", diagnosis.typeTerm],
             ["Kondisi", diagnosis.frizzTerm],
           ].map(([k, v]) => (
             <div key={k}>
-              <dt className="text-[11px] uppercase tracking-wide text-zinc-400">{k}</dt>
-              <dd className="text-xs font-medium text-zinc-800">{v ?? "—"}</dd>
+              <dt className="text-[11px] uppercase tracking-wide text-ink-faint">{k}</dt>
+              <dd className="text-xs font-medium text-ink">{v ?? "—"}</dd>
             </div>
           ))}
         </dl>
       )}
 
       {spent > 0 && (
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-ink-faint">
           {spent === 0 ? "0 unit." : `${spent} unit terpakai.`}
         </p>
       )}
@@ -352,30 +347,42 @@ export default function ReadinessPage() {
       {/* --- verdict ------------------------------------------------------- */}
       {readiness && readiness.verdict !== "unknown" && (
         <section className="mt-8">
+          {/* The verdict is carried by three things at once — a left rule, a
+              tint and the word itself — so it does not depend on hue alone.
+              A bride who cannot distinguish the red from the green still reads
+              "Belum sampai". */}
           <div
-            className={`rounded-xl border p-4 ${
+            className={`rounded-frame border border-l-4 p-5 ${
               readiness.verdict === "ready"
-                ? "border-emerald-200 bg-emerald-50"
+                ? "border-ready/30 border-l-ready bg-ready-tint"
                 : readiness.verdict === "prep"
-                  ? "border-amber-200 bg-amber-50"
-                  : "border-rose-200 bg-rose-50"
+                  ? "border-prep/30 border-l-prep bg-prep-tint"
+                  : "border-late/30 border-l-late bg-late-tint"
             }`}
           >
-            <p className="text-[11px] font-medium uppercase tracking-widest text-zinc-500">
+            <p
+              className={`text-step--2 font-medium tracking-[0.18em] uppercase ${
+                readiness.verdict === "ready"
+                  ? "text-ready"
+                  : readiness.verdict === "prep"
+                    ? "text-prep"
+                    : "text-late"
+              }`}
+            >
               {readiness.verdict === "ready"
                 ? "Siap"
                 : readiness.verdict === "prep"
                   ? "Bisa, dengan persiapan"
                   : "Belum sampai"}
             </p>
-            <p className="mt-1 text-base font-semibold leading-6 text-zinc-900">
+            <p className="mt-2 font-display text-step-1 leading-snug text-ink">
               {readiness.headline}
             </p>
 
             {readiness.blockers.length > 0 && (
               <ul className="mt-3 space-y-2">
                 {readiness.blockers.map((b) => (
-                  <li key={b.kind} className="text-sm leading-6 text-zinc-700">
+                  <li key={b.kind} className="text-sm leading-6 text-ink-soft">
                     {b.message}
                   </li>
                 ))}
@@ -384,16 +391,16 @@ export default function ReadinessPage() {
           </div>
 
           {readiness.alternatives.length > 0 && (
-            <div className="mt-4 rounded-xl border border-zinc-200 p-4">
-              <h3 className="text-sm font-medium text-zinc-900">Yang bisa dilakukan</h3>
+            <div className="mt-4 rounded-xl border border-line p-4">
+              <h3 className="text-sm font-medium text-ink">Yang bisa dilakukan</h3>
               <ul className="mt-2 space-y-3">
                 {readiness.alternatives.map((a, i) => (
-                  <li key={i} className="text-sm leading-6 text-zinc-700">
+                  <li key={i} className="text-sm leading-6 text-ink-soft">
                     {a.kind === "style" ? (
                       <>
                         <button
                           onClick={() => setTargetId(a.targetId)}
-                          className="font-medium text-rose-700 underline"
+                          className="font-medium text-accent underline"
                         >
                           {a.label}
                         </button>{" "}
@@ -401,7 +408,7 @@ export default function ReadinessPage() {
                       </>
                     ) : (
                       <>
-                        <span className="font-medium text-zinc-900">Hair extension</span> — {a.note}
+                        <span className="font-medium text-ink">Hair extension</span> — {a.note}
                       </>
                     )}
                   </li>
@@ -412,14 +419,14 @@ export default function ReadinessPage() {
 
           {readiness.plan.length > 0 && (
             <div className="mt-4">
-              <h3 className="text-sm font-medium text-zinc-900">Rencana sampai hari H</h3>
-              <ol className="mt-2 space-y-3 border-l border-zinc-200 pl-4">
+              <h3 className="text-sm font-medium text-ink">Rencana sampai hari H</h3>
+              <ol className="mt-2 space-y-3 border-l border-line pl-4">
                 {readiness.plan.map((p, i) => (
                   <li key={i}>
-                    <p className="text-[11px] font-medium uppercase tracking-wide text-rose-700">
+                    <p className="text-[11px] font-medium uppercase tracking-wide text-accent">
                       {p.when}
                     </p>
-                    <p className="text-sm leading-6 text-zinc-700">{p.action}</p>
+                    <p className="text-sm leading-6 text-ink-soft">{p.action}</p>
                   </li>
                 ))}
               </ol>
@@ -428,18 +435,18 @@ export default function ReadinessPage() {
 
           <button
             onClick={() => setShowWhy((v) => !v)}
-            className="mt-4 text-xs font-medium text-zinc-500 underline"
+            className="mt-4 text-xs font-medium text-ink-faint underline"
           >
             {showWhy ? "Sembunyikan alasannya" : "Kenapa hasilnya begini?"}
           </button>
           {showWhy && (
-            <ul className="mt-2 space-y-1.5 rounded-lg bg-zinc-50 p-3">
+            <ul className="mt-2 space-y-1.5 rounded-lg bg-surface p-3">
               {readiness.reasoning.map((r, i) => (
-                <li key={i} className="text-xs leading-5 text-zinc-600">
+                <li key={i} className="text-xs leading-5 text-ink-soft">
                   {r}
                 </li>
               ))}
-              <li className="pt-1 text-[11px] leading-5 text-zinc-400">
+              <li className="pt-1 text-[11px] leading-5 text-ink-faint">
                 Perkiraan pertumbuhan memakai rata-rata 1,25 cm per bulan, dan panjang tiap
                 tingkat adalah perkiraan kami — API mengembalikan kata, bukan ukuran. Anggap
                 hasilnya kisaran, bukan tanggal pasti.

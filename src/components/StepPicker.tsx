@@ -84,22 +84,22 @@ export default function StepPicker({ slot, value, onChange, warning }: Props) {
   }
 
   return (
-    <div className="border-b border-zinc-200 py-3 last:border-b-0">
+    <div className="border-b border-line py-3 last:border-b-0">
       <div className="flex items-center gap-3">
         {value?.thumb ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={value.thumb}
             alt=""
-            className="h-12 w-12 shrink-0 rounded-md border border-zinc-200 object-cover"
+            className="h-12 w-12 shrink-0 rounded-md border border-line object-cover"
           />
         ) : (
-          <div className="h-12 w-12 shrink-0 rounded-md border border-dashed border-zinc-300" />
+          <div className="h-12 w-12 shrink-0 rounded-md border border-dashed border-line-strong" />
         )}
 
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium text-zinc-900">{slot.label}</p>
-          <p className="truncate text-xs text-zinc-500">
+          <p className="text-sm font-medium text-ink">{slot.label}</p>
+          <p className="truncate text-xs text-ink-faint">
             {value ? value.label : slot.optional ? "Belum dipilih (boleh dilewati)" : "Wajib dipilih"}
           </p>
         </div>
@@ -108,14 +108,14 @@ export default function StepPicker({ slot, value, onChange, warning }: Props) {
           {value && (
             <button
               onClick={() => onChange(undefined)}
-              className="rounded-md px-2 py-1.5 text-xs font-medium text-zinc-500 hover:bg-zinc-50"
+              className="rounded-md px-2 py-1.5 text-xs font-medium text-ink-faint hover:bg-surface"
             >
               Hapus
             </button>
           )}
           <button
             onClick={() => setOpen((o) => !o)}
-            className="rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+            className="rounded-md border border-line-strong px-3 py-1.5 text-xs font-medium text-ink-soft hover:bg-surface"
           >
             {open ? "Tutup" : value ? "Ganti" : "Pilih"}
           </button>
@@ -123,19 +123,19 @@ export default function StepPicker({ slot, value, onChange, warning }: Props) {
       </div>
 
       {slot.hint && !open && (
-        <p className="mt-1.5 pl-15 text-[11px] leading-4 text-zinc-400">{slot.hint}</p>
+        <p className="mt-1.5 pl-15 text-[11px] leading-4 text-ink-faint">{slot.hint}</p>
       )}
 
       {warning && (
-        <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-2.5 text-[11px] leading-5 text-amber-900">
+        <p className="mt-2 rounded-lg border border-prep/30 bg-prep-tint p-2.5 text-[11px] leading-5 text-prep">
           {warning}
         </p>
       )}
 
       {open && (
         <div className="mt-3">
-          {loading && <p className="text-xs text-zinc-500">Memuat katalog…</p>}
-          {error && <p className="text-xs text-rose-700">{error}</p>}
+          {loading && <p className="text-xs text-ink-faint">Memuat katalog…</p>}
+          {error && <p className="text-xs text-late">{error}</p>}
 
           {slot.source === "template" && templates.length > 0 && (
             <>
@@ -143,7 +143,7 @@ export default function StepPicker({ slot, value, onChange, warning }: Props) {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="mb-2 w-full rounded-lg border border-zinc-300 bg-white p-2 text-xs text-zinc-900"
+                  className="mb-2 w-full rounded-lg border border-line-strong bg-paper p-2 text-xs text-ink"
                 >
                   {categories.map((c) => (
                     <option key={c} value={c}>
@@ -158,7 +158,7 @@ export default function StepPicker({ slot, value, onChange, warning }: Props) {
                     key={t.id}
                     onClick={() => choose({ id: t.id, label: t.title, thumb: t.thumb })}
                     className={`overflow-hidden rounded-lg border-2 text-left ${
-                      value?.id === t.id ? "border-rose-700" : "border-transparent"
+                      value?.id === t.id ? "border-accent" : "border-transparent"
                     }`}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -168,7 +168,7 @@ export default function StepPicker({ slot, value, onChange, warning }: Props) {
                       loading="lazy"
                       className="aspect-square w-full object-cover"
                     />
-                    <span className="block px-1 py-1 text-[10px] leading-tight text-zinc-700">
+                    <span className="block px-1 py-1 text-[10px] leading-tight text-ink-soft">
                       {t.title}
                     </span>
                   </button>
@@ -184,12 +184,12 @@ export default function StepPicker({ slot, value, onChange, warning }: Props) {
                   key={r.id}
                   onClick={() => choose({ id: r.id, label: r.label, thumb: r.url })}
                   className={`overflow-hidden rounded-lg border-2 text-left ${
-                    value?.id === r.id ? "border-rose-700" : "border-transparent"
+                    value?.id === r.id ? "border-accent" : "border-transparent"
                   }`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={r.url} alt={r.label} loading="lazy" className="aspect-3/4 w-full object-cover" />
-                  <span className="block px-1 py-1 text-[10px] leading-tight text-zinc-700">
+                  <span className="block px-1 py-1 text-[10px] leading-tight text-ink-soft">
                     {r.label}
                   </span>
                 </button>
@@ -198,7 +198,7 @@ export default function StepPicker({ slot, value, onChange, warning }: Props) {
           )}
 
           {!loading && !error && slot.source === "reference" && refs.length === 0 && (
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-ink-faint">
               Belum ada pilihan untuk slot ini di pustaka referensi.
             </p>
           )}

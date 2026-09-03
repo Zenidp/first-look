@@ -212,7 +212,7 @@ export default function PhotoCropper({ file, framing, onCancel, onDone }: Props)
 
   if (error && !photo) {
     return (
-      <div className="rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">
+      <div className="rounded-lg border border-late/30 bg-late-tint p-4 text-sm text-late">
         <p>{error}</p>
         <button onClick={onCancel} className="mt-2 text-xs font-medium underline">
           Pilih foto lain
@@ -223,8 +223,8 @@ export default function PhotoCropper({ file, framing, onCancel, onDone }: Props)
 
   return (
     <div>
-      <p className="text-sm font-medium text-zinc-900">{guide.label}</p>
-      <p className="mt-1 text-xs leading-5 text-zinc-500">{guide.hint}</p>
+      <p className="text-sm font-medium text-ink">{guide.label}</p>
+      <p className="mt-1 text-xs leading-5 text-ink-faint">{guide.hint}</p>
 
       <div
         ref={frameRef}
@@ -234,7 +234,7 @@ export default function PhotoCropper({ file, framing, onCancel, onDone }: Props)
         onPointerCancel={onPointerUp}
         onWheel={onWheel}
         style={{ height: frameH || undefined }}
-        className="relative mt-3 w-full max-w-sm cursor-move touch-none overflow-hidden rounded-xl bg-zinc-100 select-none"
+        className="relative mt-3 w-full max-w-sm cursor-move touch-none overflow-hidden rounded-xl bg-surface-2 select-none"
       >
         {photo && view && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -307,7 +307,7 @@ export default function PhotoCropper({ file, framing, onCancel, onDone }: Props)
           <span
             key={l.label}
             style={{ top: `${l.y * 100}%` }}
-            className="pointer-events-none absolute left-2 -translate-y-1/2 rounded bg-black/55 px-1.5 py-0.5 text-[10px] text-white"
+            className="pointer-events-none absolute left-2 -translate-y-1/2 rounded bg-black/55 px-1.5 py-0.5 text-[10px] text-paper"
           >
             {l.label}
           </span>
@@ -315,7 +315,7 @@ export default function PhotoCropper({ file, framing, onCancel, onDone }: Props)
       </div>
 
       {/* Slider as well as pinch: a trackpad has no pinch and a phone has no wheel. */}
-      <label className="mt-3 flex max-w-sm items-center gap-3 text-xs text-zinc-500">
+      <label className="mt-3 flex max-w-sm items-center gap-3 text-xs text-ink-faint">
         Perbesar
         <input
           type="range"
@@ -327,19 +327,19 @@ export default function PhotoCropper({ file, framing, onCancel, onDone }: Props)
             const target = minScale(photo) * (Number(e.target.value) / 100);
             zoomAbout(target / view.scale, frameW / 2, frameH / 2);
           }}
-          className="flex-1 accent-rose-700"
+          className="flex-1 accent-accent"
         />
       </label>
 
       {check && !check.ok && (
-        <ul className="mt-3 max-w-sm space-y-1 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900">
+        <ul className="mt-3 max-w-sm space-y-1 rounded-lg border border-prep/30 bg-prep-tint p-3 text-xs leading-5 text-prep">
           {check.problems.map((p) => (
             <li key={p}>{p}</li>
           ))}
         </ul>
       )}
       {error && photo && (
-        <p className="mt-3 max-w-sm rounded-lg border border-rose-200 bg-rose-50 p-3 text-xs text-rose-800">
+        <p className="mt-3 max-w-sm rounded-lg border border-late/30 bg-late-tint p-3 text-xs text-late">
           {error}
         </p>
       )}
@@ -348,13 +348,13 @@ export default function PhotoCropper({ file, framing, onCancel, onDone }: Props)
         <button
           onClick={confirm}
           disabled={!check?.ok || busy}
-          className="flex-1 rounded-lg bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white disabled:opacity-40"
+          className="flex-1 rounded-lg bg-ink px-4 py-2.5 text-sm font-medium text-paper disabled:opacity-40"
         >
           {busy ? "Memproses…" : "Pakai foto ini"}
         </button>
         <button
           onClick={onCancel}
-          className="rounded-lg border border-zinc-300 px-4 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+          className="rounded-lg border border-line-strong px-4 py-2.5 text-sm font-medium text-ink-soft hover:bg-surface"
         >
           Batal
         </button>

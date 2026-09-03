@@ -1,41 +1,153 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Design tokens.
+ *
+ * Everything visual is declared once, here, as a Tailwind v4 `@theme` — which
+ * emits real CSS custom properties on :root, so a rebrand is a value change
+ * rather than a find-and-replace across components.
+ *
+ * The palette is warm rather than neutral on purpose. This is a bridal look
+ * board: the thing being judged on screen is the colour of foundation, gold and
+ * lace, and a cool grey UI shifts the perception of all three. Ivory paper and
+ * a warm ink read closer to how these look in a sanggar.
+ */
+@theme {
+  /* --- colour ------------------------------------------------------------ */
+  --color-paper: hsl(40 33% 98%); /* page ground, warm ivory */
+  --color-surface: hsl(38 26% 95%); /* raised card on paper */
+  --color-surface-2: hsl(36 22% 92%); /* pressed / inset */
+  --color-ink: hsl(24 14% 11%); /* headings, primary text */
+  --color-ink-soft: hsl(24 8% 34%); /* body copy */
+  --color-ink-faint: hsl(24 6% 46%); /* captions — still ≥4.5:1 on paper */
+  --color-line: hsl(34 16% 87%); /* hairlines */
+  --color-line-strong: hsl(32 14% 78%); /* control borders, ≥3:1 */
 
+  /* One accent, used sparingly. Deep rose-clay rather than a bright pink:
+     it has to sit next to gold and ivory without competing with them. */
+  --color-accent: hsl(4 44% 40%);
+  --color-accent-hover: hsl(4 46% 33%);
+  --color-accent-tint: hsl(8 52% 96%);
+  --color-accent-line: hsl(8 38% 87%);
+
+  /* Gold is a material in this product, not a decoration. Reserved for the
+     hairline that marks a real API result. */
+  --color-gold: hsl(38 42% 48%);
+  --color-gold-tint: hsl(42 60% 95%);
+
+  /* The dark section — one per page, used as a breath between light ones. */
+  --color-night: hsl(24 16% 10%);
+  --color-night-soft: hsl(30 8% 66%);
+  --color-night-line: hsl(24 10% 22%);
+
+  /* Verdict colours. Hair Readiness returns three answers and they must be
+     distinguishable without relying on hue alone, so each also carries a
+     different border weight and label in the markup. */
+  --color-ready: hsl(158 42% 26%);
+  --color-ready-tint: hsl(150 40% 96%);
+  --color-prep: hsl(32 70% 30%);
+  --color-prep-tint: hsl(42 78% 95%);
+  --color-late: hsl(2 52% 38%);
+  --color-late-tint: hsl(6 60% 96%);
+
+  /* --- type -------------------------------------------------------------- */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  /* Fluid scale — one clamp per step, so no breakpoint ever restates a size. */
+  --text-step--2: clamp(0.72rem, 0.71rem + 0.06vw, 0.76rem);
+  --text-step--1: clamp(0.83rem, 0.81rem + 0.12vw, 0.9rem);
+  --text-step-0: clamp(1rem, 0.97rem + 0.15vw, 1.075rem);
+  --text-step-1: clamp(1.2rem, 1.13rem + 0.35vw, 1.4rem);
+  --text-step-2: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
+  --text-step-3: clamp(1.9rem, 1.6rem + 1.5vw, 2.9rem);
+  --text-step-4: clamp(2.4rem, 1.85rem + 2.7vw, 4.2rem);
+  --text-step-5: clamp(2.9rem, 2rem + 4.4vw, 5.6rem);
+
+  /* --- form -------------------------------------------------------------- */
+  /* Deliberately not one radius everywhere: a photograph, a card and a button
+     are different objects and a single radius flattens that into a template. */
+  --radius-card: 0.875rem;
+  --radius-frame: 1.25rem;
+  --radius-control: 0.5rem;
+
+  /* Shadows are warm and low. A grey drop shadow on ivory reads as dirt. */
+  --shadow-raised:
+    0 1px 2px hsl(24 20% 20% / 0.05), 0 8px 24px -12px hsl(24 20% 20% / 0.14);
+  --shadow-frame:
+    0 2px 4px hsl(24 20% 20% / 0.04), 0 24px 60px -28px hsl(24 20% 20% / 0.28);
+
+  --container-prose: 65ch;
+}
+
+:root {
   /*
-   * This app is light-only on purpose, and the declaration matters as much as
-   * the palette.
+   * Light-only, declared rather than assumed.
    *
-   * Every screen written for this project — /look, /test, /prewedding — styles
-   * itself with light-mode colours (text-zinc-900 on white) and carries no
-   * `dark:` variants at all. The create-next-app boilerplate below used to flip
-   * --background to near-black whenever the OS was in dark mode, which left
-   * near-black text on a near-black page and, worse, made every native <select>
-   * popup unreadable: the options inherited the near-white --foreground while
-   * the browser painted the popup on a light surface. Grey on white.
+   * Every screen in this project is written in light-mode colours and carries
+   * no `dark:` variants. Without this line the browser paints native controls —
+   * <select> popups, date pickers, scrollbars, focus rings — from the OS
+   * setting instead of the page, which previously produced unreadable grey-on-
+   * white dropdowns for anyone in dark mode.
    *
-   * Stating `color-scheme: light` is what actually fixes the native controls —
-   * dropdown popups, scrollbars, focus rings are painted by the browser, not by
-   * Tailwind, and without this they follow the OS instead of the page.
-   *
-   * There is also a product reason not to theme this: it is a bridal look
-   * board. Re-tinting a page where the whole point is judging the colour of
-   * makeup, gold and lace would misrepresent the thing being sold.
+   * There is also a product reason. Re-tinting a page whose entire purpose is
+   * judging the colour of makeup, gold and lace would misrepresent the thing
+   * being sold.
    */
   color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@layer base {
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink-soft);
+    font-family: var(--font-sans);
+    font-size: var(--text-step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  /* Never remove the outline without replacing it. This is the ring every
+     keyboard user navigates by, and it is deliberately high-contrast. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-tint);
+    color: var(--color-ink);
+  }
+
+  /* Honour the OS setting rather than deciding for the reader. Motion in this
+     app is decorative in every place it appears, so all of it goes. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility rule-gold {
+  /* The hairline that marks a real, paid API result rather than a mockup. */
+  background-image: linear-gradient(
+    to right,
+    var(--color-gold),
+    color-mix(in oklab, var(--color-gold) 20%, transparent)
+  );
 }
