@@ -47,14 +47,29 @@ type VideoState = { url?: string; error?: string; units?: number };
  *
  * Abandoning a running task is not free — the docs warn that an unpolled task
  * can expire and still be charged — so this keeps asking rather than giving up
- * early. Five minutes is generous against a measured 62 seconds, and the
- * interval matches the server's own 1.5s polling cadence.
+ * early.
+ *
+ * Fifteen minutes, not the five it used to be. FINDINGS §9 measured 38-62s
+ * across three renders and five minutes looked generous against that; then a
+ * render on 3 Sep took over eight, and the poll gave up while the task was
+ * still alive. Provider latency is not something this app controls, so the
+ * ceiling is set well above the worst case actually observed rather than a
+ * comfortable multiple of the best.
+ *
+ * Giving up no longer loses the result either way: the server files an
+ * unclaimed task under its cache key, so pressing the button again rejoins the
+ * same render instead of paying for a second one.
  */
-async function pollVideo(taskId: string): Promise<VideoState> {
-  const deadline = Date.now() + 300_000;
+async function pollVideo(
+  taskId: string,
+  onTick: (seconds: number) => void,
+): Promise<VideoState> {
+  const startedAt = Date.now();
+  const deadline = startedAt + 900_000;
 
   while (Date.now() < deadline) {
     await new Promise((r) => setTimeout(r, 3000));
+    onTick(Math.round((Date.now() - startedAt) / 1000));
 
     let res: Response;
     try {
@@ -70,8 +85,9 @@ async function pollVideo(taskId: string): Promise<VideoState> {
 
   return {
     error:
-      "The video has not finished after five minutes. The units are already spent — " +
-      "try again later and the result will appear immediately if it is ready.",
+      "This render is taking unusually long — over fifteen minutes. The units are " +
+      "already spent, and the result is not lost: press “Animate it” again and it " +
+      "will rejoin the same render rather than starting a new one.",
   };
 }
 
@@ -133,6 +149,11 @@ export default function LookPage() {
 
   const [video, setVideo] = useState<VideoState | null>(null);
   const [videoBusy, setVideoBusy] = useState(false);
+  // Seconds elapsed on the current render, and whether we rejoined one already
+  // running. Both exist so a long wait reads as progress rather than a hang —
+  // an unmoving "Creating video…" is indistinguishable from a broken app.
+  const [videoWaited, setVideoWaited] = useState(0);
+  const [videoResumed, setVideoResumed] = useState(false);
   const [details, setDetails] = useState<Record<string, string>>({});
 
   // The last successful image in the chain, as bytes. Retrying or skipping a
@@ -245,6 +266,8 @@ export default function LookPage() {
   async function makeVideo() {
     if (!finalUrl) return;
     setVideoBusy(true);
+    setVideoWaited(0);
+    setVideoResumed(false);
     setVideo(null);
     try {
       const blob = await (await fetch(finalUrl)).blob();
@@ -277,7 +300,8 @@ export default function LookPage() {
         return;
       }
 
-      setVideo(await pollVideo(data.taskId));
+      setVideoResumed(Boolean(data.resumed));
+      setVideo(await pollVideo(data.taskId, setVideoWaited));
     } catch (err) {
       setVideo({ error: err instanceof Error ? err.message : "Could not create the video." });
     } finally {
@@ -567,13 +591,19 @@ export default function LookPage() {
               disabled={videoBusy}
               className="rounded-md bg-accent px-3 py-2 text-xs font-medium text-paper disabled:opacity-40"
             >
-              {videoBusy ? "Creating video…" : "Animate it — 5 units"}
+              {videoBusy
+                ? `Creating video… ${videoWaited}s`
+                : "Animate it — 5 units"}
             </button>
           </div>
           {videoBusy && (
-            <p className="mt-2 text-xs text-ink-faint">
-              Generative video is far slower than a try-on: about a minute for a
-              five-second clip.
+            <p className="mt-2 text-xs leading-5 text-ink-faint">
+              {videoResumed
+                ? "This clip was already being rendered, so it rejoined that render — nothing extra was charged. "
+                : "Generative video is far slower than a try-on. "}
+              A five-second clip usually lands in about a minute, but the provider
+              can take several. Leave this tab open; the result appears here as
+              soon as it is ready.
             </p>
           )}
         </section>

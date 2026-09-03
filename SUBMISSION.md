@@ -205,3 +205,45 @@ beskap, hair diagnostics, hair analysis ai, devnetwork hackathon, api cloud ai
 hackathon, hackathon 2026, nextjs, typescript, supabase, vercel, ai try on,
 beauty tech, mua tools, wedding planning app, generative video, image to video,
 face ai, bridal trial, first look
+
+---
+
+# LinkedIn post
+
+**PROBLEM**
+
+A bridal trial in Jakarta costs Rp 1.5–4 million and half a day — and it
+regularly ends in a look the bride didn't want.
+
+Why? She and her makeup artist are working from Pinterest screenshots of other
+people's faces. The first time they both see the same thing is the trial itself,
+after the money is gone.
+
+**SOLUTION**
+
+I built First Look: a bridal look studio that settles the look *before* the
+trial.
+
+→ Kebaya, sanggul, makeup and jewellery stacked onto one photo of her own face.
+Each try-on runs against the previous result, so the output is a real
+photograph, not a collage.
+
+→ And the part nobody else builds: hair diagnostics answer whether her hair can
+actually reach that style by the wedding date. Ready, ready with preparation, or
+not by then — with a month-by-month plan.
+
+**RESULT**
+
+Solo, in four days, on the Perfect Corp YouCam API:
+• 31 APIs wired up, each verified by eye
+• 5 try-ons composited onto a single frame
+• A groom's path too — a wedding has two people in it
+• The whole demo runs at zero API cost in production
+
+Everyone points virtual try-on at "what would this look like?"
+I pointed it at "can she get there in time?"
+
+Live: https://first-look-five.vercel.app
+Code: https://github.com/Zenidp/first-look
+
+#PerfectCorp #AI #BuildInPublic #Hackathon #IndonesiaTech

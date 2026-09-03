@@ -4,7 +4,7 @@ import { PerfectCorpError, createTask, runTask, uploadImage } from "@/lib/perfec
 import { PayloadError, buildPayload } from "@/lib/perfectcorp/payload";
 import { forceLive, offline, readFixture, writeFixture } from "@/lib/perfectcorp/fixtures";
 import { identityFor, unitsFor } from "@/lib/perfectcorp/run";
-import { putPendingTask } from "@/lib/supabase";
+import { getPendingTaskByKey, putPendingTask } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -89,6 +89,27 @@ export async function POST(request: Request) {
         "OfflineCacheMiss",
         409,
       );
+    }
+
+    // Before paying: is this exact clip already being rendered?
+    //
+    // A render outlives the request that starts it, so the browser polls for
+    // it. Close the tab, or let a slow render outlast the poll, and nobody ever
+    // collects the result — the task still completes, still bills, and no
+    // fixture is written. Without this check the next attempt at the same look
+    // computes the same key, misses the cache and pays for the identical clip
+    // again. Rejoining costs nothing and is always the right answer, because
+    // the units for that task are already gone.
+    const alreadyRunning = await getPendingTaskByKey(key);
+    if (alreadyRunning) {
+      return NextResponse.json({
+        status: "pending",
+        taskId: alreadyRunning.task_id,
+        key,
+        units: alreadyRunning.units,
+        resumed: true,
+        totalMs: Date.now() - startedAt,
+      });
     }
 
     const units = unitsFor(FEATURE, options);

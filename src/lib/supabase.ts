@@ -197,6 +197,39 @@ export async function getPendingTask(taskId: string): Promise<PendingTask | null
   }
 }
 
+/**
+ * An in-flight task already paid for, found by the fixture key rather than the
+ * task id.
+ *
+ * This exists because of a failure mode that costs real money. A video render
+ * outlives the request that starts it, so the browser polls; if the person
+ * closes the tab, or the poll gives up before a slow render lands, nobody ever
+ * asks for the result. The task completes upstream and is billed, but no
+ * fixture is ever written — and the next attempt at the same look computes the
+ * same key, misses the cache, and pays for the identical clip a second time.
+ *
+ * Looking the pending row up by key turns that retry into a rejoin.
+ *
+ * Newest first, because a slow render may have accumulated more than one row
+ * before this existed; the freshest is the one most likely still alive.
+ */
+export async function getPendingTaskByKey(key: string): Promise<PendingTask | null> {
+  const cfg = config();
+  if (!cfg) return null;
+  try {
+    const res = await fetch(
+      `${cfg.url}/rest/v1/pending_tasks?key=eq.${encodeURIComponent(key)}` +
+        `&select=*&order=created_at.desc&limit=1`,
+      { headers: headers(cfg.key), cache: "no-store" },
+    );
+    if (!res.ok) return null;
+    const rows = (await res.json()) as PendingTask[];
+    return rows[0] ?? null;
+  } catch {
+    return null;
+  }
+}
+
 /** Called once a task reaches a terminal state, success or failure. */
 export async function dropPendingTask(taskId: string): Promise<void> {
   const cfg = config();
