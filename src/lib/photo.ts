@@ -32,7 +32,35 @@ const MAX_BYTES = 10 * 1024 * 1024;
  */
 const MAX_UPSCALE = 1.3;
 
-export type Framing = "beauty" | "outfit";
+export type Framing = "beauty" | "outfit" | "groom" | "groomOutfit";
+
+/**
+ * Who is being dressed.
+ *
+ * Kept separate from the framing because the two are genuinely orthogonal: the
+ * geometry a photo needs (waist-up vs full-body) has nothing to do with whose
+ * photo it is. Flattening them into one four-way switch is what would force the
+ * UI to offer a groom a kebaya.
+ */
+export type Subject = "bride" | "groom";
+
+export const SUBJECTS: Record<Subject, { label: string; blurb: string; framings: Framing[] }> = {
+  bride: {
+    label: "Pengantin wanita",
+    blurb: "Makeup, sanggul, kebaya, perhiasan",
+    framings: ["beauty", "outfit"],
+  },
+  groom: {
+    label: "Pengantin pria",
+    blurb: "Jenggot, rambut, beskap",
+    framings: ["groom", "groomOutfit"],
+  },
+};
+
+/** Which subject a framing belongs to. */
+export function subjectOf(framing: Framing): Subject {
+  return framing === "groom" || framing === "groomOutfit" ? "groom" : "bride";
+}
 
 /**
  * Guide geometry, as fractions of the crop frame. Measured off
@@ -62,6 +90,23 @@ export const GUIDES: Record<
     lines: [
       { y: 0.04, label: "ujung kepala" },
       { y: 0.96, label: "ujung kaki" },
+    ],
+  },
+  // The groom's two framings reuse the bride's geometry exactly. The API's
+  // 128px face minimum and cloth-v4's need for a torso are properties of the
+  // engine, not of who is standing in front of the camera — so the guide that
+  // satisfies them is the same guide. Only the wording changes.
+  groom: {
+    label: "Setengah badan",
+    hint: "Pas-kan wajah ke oval, dan pastikan rahang dan kedua bahu masuk frame.",
+    face: { cx: 0.5, cy: 0.2, rx: 0.12, ry: 0.155 },
+  },
+  groomOutfit: {
+    label: "Seluruh badan",
+    hint: "Ujung kepala di garis atas, ujung sepatu di garis bawah.",
+    lines: [
+      { y: 0.04, label: "ujung kepala" },
+      { y: 0.96, label: "ujung sepatu" },
     ],
   },
 };

@@ -21,7 +21,7 @@ import {
   isRunnable,
   type Selection,
 } from "@/lib/look-rules";
-import { GUIDES, type Framing } from "@/lib/photo";
+import { GUIDES, SUBJECTS, subjectOf, type Framing, type Subject } from "@/lib/photo";
 
 /**
  * The look builder.
@@ -88,10 +88,12 @@ const DETAILS = [
 
 /** Demo photo + preselected slots per framing, derived from the recipes so
  *  there is one source of truth for the zero-unit path. */
-const DEMO = {
+const DEMO: Record<Framing, (typeof LOOK_RECIPES)[number]> = {
   beauty: LOOK_RECIPES.find((r) => r.id === "jawa-klasik")!,
   outfit: LOOK_RECIPES.find((r) => r.id === "jawa-klasik-outfit")!,
-} as const;
+  groom: LOOK_RECIPES.find((r) => r.id === "jawa-groom")!,
+  groomOutfit: LOOK_RECIPES.find((r) => r.id === "jawa-groom-outfit")!,
+};
 
 /**
  * Maps the recipe onto the builder's slots by feature. Keyed off the slot list
@@ -160,6 +162,14 @@ export default function LookPage() {
     setPhoto(null);
     reset();
   }
+
+  /** Switching who is being dressed lands on that subject's waist-up framing,
+   *  which is the one that carries a whole look. */
+  function switchSubject(next: Subject) {
+    switchFraming(SUBJECTS[next].framings[0]);
+  }
+
+  const subject = subjectOf(framing);
 
   async function loadDemo() {
     const recipe = DEMO[framing];
@@ -303,9 +313,36 @@ export default function LookPage() {
         yang sama — jadi satu foto asli, bukan kolase — lalu bisa digerakkan jadi video.
       </StudioHeader>
 
+      {/* --- subject ------------------------------------------------------- */}
+      <fieldset className="mb-4">
+        <legend className="sr-only">Siapa yang disusun look-nya</legend>
+        <div className="grid grid-cols-2 gap-2">
+          {(Object.keys(SUBJECTS) as Subject[]).map((s) => (
+            <button
+              key={s}
+              type="button"
+              aria-pressed={subject === s}
+              onClick={() => switchSubject(s)}
+              className={`rounded-control border px-3 py-2.5 text-left transition-colors ${
+                subject === s
+                  ? "border-accent bg-accent-tint"
+                  : "border-line-strong hover:bg-surface"
+              }`}
+            >
+              <span className="block text-sm font-medium text-ink">
+                {SUBJECTS[s].label}
+              </span>
+              <span className="block text-[11px] leading-4 text-ink-faint">
+                {SUBJECTS[s].blurb}
+              </span>
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
       {/* --- framing ------------------------------------------------------- */}
       <div className="mb-6 grid grid-cols-2 gap-2">
-        {(["beauty", "outfit"] as Framing[]).map((f) => (
+        {SUBJECTS[subject].framings.map((f) => (
           <button
             key={f}
             onClick={() => switchFraming(f)}
@@ -315,13 +352,17 @@ export default function LookPage() {
           >
             <span className="block text-sm font-medium text-ink">{GUIDES[f].label}</span>
             <span className="block text-[11px] leading-4 text-ink-faint">
-              {f === "beauty" ? "Makeup, rambut, perhiasan" : "Busana saja"}
+              {f === "beauty"
+                ? "Makeup, rambut, perhiasan"
+                : f === "groom"
+                  ? "Jenggot, rambut, busana"
+                  : "Busana saja"}
             </span>
           </button>
         ))}
       </div>
 
-      {framing === "outfit" && (
+      {(framing === "outfit" || framing === "groomOutfit") && (
         <p className="mb-6 rounded-lg border border-line bg-surface p-3 text-xs leading-5 text-ink-soft">
           {OUTFIT_LIMITATION}
         </p>
@@ -383,6 +424,7 @@ export default function LookPage() {
             <StepPicker
               key={slot.id}
               slot={slot}
+              subject={subject}
               value={selection[slot.id]}
               warning={issues.find((i) => i.slot === slot.id)?.message}
               onChange={(c) => {

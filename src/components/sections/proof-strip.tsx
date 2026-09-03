@@ -21,9 +21,9 @@ const FACTS = [
     note: "Busana, rambut, makeup, kalung, anting — berurutan, satu frame.",
   },
   {
-    figure: "13",
+    figure: "17",
     unit: "referensi Nusantara",
-    note: "8 busana daerah dan 5 makeup pengantin, tidak ada di katalog bawaan.",
+    note: "12 busana daerah — pengantin wanita dan pria — dan 5 makeup pengantin.",
   },
   {
     figure: "7,4 dtk",

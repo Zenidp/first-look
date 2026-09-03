@@ -362,6 +362,95 @@ for mid, desc in MAKEUPS.items():
     job(mid, "makeup", f"public/references/{mid}.jpg", MAKEUP_BASE + desc)
 
 
+# --- Part 4: the groom ------------------------------------------------------
+# A wedding has two people in it, and the bride-only library made the product
+# only half true. The groom is a second synthetic identity, generated the same
+# way and under the same licence terms as the bride.
+#
+# He is CLEAN-SHAVEN on purpose. beard-style is a try-on, so it needs a jaw with
+# nothing already on it: an existing beard becomes something the engine has to
+# paint over rather than onto, and the fifteen styles stop reading as different
+# from one another. The clean jaw is also the honest "before".
+
+GROOM_FACE = (
+    "Photorealistic head-and-shoulders portrait of a handsome 30-year-old Indonesian "
+    "man looking straight into the camera. Warm medium-brown skin, dark brown eyes, "
+    "straight black hair cut short and neat, forehead and both ears fully visible. "
+    "COMPLETELY CLEAN-SHAVEN: no beard, no moustache, no stubble, no shadow on the jaw "
+    "or upper lip; the skin of the chin, jawline, cheeks and above the lip is smooth, "
+    "bare and clearly visible. Strong symmetrical features, clear complexion. "
+    "Calm closed-mouth expression, lips relaxed and fully visible. Both eyes wide open. "
+    "Framing: head, shoulders and upper chest visible. His face fills roughly half the "
+    "height of the frame. Shoulders clearly in frame and not cropped. Head perfectly "
+    "upright and square to the camera, no tilt, no turn. "
+    "He wears a plain black fitted crew-neck t-shirt. "
+    "Plain seamless light grey background. "
+)
+
+job("groom-face-front", "groom", "input/groom-face-front.jpg",
+    GROOM_FACE + BASE + NEGATIVE)
+
+job("groom-half-body", "groom", "input/groom-half-body.jpg",
+    "Using the man in the reference image, keep his face, skin tone, hair colour and "
+    "hairstyle exactly the same, and keep him COMPLETELY CLEAN-SHAVEN with no beard, "
+    "no moustache and no stubble. Forehead, both ears, chin and jawline fully exposed. "
+    "HALF-BODY FRAMING: the frame starts just above his head and ends just below his "
+    "waist. Head, neck, both shoulders, both upper arms, the full torso and the waistline "
+    "are all inside the frame. His head fills roughly one quarter of the frame height. "
+    "Nothing is cropped at the sides. He stands facing the camera, upright and square, "
+    "looking straight into the camera, arms relaxed and held slightly away from his sides "
+    "so the outline of his torso is clearly readable. Calm closed-mouth expression, both "
+    "eyes wide open. He wears a plain fitted light grey crew-neck t-shirt with no pattern, "
+    "no print and no jewellery of any kind. Plain seamless light grey background. " + BASE +
+    " Avoid: beard, moustache, stubble, cropped head, cropped shoulders, hands raised, "
+    "arms pressed against the body, bulky clothing, patterns, busy background, watermark.",
+    ref="input/groom-face-front.jpg")
+
+job("groom-full-body", "groom", "input/groom-full-body.jpg",
+    "Using the man in the reference image, keep his face, skin tone, hair colour and "
+    "hairstyle exactly the same, and keep him completely clean-shaven. "
+    "FULL-BODY FRAMING: the entire body from the top of his head to the soles of his shoes "
+    "is inside the frame, with clear empty background above his head and below his feet. "
+    "Nothing is cropped. He stands facing the camera, upright and square, feet together, "
+    "arms relaxed and held slightly away from his sides. He wears a plain fitted light grey "
+    "crew-neck t-shirt, plain mid-grey trousers and plain dark shoes, with no pattern, no "
+    "print and no jewellery. Plain seamless light grey background, even studio lighting, "
+    "sharp focus, high resolution. " + BASE +
+    " Avoid: beard, moustache, cropped feet, cropped head, sitting, walking, patterns, "
+    "busy background, watermark.",
+    ref="input/groom-face-front.jpg")
+
+# Groom garments. Flat-lay like the bride's, and for the same measured reason:
+# cloth-v4 reads an open front literally, so every one of these is specified as
+# a closed, fully-covering outfit.
+GROOM_GARMENTS = {
+    "beskap-jawa-groom":
+        "A Javanese groom's beskap outfit: a fitted long-sleeved high-collared jacket in deep "
+        "navy velvet, fastened CLOSED at the front with no opening, paired below with a "
+        "floor-length batik wrap in traditional sogan brown and cream parang motif. "
+        "Arranged flat with the closed jacket above and the batik wrap spread below it. "
+        "NO headwear of any kind in the frame.",
+    "beskap-sunda-groom":
+        "A Sundanese groom's outfit: a fitted long-sleeved high-collared jacket in ivory brocade "
+        "with fine gold thread detail, fastened CLOSED at the front edge to edge with no opening, "
+        "paired below with a floor-length batik wrap in cream and gold. Arranged flat. NO headwear of any kind in the frame.",
+    "baju-minang-groom":
+        "A Minangkabau groom's outfit: a loose long-sleeved tunic in deep red songket with dense "
+        "gold thread weaving, closed all the way round with a solid unbroken front so the torso "
+        "is fully covered to below the hip, paired with matching red and gold songket trousers "
+        "Arranged flat. NO headwear of any kind in the frame.",
+    "jas-pengantin-modern":
+        "A modern Indonesian groom's wedding suit: a fitted single-breasted three-piece suit in "
+        "charcoal grey wool, the jacket buttoned CLOSED over a matching waistcoat and a crisp "
+        "white dress shirt with a slim burgundy tie, paired with matching straight charcoal "
+        "trousers. Arranged flat with the closed jacket above and the trousers spread below it.",
+}
+for gid, desc in GROOM_GARMENTS.items():
+    job(gid, "groom-garment", f"public/references/{gid}.jpg",
+        GARMENT_BASE.replace("traditional Indonesian garment", "Indonesian groom's outfit")
+        + desc, aspect="1:1")
+
+
 def gcloud(*args: str) -> str:
     return subprocess.run(
         ["gcloud", *args], capture_output=True, text=True, check=True
@@ -447,7 +536,10 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("ids", nargs="*", help="asset ids to generate")
     ap.add_argument("--all", action="store_true")
-    ap.add_argument("--group", choices=["bride", "garment", "makeup", "jewellery"])
+    ap.add_argument(
+        "--group",
+        choices=["bride", "garment", "makeup", "jewellery", "groom", "groom-garment"],
+    )
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--force", action="store_true", help="regenerate even if the file exists")
     args = ap.parse_args()

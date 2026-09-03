@@ -73,7 +73,14 @@ expect_json "generative family flagged" \
   "$BASE/api/features"
 expect_json "8 prewedding concepts" "len(d['concepts'])==8" "$BASE/api/concepts"
 expect_json "reference library reports slots" \
-  "d['readyCount']+d['pendingCount']==18" "$BASE/api/references"
+  "d['readyCount']+d['pendingCount']==22" "$BASE/api/references"
+# The groom's wardrobe must stay separable from the bride's. The try-on endpoint
+# dresses whatever body is in the frame and cannot tell them apart, so this flag
+# is the only thing stopping the builder offering a groom a kebaya — and that
+# would be a real, billed, wrong result.
+expect_json "groom garments are flagged and separable" \
+  "sum(1 for r in d['ready'] if r.get('groom'))==4 and sum(1 for r in d['ready'] if r['use']=='clothes' and not r.get('groom'))==8" \
+  "$BASE/api/references"
 expect_json "video registered, and priced per second not per call" \
   "any(f['id']=='imageToVideo' and f['task']=='image-to-video/youcam' for f in d['features'])" \
   "$BASE/api/features"

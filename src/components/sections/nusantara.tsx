@@ -12,7 +12,12 @@ import { REFERENCE_LIBRARY, referencePath } from "@/lib/references";
  * custom-reference path instead, and the garment strip below is that library,
  * read from the same file the look builder reads.
  */
-const GARMENTS = REFERENCE_LIBRARY.filter((item) => item.use === "clothes");
+const GARMENTS = REFERENCE_LIBRARY.filter(
+  (item) => item.use === "clothes" && !item.groom,
+);
+const GROOM_GARMENTS = REFERENCE_LIBRARY.filter(
+  (item) => item.use === "clothes" && item.groom,
+);
 
 export default function Nusantara() {
   return (
@@ -34,30 +39,72 @@ export default function Nusantara() {
               beberapa estetika, bukan satu. Paes ageng Yogyakarta, siger Sunda dan
               suntiang Minang adalah siluet, hiasan kepala dan riasan yang berbeda.
             </p>
+            <p className="mt-4 max-w-prose text-step-0 leading-relaxed text-ink-soft">
+              Dan pernikahan itu dua orang. Pengantin pria punya jalurnya sendiri —
+              beskap, potongan rambut dan jenggot, ditumpuk ke fotonya dengan urutan
+              yang sama. Kain batik parang yang sama mengalir di kebaya dan di
+              beskapnya, karena begitulah sepasang pengantin Jawa sebenarnya
+              berpakaian.
+            </p>
 
-            <ul className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
-              {GARMENTS.map((garment) => (
-                <li key={garment.id} className="flex items-baseline gap-2">
-                  <span aria-hidden="true" className="size-1 rounded-full bg-gold" />
-                  <span className="text-step--1 text-ink-soft">{garment.label}</span>
-                </li>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2">
+              {[
+                { heading: "Pengantin wanita", items: GARMENTS },
+                { heading: "Pengantin pria", items: GROOM_GARMENTS },
+              ].map((column) => (
+                <div key={column.heading}>
+                  <h3 className="text-step--2 font-medium tracking-wide text-ink">
+                    {column.heading}
+                  </h3>
+                  <ul className="mt-2 space-y-1.5">
+                    {column.items.map((garment) => (
+                      <li key={garment.id} className="flex items-baseline gap-2">
+                        <span
+                          aria-hidden="true"
+                          className="size-1 shrink-0 rounded-full bg-gold"
+                        />
+                        <span className="text-step--1 text-ink-soft">
+                          {garment.label}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
+          {/*
+           * Both of them, side by side, because a wedding has two people in it
+           * and a library that only dresses one is only half a product. Same
+           * batik parang runs through her kebaya and his beskap — which is what
+           * a Javanese couple actually wears, and something a Western catalogue
+           * cannot express at all.
+           */}
           <figure className="m-0">
-            <div className="relative aspect-3/4 overflow-hidden rounded-frame border border-line bg-surface shadow-frame">
-              <Image
-                src="/fixtures/8ff00575b06c290b8e205605f22c4d41.jpg"
-                alt="Hasil try-on seluruh badan: kebaya renda gading berlengan panjang di atas kain batik parang cokelat."
-                fill
-                sizes="(min-width: 1024px) 30rem, 90vw"
-                className="object-cover"
-              />
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="relative aspect-3/4 overflow-hidden rounded-frame border border-line bg-surface shadow-frame">
+                <Image
+                  src="/fixtures/8ff00575b06c290b8e205605f22c4d41.jpg"
+                  alt="Hasil try-on seluruh badan pada pengantin wanita: kebaya renda gading berlengan panjang di atas kain batik parang cokelat."
+                  fill
+                  sizes="(min-width: 1024px) 15rem, 45vw"
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative aspect-3/4 overflow-hidden rounded-frame border border-line bg-surface shadow-frame">
+                <Image
+                  src="/fixtures/ef2a0bf1203c6cc46842d69bf1706914.jpg"
+                  alt="Hasil try-on seluruh badan pada pengantin pria: beskap beludru biru tua di atas kain batik parang yang sama."
+                  fill
+                  sizes="(min-width: 1024px) 15rem, 45vw"
+                  className="object-cover"
+                />
+              </div>
             </div>
 
             <div className="mt-5 grid grid-cols-4 gap-2 sm:gap-3">
-              {GARMENTS.slice(0, 4).map((garment) => (
+              {[...GARMENTS.slice(0, 2), ...GROOM_GARMENTS.slice(0, 2)].map((garment) => (
                 <div key={garment.id}>
                   <div className="relative aspect-3/4 overflow-hidden rounded-card border border-line bg-surface">
                     <Image
@@ -77,7 +124,7 @@ export default function Nusantara() {
 
             <figcaption className="mt-4 text-step--2 leading-5 text-ink-faint">
               Referensi busana di atas adalah gambar sintetis yang dibuat untuk
-              proyek ini, bukan karya perancang sungguhan. Hasil try-on di
+              proyek ini, bukan karya perancang sungguhan. Kedua foto di
               sebelahnya adalah keluaran API yang sebenarnya.
             </figcaption>
           </figure>

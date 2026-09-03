@@ -18,7 +18,14 @@ import type { Slot } from "@/lib/look-rules";
 export type Choice = { id: string; label: string; thumb?: string };
 
 type Template = { id: string; thumb: string; title: string; category_name: string };
-type RefItem = { id: string; label: string; region: string; use: string; url: string };
+type RefItem = {
+  id: string;
+  label: string;
+  region: string;
+  use: string;
+  url: string;
+  groom?: boolean;
+};
 
 type Props = {
   slot: Slot;
@@ -26,9 +33,22 @@ type Props = {
   onChange: (choice: Choice | undefined) => void;
   /** Rendered under the row — a rule warning, when there is one. */
   warning?: string;
+  /**
+   * Who is being dressed. The reference library holds both wardrobes and the
+   * try-on endpoint cannot tell them apart — it dresses whatever body is in the
+   * frame — so offering a groom a kebaya would produce a real, billed, wrong
+   * result. The filter is the only thing preventing that.
+   */
+  subject?: "bride" | "groom";
 };
 
-export default function StepPicker({ slot, value, onChange, warning }: Props) {
+export default function StepPicker({
+  slot,
+  value,
+  onChange,
+  warning,
+  subject = "bride",
+}: Props) {
   const [open, setOpen] = useState(false);
   const [templates, setTemplates] = useState<Template[]>([]);
   const [refs, setRefs] = useState<RefItem[]>([]);
@@ -55,7 +75,13 @@ export default function StepPicker({ slot, value, onChange, warning }: Props) {
       .then((d) => {
         if (cancelled) return;
         if (slot.source === "template") setTemplates(d.templates ?? []);
-        else setRefs((d.ready ?? []).filter((r: RefItem) => r.use === slot.feature));
+        else
+          setRefs(
+            (d.ready ?? []).filter(
+              (r: RefItem) =>
+                r.use === slot.feature && Boolean(r.groom) === (subject === "groom"),
+            ),
+          );
         setError("");
         setFetched(true);
       })
@@ -71,7 +97,7 @@ export default function StepPicker({ slot, value, onChange, warning }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [open, fetched, slot.source, slot.feature]);
+  }, [open, fetched, slot.source, slot.feature, subject]);
 
   const loading = open && !fetched;
 

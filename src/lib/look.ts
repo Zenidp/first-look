@@ -117,6 +117,21 @@ export const OUTFIT_VIDEO_NEGATIVE =
   "extra limbs, camera zoom, cuts, text, watermark";
 
 /**
+ * The groom's clip asks for less motion than the bride's, and that is a
+ * structural preference rather than a stylistic one. There is no jewellery to
+ * catch the light and no veil to move here, so extra motion buys nothing while
+ * widening the model's licence to redraw the face — and a beard composited one
+ * step earlier is exactly the detail that drifts first.
+ */
+export const GROOM_VIDEO_PROMPT =
+  "The groom stands still and breathes gently, turning his head very slightly " +
+  "toward the camera. Minimal motion, soft studio light. The camera holds still.";
+
+export const GROOM_VIDEO_NEGATIVE =
+  "changing outfit, changing background, changing hairstyle, changing beard, " +
+  "distorted face, extra hands, camera zoom, cuts, text, watermark";
+
+/**
  * The demo recipes. Every reference here is self-made (see FINDINGS section 7 —
  * Perfect Corp's own sample imagery may not be redistributed), and the two
  * template ids are real ids rather than titles: the Wedding look shown as
@@ -208,6 +223,66 @@ export const LOOK_RECIPES: LookRecipe[] = [
         feature: "clothes",
         label: "Kebaya",
         referenceId: "kebaya-jawa-klasik",
+        options: { garmentCategory: "full_body" },
+      },
+    ],
+  },
+
+  /**
+   * The groom, on the same two framings and under the same ordering law.
+   *
+   * Three steps rather than five, and the two that are missing were left out
+   * deliberately. The necklace and earring endpoints are built around a bridal
+   * neckline and an earlobe; makeup-look is a bridal catalogue. Offering slots
+   * that would mostly fail is worse than not offering them, because a task that
+   * is accepted and then fails is still billed (FINDINGS §3).
+   */
+  {
+    id: "jawa-groom",
+    label: "Look pengantin pria",
+    blurb:
+      "Beskap, potongan rambut dan jenggot ditumpuk di satu foto yang sama — " +
+      "urutan yang sama seperti look pengantin wanita.",
+    photo: "groom-half-body.jpg",
+    video: { prompt: GROOM_VIDEO_PROMPT, negativePrompt: GROOM_VIDEO_NEGATIVE },
+    steps: [
+      {
+        feature: "clothes",
+        label: "Beskap",
+        referenceId: "beskap-jawa-groom",
+        options: { garmentCategory: "full_body" },
+      },
+      {
+        feature: "hairStyle",
+        label: "Rambut",
+        // hairColor 'src' for the same reason as the bride's updo: without it
+        // the template drags its own colour along, and a black-haired groom
+        // comes back several shades lighter than he went in.
+        options: { templateId: "male_textured_crop", hairColor: "src" },
+      },
+      {
+        // Beard last. It repaints the jaw, so any step after it would be
+        // painting over a beard it has no knowledge of.
+        feature: "beardStyle",
+        label: "Jenggot",
+        options: { templateId: "all_goatee" },
+      },
+    ],
+  },
+
+  {
+    id: "jawa-groom-outfit",
+    label: "Beskapnya, saat dipakai",
+    blurb:
+      "Beskap dan kain di seluruh badan, lalu digerakkan — untuk melihat jatuhnya " +
+      "bahan dan siluetnya.",
+    photo: "groom-full-body.jpg",
+    video: { prompt: OUTFIT_VIDEO_PROMPT, negativePrompt: OUTFIT_VIDEO_NEGATIVE },
+    steps: [
+      {
+        feature: "clothes",
+        label: "Beskap",
+        referenceId: "beskap-jawa-groom",
         options: { garmentCategory: "full_body" },
       },
     ],

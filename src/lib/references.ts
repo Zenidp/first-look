@@ -51,6 +51,12 @@ export type ReferenceItem = {
   use: ReferenceUse;
   /** Muslim bridal styling — lets the UI offer a covered-hair filter. */
   hijab?: boolean;
+  /**
+   * Worn by the groom. The try-on endpoint neither knows nor cares, but the
+   * look builder does: offering a bride a beskap is as wrong as offering a
+   * groom a kebaya, and the slot filters on this.
+   */
+  groom?: boolean;
   /** Who made the image. Required: no uncredited photo ships. */
   credit: string;
   /** Licence or written permission. Required for the same reason. */
@@ -143,6 +149,52 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
     use: "clothes",
     hijab: true,
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
+    license: "AI-generated for this project; no third-party rights",
+  },
+
+  // ---- Busana pengantin pria -----------------------------------------------
+  // A wedding has two people in it. These route through `clothes` (cloth-v4)
+  // exactly like the bride's garments — the endpoint has no notion of who is
+  // wearing what, it dresses whatever body is in the frame.
+  //
+  // Each is specified as a CLOSED outfit for the same measured reason as the
+  // kebaya: cloth-v4 reads an open flat-lay literally and returns an open
+  // jacket over a bare chest.
+  {
+    id: "beskap-jawa-groom",
+    label: "Beskap Jawa",
+    region: "Jawa",
+    use: "clothes",
+    groom: true,
+    credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 3 Sep 2026",
+    license: "AI-generated for this project; no third-party rights",
+    notes: "Pairs with kebaya-jawa-klasik — same sogan parang batik.",
+  },
+  {
+    id: "beskap-sunda-groom",
+    label: "Beskap Sunda",
+    region: "Sunda",
+    use: "clothes",
+    groom: true,
+    credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 3 Sep 2026",
+    license: "AI-generated for this project; no third-party rights",
+  },
+  {
+    id: "baju-minang-groom",
+    label: "Baju pengantin Minang",
+    region: "Minang",
+    use: "clothes",
+    groom: true,
+    credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 3 Sep 2026",
+    license: "AI-generated for this project; no third-party rights",
+  },
+  {
+    id: "jas-pengantin-modern",
+    label: "Jas pengantin modern",
+    region: "Nasional",
+    use: "clothes",
+    groom: true,
+    credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 3 Sep 2026",
     license: "AI-generated for this project; no third-party rights",
   },
 

@@ -63,6 +63,59 @@ export const SLOTS: Record<Framing, Slot[]> = {
       hint: "Di frame seluruh badan hanya busana yang bisa dipasang. Alasannya di bawah.",
     },
   ],
+
+  /**
+   * The groom. Same ordering law as the bride — largest repainted area first —
+   * so the beskap goes on before anything is done to his head.
+   *
+   * There is no jewellery here and no makeup, which is not an omission: the
+   * necklace and earring endpoints are built around a bridal neckline and an
+   * earlobe, and a groom's look is carried by the outfit, the hair and the
+   * beard. Adding slots that would mostly fail is worse than not offering them,
+   * because a failure after task creation is still billed.
+   */
+  groom: [
+    {
+      id: "clothes",
+      feature: "clothes",
+      label: "Busana",
+      source: "reference",
+      options: { garmentCategory: "full_body" },
+      optional: true,
+      hint: "Beskap, baju adat, atau jas. Dipasang pertama karena mengecat ulang seluruh badan.",
+    },
+    {
+      id: "hairStyle",
+      feature: "hairStyle",
+      label: "Rambut",
+      source: "template",
+      options: { hairColor: "src" },
+      optional: true,
+      hint: "Katalognya punya delapan potongan pria.",
+    },
+    {
+      // Last, and deliberately so: beard-style repaints the jaw, and anything
+      // run after it would have to paint over a beard it does not know about.
+      id: "beardStyle",
+      feature: "beardStyle",
+      label: "Jenggot",
+      source: "template",
+      optional: true,
+      hint: "15 gaya, termasuk 'Shaved' kalau ingin tetap bersih.",
+    },
+  ],
+
+  groomOutfit: [
+    {
+      id: "clothes",
+      feature: "clothes",
+      label: "Busana",
+      source: "reference",
+      options: { garmentCategory: "full_body" },
+      optional: false,
+      hint: "Di frame seluruh badan hanya busana yang bisa dipasang. Alasannya di bawah.",
+    },
+  ],
 };
 
 /**

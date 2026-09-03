@@ -185,6 +185,7 @@ Record in Bahasa or English, but subtitle in English. Judges are American.
 | Tue 1 Sep 2026 (am) | **The composite look and the video.** Verified the video API against its OpenAPI bundle and registered it (31 features). Added `input/half-body.jpg` — the only framing that can carry a whole look chain. Built `/api/look/compose`, which chains five try-ons so each result feeds the next, and `/look`, the look board that runs it and animates the result. Extracted `perfectcorp/run.ts` so the chain and the single-feature route share one billing guard. 19 units spent. | One real photo of the whole look, plus a 5s clip. Both replay for 0 units. |
 | Tue 1 Sep 2026 (pm) | **From "it works" to "someone can use it".** Guided crop with an overlay that *defines* the face size (no face detection, so no billed guesses), EXIF fixed only when it needs fixing so conforming photos stay byte-identical. Look builder: she picks makeup, hair, busana and perhiasan herself, and impossible combinations are refused in the UI rather than discovered by paying. Chain orchestrated per-step from the browser, resumable after a failure, engine errors translated to Indonesian. Supabase layer for a cache that survives a read-only production filesystem. Real landing page. 0 units spent. | The demo path is still free end to end, in production. Supabase is written but unverified — needs credentials. |
 | Tue 1 Sep 2026 (eve) | **Shared cache wired and proven.** Supabase applied via the Management API (no CLI, no dependency, one authenticated fetch), env vars set on Vercel, and the credit leak closed: a result never committed to git is served by production for 0 units. Video split into create-and-poll so a 62s render is not hostage to a 60s function limit — verified live. Found that negative prompts never steered the camera; the motion description does, which recovered the hem and shoes in the outfit clip. 6 units spent. | Production is genuinely usable by a stranger. Only Hair Readiness is left. |
+| Thu 3 Sep 2026 | **Production front end, then the groom.** Rebuilt the whole surface against `frontend-blueprint.md`: design tokens as Tailwind v4 `@theme`, Fraunces + Plus Jakarta Sans (the app had been loading fonts and then discarding them via a stray `font-family: Arial`), `config/navigation.ts` as the single source for header/footer/sitemap, route groups, sitemap/robots/manifest/OG card/JSON-LD, 404 + error boundaries, security headers. Then **the groom**: a second synthetic identity (3 photos), 4 groom garments, `beardStyle` + male hair wired into the chain, and a subject toggle in the builder. 19 units spent, 4 fixtures binned as orphans after a reference fix. | Deployed. Smoke 33/33, demo path still 0 units. |
 | Wed 2 Sep 2026 | **Hair Readiness — the differentiator, built.** Three diagnostics feed a rule layer that returns ready / with-preparation / not-by-then, a month-by-month plan, and a visible "why". Density is absent and documented: it rejected every photo, frontal and three-quarter alike, with an error whose own message says both are supported. Landing page now routes into it. 7 units spent (2 length, 2 frizziness, 3 on density's three refusals). | All four screens exist. Demo path still 0 units, smoke 32/32. |
 
 ### Where to pick up — READ THIS FIRST
@@ -215,6 +216,7 @@ against production, not just locally.
 | `/readiness` | same, but date **+12 months** | **Bisa dengan persiapan** |
 | `/readiness` | same, style **"Sanggul / updo"** | **Siap** |
 | `/readiness` | "Kenapa hasilnya begini?" | The visible reasoning §6 asks for |
+| `/look` | Switch to **"Pengantin pria"** → "Pakai contoh" → run | Beskap + potongan rambut + jenggot on one photo. A wedding is two people |
 
 The same measured bride produces all three verdicts. Nothing is faked.
 
@@ -353,6 +355,8 @@ features reject the wrong subject outright after charging.
 | Hair Type (3 photos) | `face-front-hairdown`, `face-right`, `face-left` | — |
 | **Composite look chain** | `half-body` | kebaya + updo + `all_ethereal` + kalung + anting |
 | **Look → Video** | the chain's output | — (prompt only, 480p/5s) |
+| **Groom look chain** | `groom-half-body` | beskap + `male_textured_crop` + `all_goatee` |
+| **Groom outfit** | `groom-full-body` | `beskap-jawa-groom` |
 
 **`half-body` is not an extra angle, it is a requirement.** A whole look chain
 needs one frame that satisfies two opposing constraints: a face wide enough for

@@ -1,0 +1,15 @@
+{
+  "key": "bca672931afb6a21b4a8b514160e7bd5",
+  "feature": "beardStyle",
+  "inputs": {
+    "__feature": "beardStyle",
+    "templateId": "all_goatee"
+  },
+  "mediaType": "image",
+  "taskId": "kFgDuEpbD9ouDTFQxAeVBa5gL615WK6ipasnwUwXm7UMUx6NqvoM2zB4adoByrAQGb81HLK0wBtEhzB9wwg7RQ",
+  "unitsSpent": 1,
+  "elapsedMs": 2807,
+  "polls": 2,
+  "createdAt": "2026-09-03T08:02:45.180Z",
+  "imagePath": "/fixtures/bca672931afb6a21b4a8b514160e7bd5.jpg"
+}

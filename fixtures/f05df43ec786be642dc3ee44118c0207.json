@@ -1,0 +1,16 @@
+{
+  "key": "f05df43ec786be642dc3ee44118c0207",
+  "feature": "hairStyle",
+  "inputs": {
+    "__feature": "hairStyle",
+    "templateId": "male_textured_crop",
+    "hairColor": "src"
+  },
+  "mediaType": "image",
+  "taskId": "ABgL2BevniKNqyFhmJvX9Tga7r4GiIeB5XzTwCvZ1erITKnUo561eJZQRweT0OSjAO6h9Y273R6RR5V6m9KYNQ",
+  "unitsSpent": 2,
+  "elapsedMs": 6197,
+  "polls": 4,
+  "createdAt": "2026-09-03T08:02:39.857Z",
+  "imagePath": "/fixtures/f05df43ec786be642dc3ee44118c0207.jpg"
+}
