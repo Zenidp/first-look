@@ -131,12 +131,12 @@ export const STYLE_TARGETS: StyleTarget[] = [
     // bride with ear-length hair has no reachable option at all and the feature
     // only ever tells her no — which is a worse product than not asking.
     id: "sleek-bob",
-    label: "Bob rapi",
+    label: "Sleek bob",
     templateId: "female_slicked_back_bob",
     needsLength: "ear length",
     toleratesCurlUpTo: 3,
     toleratesFrizzUpTo: 1,
-    why: "Gaya rapi yang justru dirancang untuk rambut pendek — tidak perlu menunggu panjang.",
+    why: "A polished style designed for short hair — nothing to wait for.",
   },
   {
     id: "sanggul-updo",
@@ -145,43 +145,43 @@ export const STYLE_TARGETS: StyleTarget[] = [
     needsLength: "short hair or longer",
     toleratesCurlUpTo: 4, // through 3a-3b; tighter curls shrink a lot when gathered
     toleratesFrizzUpTo: 1,
-    why: "Rambut harus cukup panjang untuk disanggul dan dijepit rapi.",
+    why: "The hair has to be long enough to gather and pin cleanly.",
   },
   {
     id: "messy-bun",
-    label: "Sanggul longgar",
+    label: "Loose bun",
     templateId: "female_messy_bun",
     needsLength: "short hair",
     toleratesCurlUpTo: 6,
     toleratesFrizzUpTo: 2,
-    why: "Sanggul longgar memaafkan tekstur — justru butuh sedikit volume.",
+    why: "A loose bun forgives texture — it actually wants some volume.",
   },
   {
     id: "high-pony",
-    label: "Ekor kuda tinggi",
+    label: "High ponytail",
     templateId: "all_high_pony_tail",
     needsLength: "above chest",
     toleratesCurlUpTo: 5,
     toleratesFrizzUpTo: 1,
-    why: "Ekornya harus terlihat jatuh, jadi butuh panjang di bawah bahu.",
+    why: "The tail has to visibly fall, so it needs length below the shoulder.",
   },
   {
     id: "braids",
-    label: "Kepang dua",
+    label: "Twin braids",
     templateId: "female_two_braids",
     needsLength: "above chest",
     toleratesCurlUpTo: 8, // braiding suits every texture
     toleratesFrizzUpTo: 2,
-    why: "Kepang butuh panjang, tapi cocok untuk semua tekstur rambut.",
+    why: "Braiding needs length, but suits every hair texture.",
   },
   {
     id: "soft-waves",
-    label: "Gerai bergelombang",
+    label: "Soft waves, half up",
     templateId: "all_half_up_soft_waves",
     needsLength: "above chest or longer",
     toleratesCurlUpTo: 3,
     toleratesFrizzUpTo: 0,
-    why: "Gerai memperlihatkan setiap helai, jadi panjang dan kondisi rambut terlihat jelas.",
+    why: "Worn down, every strand shows — so length and condition are both on display.",
   },
   {
     // The only target that sits at the top length band. It exists because it is
@@ -189,12 +189,12 @@ export const STYLE_TARGETS: StyleTarget[] = [
     // measure comes back "ready" — a verdict engine that has only ever said yes
     // has not been shown to work.
     id: "long-sleek",
-    label: "Gerai panjang lurus",
+    label: "Long and sleek",
     templateId: "female_sleek_middle_part",
     needsLength: "long hair",
     toleratesCurlUpTo: 2,
     toleratesFrizzUpTo: 0,
-    why: "Butuh panjang penuh dan permukaan rambut yang mulus — gaya paling menuntut di daftar ini.",
+    why: "Needs full length and a smooth surface — the most demanding style on this list.",
   },
 ];
 
@@ -279,10 +279,10 @@ export function assessReadiness(
   const need = LENGTH_BANDS.indexOf(target.needsLength);
 
   if (have < 0) {
-    reasoning.push("Panjang rambut belum terbaca, jadi bagian ini dilewati.");
+    reasoning.push("Hair length was not read, so this check was skipped.");
   } else if (have >= need) {
     reasoning.push(
-      `Panjang cukup: "${diagnosis.lengthTerm}" sudah memenuhi syarat "${target.needsLength}".`,
+      `Length is sufficient: "${diagnosis.lengthTerm}" already meets "${target.needsLength}".`,
     );
   } else {
     const gapCm = BAND_CM[target.needsLength] - BAND_CM[LENGTH_BANDS[have]];
@@ -291,58 +291,58 @@ export function assessReadiness(
       kind: "length",
       monthsNeeded,
       message:
-        `Perlu sekitar ${gapCm} cm lagi — kira-kira ${monthsNeeded} bulan, ` +
-        `dengan asumsi pertumbuhan rata-rata ${GROWTH_CM_PER_MONTH} cm per bulan.`,
+        `About ${gapCm} cm more is needed — roughly ${monthsNeeded} months, ` +
+        `assuming average growth of ${GROWTH_CM_PER_MONTH} cm a month.`,
     });
     reasoning.push(
-      `Panjang kurang: "${diagnosis.lengthTerm}" di bawah syarat "${target.needsLength}" ` +
-        `(selisih ±${gapCm} cm).`,
+      `Length falls short: "${diagnosis.lengthTerm}" is under the required "${target.needsLength}" ` +
+        `(a gap of about ${gapCm} cm).`,
     );
   }
 
   // --- curl: not a time problem, a styling one ------------------------------
   const curl = diagnosis.typeMapping ? typeIndex(diagnosis.typeMapping) : -1;
   if (curl < 0) {
-    reasoning.push("Tipe rambut belum terbaca, jadi bagian ini dilewati.");
+    reasoning.push("Hair type was not read, so this check was skipped.");
   } else if (curl <= target.toleratesCurlUpTo) {
-    reasoning.push(`Tekstur cocok: "${diagnosis.typeTerm}" masih dalam toleransi gaya ini.`);
+    reasoning.push(`Texture fits: "${diagnosis.typeTerm}" is within what this style tolerates.`);
   } else {
     blockers.push({
       kind: "curl",
       message:
-        `Teksturnya (${diagnosis.typeTerm}) lebih keriting daripada yang nyaman untuk gaya ini. ` +
-        "Tetap bisa, tapi jadi pekerjaan penataan di hari H — bicarakan dengan juru riasnya.",
+        `Her texture (${diagnosis.typeTerm}) is curlier than this style sits comfortably with. ` +
+        "Still possible, but it becomes styling work on the day — talk it through with the artist.",
     });
     reasoning.push(
-      `Tekstur di luar toleransi: "${diagnosis.typeMapping}" melewati batas gaya ini.`,
+      `Texture is outside tolerance: "${diagnosis.typeMapping}" passes this style's limit.`,
     );
   }
 
   // --- frizz: fixable, but needs lead time ----------------------------------
   const frizz = diagnosis.frizzMapping;
   if (frizz === undefined) {
-    reasoning.push("Tingkat kusut belum terbaca, jadi bagian ini dilewati.");
+    reasoning.push("Frizz level was not read, so this check was skipped.");
   } else if (frizz <= target.toleratesFrizzUpTo) {
-    reasoning.push(`Kondisi rambut memadai: "${diagnosis.frizzTerm}".`);
+    reasoning.push(`Hair condition is adequate: "${diagnosis.frizzTerm}".`);
   } else {
     blockers.push({
       kind: "frizz",
       message:
-        `Rambutnya "${diagnosis.frizzTerm}", dan gaya ini paling bagus di rambut yang lebih halus. ` +
-        "Perawatan rutin 2-3 bulan sebelum hari H membuat perbedaan besar.",
+        `Her hair reads "${diagnosis.frizzTerm}", and this style looks best on smoother hair. ` +
+        "A regular treatment routine 2-3 months before the day makes a large difference.",
     });
-    reasoning.push(`Kusut di atas toleransi gaya ini ("${diagnosis.frizzTerm}").`);
+    reasoning.push(`Frizz is above what this style tolerates ("${diagnosis.frizzTerm}").`);
   }
 
   // --- verdict --------------------------------------------------------------
   if (have < 0 && curl < 0 && frizz === undefined) {
     return {
       verdict: "unknown",
-      headline: "Belum ada hasil diagnosa.",
+      headline: "No diagnostic results yet.",
       monthsAvailable,
       blockers: [],
       plan: [],
-      reasoning: ["Jalankan diagnosa rambut dulu."],
+      reasoning: ["Run the hair diagnostics first."],
       alternatives: [],
     };
   }
@@ -387,7 +387,7 @@ function alternativesFor(haveIndex: number, rejected: StyleTarget): Alternative[
           kind: "style",
           targetId: t.id,
           label: t.label,
-          note: `${t.why} Panjang rambutnya sekarang sudah cukup.`,
+          note: `${t.why} Her current length already reaches it.`,
         });
       }
     }
@@ -396,8 +396,8 @@ function alternativesFor(haveIndex: number, rejected: StyleTarget): Alternative[
   out.push({
     kind: "extensions",
     note:
-      "Hair extension menutup selisih panjang tanpa menunggu. Coba dulu di sini supaya " +
-      "kelihatan hasilnya sebelum memutuskan.",
+      "Extensions close the length gap without waiting. Try them here first, so she can " +
+      "see the result before deciding.",
   });
 
   return out;
@@ -411,16 +411,16 @@ function headlineFor(
 ): string {
   switch (verdict) {
     case "ready":
-      return `Rambutnya sudah siap untuk ${target.label.toLowerCase()}.`;
+      return `Her hair is already ready for ${target.label.toLowerCase()}.`;
     case "prep":
-      return `Bisa, dengan persiapan — masih ada ${months} bulan.`;
+      return `Reachable with preparation — there are ${months} months left.`;
     case "not_by_date":
       return (
-        `Belum sampai di tanggal itu: butuh sekitar ${lengthBlocker?.monthsNeeded} bulan ` +
-        `pertumbuhan, sementara tersisa ${months} bulan.`
+        `Not by that date: it needs about ${lengthBlocker?.monthsNeeded} months of ` +
+        `growth, and there are ${months} months left.`
       );
     default:
-      return "Belum ada hasil diagnosa.";
+      return "No diagnostic results yet.";
   }
 }
 
@@ -442,26 +442,26 @@ function buildPlan(
   const monthName = (offsetFromNow: number) => {
     const d = new Date(weddingDate);
     d.setMonth(d.getMonth() - (monthsAvailable - offsetFromNow));
-    return d.toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+    return d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
   };
 
   if (blockers.some((b) => b.kind === "length")) {
     plan.push({
       when: monthName(0),
       action:
-        "Berhenti memotong panjangnya. Trim ujung rambut tipis-tipis saja tiap 8-10 minggu " +
-        "supaya tidak bercabang tanpa mengurangi panjang.",
+        "Stop cutting the length. Take only the thinnest trim off the ends every 8-10 weeks " +
+        "to hold off split ends without losing length.",
     });
   }
   if (blockers.some((b) => b.kind === "frizz")) {
     plan.push({
       when: monthName(0),
-      action: "Mulai perawatan pelembap rutin — masker mingguan, kurangi alat panas.",
+      action: "Start a regular moisture routine — a weekly mask, less heat styling.",
     });
     if (monthsAvailable >= 3) {
       plan.push({
         when: monthName(Math.max(0, monthsAvailable - 3)),
-        action: "Perawatan salon (keratin atau sejenisnya) kalau memang mau, bukan di bulan terakhir.",
+        action: "A salon treatment (keratin or similar) if she wants one — not in the final month.",
       });
     }
   }
@@ -469,13 +469,13 @@ function buildPlan(
     plan.push({
       when: monthName(Math.max(0, monthsAvailable - 2)),
       action:
-        "Tunjukkan hasil ini ke juru riasnya saat trial. Teksturnya perlu dibicarakan sebelum hari H, bukan pada hari H.",
+        "Show this to her artist at the trial. The texture needs discussing before the day, not on it.",
     });
   }
 
   plan.push({
     when: monthName(Math.max(0, monthsAvailable - 1)),
-    action: "Trial makeup dan sanggul, dengan gaya yang sudah dipilih di sini.",
+    action: "The makeup and hair trial, with the style already chosen here.",
   });
 
   return plan;

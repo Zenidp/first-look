@@ -84,7 +84,7 @@ export default async function Image() {
                 maxWidth: 620,
               }}
             >
-              Lihat look pengantinmu sebelum bayar trial.
+              See the wedding look before you pay for the trial.
             </div>
           </div>
 
@@ -99,10 +99,10 @@ export default async function Image() {
             }}
           >
             <div style={{ display: "flex" }}>
-              Makeup, sanggul, kebaya dan perhiasan di satu foto wajahnya sendiri.
+              Makeup, sanggul, kebaya and jewellery on one photo of her own face.
             </div>
             <div style={{ display: "flex", marginTop: 8 }}>
-              Lalu: apakah rambutnya siap pada hari H.
+              Then: whether her hair is ready for the day.
             </div>
           </div>
         </div>

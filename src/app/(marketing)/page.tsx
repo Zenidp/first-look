@@ -27,7 +27,7 @@ import { applicationSchema, faqSchema } from "@/lib/seo";
  */
 export default function HomePage() {
   return (
-    <main id="konten">
+    <main id="main-content">
       <Hero />
       <ProofStrip />
       <Problem />

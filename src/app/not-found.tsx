@@ -16,17 +16,17 @@ export default function NotFound() {
   return (
     <>
       <SiteHeader />
-      <main id="konten">
+      <main id="main-content">
         <Container width="narrow" className="py-20 sm:py-28">
           <p className="text-step--2 font-medium tracking-[0.18em] text-accent uppercase">
             404
           </p>
           <h1 className="mt-4 font-display text-step-3 leading-tight font-normal text-ink">
-            Halaman itu tidak ada.
+            That page does not exist.
           </h1>
           <p className="mt-4 max-w-prose text-step-0 leading-relaxed text-ink-soft">
-            Mungkin tautannya salah ketik, atau halamannya pernah ada dan sekarang
-            tidak. Semua yang ada di situs ini muat dalam daftar di bawah.
+            Either the link has a typo, or the page existed once and no longer does.
+            Everything this site has fits in the list below.
           </p>
 
           <ul className="mt-10 border-t border-line">
@@ -50,7 +50,7 @@ export default function NotFound() {
             href="/"
             className="mt-8 inline-flex min-h-12 items-center rounded-control bg-ink px-6 text-step-0 font-medium text-paper no-underline transition-colors hover:bg-accent"
           >
-            Kembali ke beranda
+            Back to the home page
           </Link>
         </Container>
       </main>

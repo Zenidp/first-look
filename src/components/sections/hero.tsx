@@ -29,14 +29,14 @@ export default function Hero() {
         <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
           <div className="max-w-xl">
             <h1 className="font-display text-step-4 leading-[1.02] font-normal tracking-tight text-ink">
-              Lihat look pengantinmu sebelum bayar trial.
+              See the wedding look before you pay for the trial.
             </h1>
 
             <p className="mt-6 max-w-prose text-step-1 leading-relaxed text-ink-soft">
-              Trial rias pengantin menghabiskan {site.trialCost} dan setengah hari,
-              dan sering berakhir dengan look yang dia tidak mau. Susun dulu di
-              sini: makeup, sanggul, kebaya, kalung dan anting, semuanya bertumpuk
-              di satu foto wajahnya sendiri.
+              A bridal trial costs {site.trialCost} and half a day, and it
+              regularly ends in a look the bride does not want. Settle it here
+              first: makeup, sanggul, kebaya and jewellery, stacked onto one
+              photograph of her own face.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -44,18 +44,18 @@ export default function Hero() {
                 href="/look"
                 className="inline-flex min-h-12 items-center rounded-control bg-ink px-6 text-step-0 font-medium text-paper no-underline transition-colors hover:bg-accent"
               >
-                Mulai susun look
+                Start a look
               </Link>
               <Link
                 href="/readiness"
                 className="inline-flex min-h-12 items-center rounded-control border border-line-strong px-6 text-step-0 font-medium text-ink no-underline transition-colors hover:bg-surface"
               >
-                Cek kesiapan rambut
+                Check hair readiness
               </Link>
             </div>
 
             <p className="mt-5 text-step--1 text-ink-faint">
-              Gratis dicoba dengan foto contoh. Tidak perlu akun.
+              Free to try with the sample photo. No account.
             </p>
           </div>
 
@@ -64,28 +64,28 @@ export default function Hero() {
               <div className="relative aspect-3/4 overflow-hidden rounded-frame border border-line bg-surface">
                 <Image
                   src="/demo/half-body.jpg"
-                  alt="Foto calon pengantin sebelum apa pun dipasang: kaus polos, rambut disisir ke belakang, latar abu-abu."
+                  alt="The bride before anything is applied: a plain t-shirt, hair combed back, grey studio wall."
                   fill
                   sizes="(min-width: 1024px) 22rem, 45vw"
                   className="object-cover"
                   priority
                 />
                 <span className="absolute bottom-3 left-3 rounded-full bg-paper/90 px-3 py-1 text-step--2 font-medium text-ink">
-                  Fotonya
+                  Her photo
                 </span>
               </div>
 
               <div className="relative aspect-3/4 overflow-hidden rounded-frame border border-line bg-surface shadow-frame">
                 <Image
                   src="/fixtures/c12e0cb5a8dd4861554ab98e28375c25.jpg"
-                  alt="Foto yang sama setelah lima try-on ditumpuk: kebaya renda gading, sanggul, makeup pengantin, kalung emas dan anting menjuntai."
+                  alt="The same photograph after five try-ons: an ivory lace kebaya, a sanggul, bridal makeup, a gold collar necklace and drop earrings."
                   fill
                   sizes="(min-width: 1024px) 22rem, 45vw"
                   className="object-cover"
                   priority
                 />
                 <span className="absolute bottom-3 left-3 rounded-full bg-ink/85 px-3 py-1 text-step--2 font-medium text-paper">
-                  Lima lapis kemudian
+                  Five layers later
                 </span>
               </div>
             </div>
@@ -93,9 +93,9 @@ export default function Hero() {
             <figcaption className="mt-4 flex items-start gap-3">
               <span aria-hidden="true" className="mt-2 h-px w-8 shrink-0 rule-gold" />
               <span className="text-step--1 leading-6 text-ink-faint">
-                Kebaya, sanggul, makeup, kalung dan anting dipasang berurutan ke
-                frame yang sama. Hasilnya satu foto, bukan kolase — latar dan
-                potongannya tetap miliknya.
+                Kebaya, sanggul, makeup, necklace and earrings applied in sequence
+                to the same frame. The result is one photograph, not a collage —
+                the face, the light and the crop stay hers.
               </span>
             </figcaption>
           </figure>

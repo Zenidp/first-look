@@ -42,7 +42,7 @@ export default function PreweddingPage() {
         setConcepts(d.concepts ?? []);
         setUnitsPerConcept(d.unitsPerConcept ?? 2);
       })
-      .catch(() => setError("Tidak bisa memuat daftar konsep."));
+      .catch(() => setError("Could not load the concept list."));
   }, []);
 
   useEffect(() => () => { if (timer.current) clearInterval(timer.current); }, []);
@@ -55,7 +55,7 @@ export default function PreweddingPage() {
       setPreview(URL.createObjectURL(prepared));
       setResults([]);
     } catch {
-      setError("Foto tidak terbaca. Gunakan jpg atau png biasa.");
+      setError("That photo could not be read. Use an ordinary jpg or png.");
     }
   }
 
@@ -75,10 +75,10 @@ export default function PreweddingPage() {
 
       const res = await fetch("/api/concepts", { method: "POST", body });
       const data = await res.json();
-      if (!res.ok) throw new Error(`${data.code ?? res.status}: ${data.error ?? "gagal"}`);
+      if (!res.ok) throw new Error(`${data.code ?? res.status}: ${data.error ?? "failed"}`);
       setResults((prev) => [data as Generated, ...prev.filter((r) => r.conceptId !== concept.id)]);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Permintaan gagal");
+      setError(e instanceof Error ? e.message : "The request failed");
     } finally {
       if (timer.current) clearInterval(timer.current);
       setRunning(null);
@@ -88,23 +88,23 @@ export default function PreweddingPage() {
   const spent = results.reduce((n, r) => n + r.unitsSpent, 0);
 
   return (
-    <main id="konten" className="mx-auto w-full max-w-2xl px-5 py-10 sm:py-14">
-      <StudioHeader eyebrow="Konsep" title="Konsep prewedding">
-        Lihat konsep pemotretan sebelum memesan fotografer, lokasi, dan wardrobe.
+    <main id="main-content" className="mx-auto w-full max-w-2xl px-5 py-10 sm:py-14">
+      <StudioHeader eyebrow="Concepts" title="Prewedding concepts">
+        See the shoot before booking a photographer, a location and a wardrobe.
       </StudioHeader>
 
       {/* This warning is not decoration. The output is a synthesised
           photograph, not the couple's photo, and saying so plainly is the
           difference between a useful tool and a misleading one. */}
       <p className="mt-4 rounded-lg border border-prep/40 bg-prep-tint p-3 text-xs text-prep">
-        <strong>Semua gambar di halaman ini dibuat AI.</strong> Ini bukan fotomu —
-        lokasi, busana, dan pose semuanya dikarang untuk menggambarkan konsep.
-        Wajahnya pun hanya pendekatan. Pakai sebagai bahan diskusi dengan
-        fotografer, bukan sebagai hasil akhir.
+        <strong>Every image on this page is AI-generated.</strong> This is not your
+        photograph — the location, the clothes and the pose are all invented to convey
+        a concept, and even the face is only an approximation. Use it to brief a
+        photographer, not as a finished result.
       </p>
 
       <section className="mt-5">
-        <label className="block text-sm font-medium">Foto</label>
+        <label className="block text-sm font-medium">Photo</label>
         <input
           type="file"
           accept="image/*"
@@ -113,15 +113,15 @@ export default function PreweddingPage() {
         />
         {preview && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={preview} alt="Foto terpilih" className="mt-3 w-32 rounded-lg" />
+          <img src={preview} alt="Selected photo" className="mt-3 w-32 rounded-lg" />
         )}
       </section>
 
       <section className="mt-6">
         <h2 className="text-sm font-medium">
-          Pilih konsep{" "}
+          Choose a concept{" "}
           <span className="font-normal text-ink-faint">
-            — {unitsPerConcept} unit per konsep
+            — {unitsPerConcept} units each
           </span>
         </h2>
         <div className="mt-2 space-y-2">
@@ -141,8 +141,8 @@ export default function PreweddingPage() {
                     {running === c.id
                       ? `${(elapsed / 1000).toFixed(1)}s…`
                       : done
-                        ? done.source === "fixture" ? "tersimpan" : "selesai"
-                        : c.verified ? "teruji" : "belum diuji"}
+                        ? done.source === "fixture" ? "cached" : "done"
+                        : c.verified ? "tested" : "untested"}
                   </span>
                 </span>
                 <span className="mt-1 block text-xs text-ink-faint">{c.blurb}</span>
@@ -152,8 +152,8 @@ export default function PreweddingPage() {
         </div>
         {running && (
           <p className="mt-2 text-center text-xs text-ink-faint">
-            Adegan generatif butuh 11–16 detik, lebih lama dari try-on biasa. Jangan
-            refresh — task yang ditinggalkan tetap ditagih.
+            A generative scene takes 11–16 seconds, longer than an ordinary try-on.
+            Do not refresh — an abandoned task is still billed.
           </p>
         )}
       </section>
@@ -163,9 +163,9 @@ export default function PreweddingPage() {
       {results.length > 0 && (
         <section className="mt-6">
           <h2 className="text-sm font-medium">
-            Hasil{" "}
+            Results{" "}
             <span className="font-normal text-ink-faint">
-              — {spent} unit terpakai sesi ini
+              — {spent} units spent this session
             </span>
           </h2>
           <div className="mt-2 space-y-4">
@@ -174,11 +174,11 @@ export default function PreweddingPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={r.imageUrl} alt={r.label} className="w-full rounded-lg" />
                 <figcaption className="mt-1 flex justify-between text-xs text-ink-faint">
-                  <span>{r.label} · dibuat AI</span>
+                  <span>{r.label} · AI-generated</span>
                   <span>
                     {r.source === "fixture"
-                      ? "dari cache, 0 unit"
-                      : `${((r.pollMs ?? 0) / 1000).toFixed(1)}s · ${r.unitsSpent} unit`}
+                      ? "from cache, 0 units"
+                      : `${((r.pollMs ?? 0) / 1000).toFixed(1)}s · ${r.unitsSpent} units`}
                   </span>
                 </figcaption>
               </figure>

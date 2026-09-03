@@ -69,7 +69,7 @@ export default function PhotoCropper({ file, framing, onCancel, onDone }: Props)
         setError("");
       })
       .catch(
-        () => !cancelled && setError("Gambar itu tidak bisa dibaca. Coba file jpg atau png."),
+        () => !cancelled && setError("That image could not be read. Try a jpg or png file."),
       );
     return () => {
       cancelled = true;
@@ -205,7 +205,7 @@ export default function PhotoCropper({ file, framing, onCancel, onDone }: Props)
       const out = await exportCrop(photo, crop, { untouched: moved === null && whole });
       onDone(out, URL.createObjectURL(out));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Gagal memproses foto.");
+      setError(err instanceof Error ? err.message : "Could not process the photo.");
       setBusy(false);
     }
   }
@@ -316,7 +316,7 @@ export default function PhotoCropper({ file, framing, onCancel, onDone }: Props)
 
       {/* Slider as well as pinch: a trackpad has no pinch and a phone has no wheel. */}
       <label className="mt-3 flex max-w-sm items-center gap-3 text-xs text-ink-faint">
-        Perbesar
+        Zoom
         <input
           type="range"
           min={100}
@@ -350,13 +350,13 @@ export default function PhotoCropper({ file, framing, onCancel, onDone }: Props)
           disabled={!check?.ok || busy}
           className="flex-1 rounded-lg bg-ink px-4 py-2.5 text-sm font-medium text-paper disabled:opacity-40"
         >
-          {busy ? "Memproses…" : "Pakai foto ini"}
+          {busy ? "Processing…" : "Use this photo"}
         </button>
         <button
           onClick={onCancel}
           className="rounded-lg border border-line-strong px-4 py-2.5 text-sm font-medium text-ink-soft hover:bg-surface"
         >
-          Batal
+          Cancel
         </button>
       </div>
     </div>

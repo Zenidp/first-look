@@ -33,34 +33,34 @@ export const SLOTS: Record<Framing, Slot[]> = {
     {
       id: "clothes",
       feature: "clothes",
-      label: "Busana",
+      label: "Garment",
       source: "reference",
       options: { garmentCategory: "full_body" },
       optional: true,
-      hint: "Kebaya, baju adat, atau gaun. Dipasang pertama karena mengecat ulang seluruh badan.",
+      hint: "Kebaya, regional dress or a gown. Applied first, because it repaints the whole body.",
     },
     {
       id: "hairStyle",
       feature: "hairStyle",
-      label: "Rambut",
+      label: "Hair",
       source: "template",
       options: { hairColor: "src" },
       optional: true,
-      hint: "Pilih sanggul kalau ingin memakai anting — lihat catatan di bawah.",
+      hint: "Choose an updo if you want earrings — see the note below.",
     },
     { id: "makeupLook", feature: "makeupLook", label: "Makeup", source: "template", optional: true },
-    { id: "necklace", feature: "necklace", label: "Kalung", source: "reference", optional: true },
-    { id: "earrings", feature: "earrings", label: "Anting", source: "reference", optional: true },
+    { id: "necklace", feature: "necklace", label: "Necklace", source: "reference", optional: true },
+    { id: "earrings", feature: "earrings", label: "Earrings", source: "reference", optional: true },
   ],
   outfit: [
     {
       id: "clothes",
       feature: "clothes",
-      label: "Busana",
+      label: "Garment",
       source: "reference",
       options: { garmentCategory: "full_body" },
       optional: false,
-      hint: "Di frame seluruh badan hanya busana yang bisa dipasang. Alasannya di bawah.",
+      hint: "On a full-body frame the garment is the only thing that can be applied. Why, below.",
     },
   ],
 
@@ -78,30 +78,30 @@ export const SLOTS: Record<Framing, Slot[]> = {
     {
       id: "clothes",
       feature: "clothes",
-      label: "Busana",
+      label: "Garment",
       source: "reference",
       options: { garmentCategory: "full_body" },
       optional: true,
-      hint: "Beskap, baju adat, atau jas. Dipasang pertama karena mengecat ulang seluruh badan.",
+      hint: "Beskap, regional dress or a suit. Applied first, because it repaints the whole body.",
     },
     {
       id: "hairStyle",
       feature: "hairStyle",
-      label: "Rambut",
+      label: "Hair",
       source: "template",
       options: { hairColor: "src" },
       optional: true,
-      hint: "Katalognya punya delapan potongan pria.",
+      hint: "The catalogue carries eight men's cuts.",
     },
     {
       // Last, and deliberately so: beard-style repaints the jaw, and anything
       // run after it would have to paint over a beard it does not know about.
       id: "beardStyle",
       feature: "beardStyle",
-      label: "Jenggot",
+      label: "Beard",
       source: "template",
       optional: true,
-      hint: "15 gaya, termasuk 'Shaved' kalau ingin tetap bersih.",
+      hint: "15 styles, including 'Shaved' to keep him clean.",
     },
   ],
 
@@ -109,11 +109,11 @@ export const SLOTS: Record<Framing, Slot[]> = {
     {
       id: "clothes",
       feature: "clothes",
-      label: "Busana",
+      label: "Garment",
       source: "reference",
       options: { garmentCategory: "full_body" },
       optional: false,
-      hint: "Di frame seluruh badan hanya busana yang bisa dipasang. Alasannya di bawah.",
+      hint: "On a full-body frame the garment is the only thing that can be applied. Why, below.",
     },
   ],
 };
@@ -127,8 +127,8 @@ export const SLOTS: Record<Framing, Slot[]> = {
  * should understand the trade rather than wonder what is missing.
  */
 export const OUTFIT_LIMITATION =
-  "Di foto seluruh badan, wajahnya terlalu kecil untuk makeup, rambut dan perhiasan — " +
-  "API menolaknya di bawah 128 piksel. Untuk itu semua, pakai look setengah badan.";
+  "On a full-body photo the face is too small for makeup, hair and jewellery — " +
+  "the API refuses anything under 128 pixels. Use the waist-up look for those.";
 
 /**
  * Hair styles that leave the earlobes visible.
@@ -183,9 +183,9 @@ export function checkSelection(framing: Framing, selection: Selection): SlotIssu
       slot: "earrings",
       level: "risky",
       message:
-        `"${hair.label}" kemungkinan menutupi telinga, dan anting akan gagal dengan ` +
-        `"earlobe alignment not confident" — kegagalan yang tetap ditagih. ` +
-        "Pilih sanggul, atau lewati antingnya.",
+        `"${hair.label}" probably covers the ears, and the earrings will fail with ` +
+        `"earlobe alignment not confident" — a failure that is still billed. ` +
+        "Choose an updo, or skip the earrings.",
     });
   }
 

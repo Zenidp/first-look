@@ -20,7 +20,7 @@ export default function SiteFooter() {
           <div className="max-w-xs">
             <Logo />
             <p className="mt-3 text-step--1 leading-6 text-ink-faint">
-              Studio look pengantin untuk juru rias dan kliennya. Dibuat di{" "}
+              A bridal look studio for makeup artists and their clients. Built in{" "}
               {site.city}.
             </p>
           </div>
@@ -48,20 +48,19 @@ export default function SiteFooter() {
 
         <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-step--2 text-ink-faint sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {new Date().getFullYear()} {site.legalName}. Prototipe, dibangun untuk
-            DevNetwork [API + Cloud + AI] Hackathon 2026.
+            © {new Date().getFullYear()} {site.legalName}. A prototype, built for
+            the DevNetwork [API + Cloud + AI] Hackathon 2026.
           </p>
           <p>
-            Try-on, video dan diagnosa rambut berjalan di atas API Perfect Corp
-            YouCam.
+            Try-on, video and hair diagnostics run on Perfect Corp’s YouCam APIs.
           </p>
         </div>
 
         <p className="mt-6 max-w-3xl text-step--2 leading-5 text-ink-faint">
-          Semua wajah dan busana yang ditampilkan di situs ini adalah gambar
-          sintetis yang dibuat untuk proyek ini. Tidak ada foto pengantin sungguhan
-          dan tidak ada aset pihak ketiga yang dipakai. Hasil try-on adalah
-          simulasi, bukan janji atas hasil rias di hari H.
+          Every face and garment shown on this site is a synthetic image made for
+          this project. No real bride’s photograph and no third-party asset is used
+          anywhere. Try-on results are a simulation, not a promise about how the
+          makeup will look on the day.
         </p>
       </Container>
     </footer>

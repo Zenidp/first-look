@@ -3,32 +3,32 @@ import Container from "@/components/shared/container";
 /**
  * The problem, in the reader's language.
  *
- * Written from the bride's and the rias' side of the table — "screenshot wajah
- * orang lain", not "reference mismatch". This is the section that earns the
- * right to describe a solution, so it names three specific failures rather
- * than gesturing at a category.
+ * Written from the bride's and the artist's side of the table — "a screenshot of
+ * somebody else's face", not "reference mismatch". This is the section that
+ * earns the right to describe a solution, so it names three specific failures
+ * rather than gesturing at a category.
  */
 const FAILURES = [
   {
-    title: "Patokannya wajah orang lain",
+    title: "The reference is somebody else's face",
     body:
-      "Calon pengantin datang membawa screenshot Pinterest. Perias melihat wajah yang " +
-      "berbeda, bentuk mata yang berbeda dan warna kulit yang berbeda dari kliennya, " +
-      "lalu keduanya berharap hasilnya mirip.",
+      "She arrives with Pinterest screenshots. The artist is looking at different " +
+      "features, a different eye shape and a different skin tone from the client in " +
+      "front of her, and both of them hope it comes out close.",
   },
   {
-    title: "Kesepakatan baru terjadi di kursi rias",
+    title: "Agreement happens in the makeup chair",
     body:
-      "Titik pertama keduanya melihat hal yang sama adalah saat trial — setelah uangnya " +
-      "keluar, setelah setengah hari terpakai, dan saat mengubah arah berarti mengulang " +
-      "dari awal.",
+      "The first moment they both see the same thing is the trial — after the money " +
+      "is spent, after half a day is gone, and at the point where changing direction " +
+      "means starting over.",
   },
   {
-    title: "Rambut tidak pernah diperiksa lebih dulu",
+    title: "Nobody checks the hair in time",
     body:
-      "Sanggul yang gagal biasanya bukan soal keahlian perias, tapi soal panjang, " +
-      "tekstur dan kondisi rambut. Itu ketahuan di trial, saat hanya tersisa beberapa " +
-      "minggu — padahal rambut tumbuh sekitar 1,25 cm sebulan.",
+      "A sanggul that fails on the day is usually not a skill problem. It is length, " +
+      "texture and condition, discovered at the trial with weeks left — when hair " +
+      "grows about 1.25 cm a month and there is no way to make up the difference.",
   },
 ];
 
@@ -39,11 +39,11 @@ export default function Problem() {
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div>
             <h2 className="font-display text-step-3 leading-tight font-normal text-ink">
-              Trialnya bukan tempat menemukan bahwa look-nya salah.
+              The trial is the wrong place to discover the look is wrong.
             </h2>
             <p className="mt-5 max-w-prose text-step-0 leading-relaxed text-ink-soft">
-              Ini bukan masalah selera. Ini masalah urutan: keputusan yang paling
-              mahal diambil paling akhir, dengan informasi paling sedikit.
+              This is not a question of taste. It is a question of order: the most
+              expensive decision gets made last, on the least information.
             </p>
           </div>
 

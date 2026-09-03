@@ -37,9 +37,9 @@ type Slot = { key: "front" | "right" | "left"; label: string; hint: string };
  * files alphabetically, which is how that was discovered (FINDINGS §2d).
  */
 const SLOTS: Slot[] = [
-  { key: "front", label: "Depan", hint: "Menghadap kamera, kepala tegak." },
-  { key: "right", label: "Serong kanan", hint: "Badan diputar ±45°, hidung ke kanan frame." },
-  { key: "left", label: "Serong kiri", hint: "Badan diputar ±45°, hidung ke kiri frame." },
+  { key: "front", label: "Front", hint: "Facing the camera, head upright." },
+  { key: "right", label: "Three-quarter right", hint: "Body turned ±45°, nose toward the right edge." },
+  { key: "left", label: "Three-quarter left", hint: "Body turned ±45°, nose toward the left edge." },
 ];
 
 const DEMO: Record<Slot["key"], string> = {
@@ -51,9 +51,9 @@ const DEMO: Record<Slot["key"], string> = {
 type StepId = "hairLengthDetection" | "hairTypeDetection" | "hairFrizzinessDetection";
 
 const STEPS: { id: StepId; label: string; photos: 1 | 3; units: number }[] = [
-  { id: "hairLengthDetection", label: "Panjang rambut", photos: 1, units: 2 },
-  { id: "hairTypeDetection", label: "Tipe rambut", photos: 3, units: 2 },
-  { id: "hairFrizzinessDetection", label: "Kondisi rambut", photos: 3, units: 2 },
+  { id: "hairLengthDetection", label: "Hair length", photos: 1, units: 2 },
+  { id: "hairTypeDetection", label: "Hair type", photos: 3, units: 2 },
+  { id: "hairFrizzinessDetection", label: "Hair condition", photos: 3, units: 2 },
 ];
 
 type StepState = { status: "idle" | "running" | "done" | "failed"; units: number; error?: string };
@@ -155,7 +155,7 @@ export default function ReadinessPage() {
           [step.id]: {
             status: "failed",
             units: 0,
-            error: err instanceof Error ? err.message : "Koneksi terputus.",
+            error: err instanceof Error ? err.message : "The connection dropped.",
           },
         }));
       }
@@ -186,21 +186,21 @@ export default function ReadinessPage() {
   }
 
   return (
-    <main id="konten" className="mx-auto w-full max-w-2xl px-5 py-10 sm:py-14">
-      <StudioHeader eyebrow="Hair readiness" title="Kesiapan rambut">
-        Sanggul yang gagal di hari H biasanya bukan soal keahlian perias — biasanya soal
-        kondisi rambut yang baru ketahuan saat trial, waktu sudah terlambat diperbaiki.
-        Ini memeriksanya sekarang, saat masih bisa diapa-apakan.
+    <main id="main-content" className="mx-auto w-full max-w-2xl px-5 py-10 sm:py-14">
+      <StudioHeader eyebrow="Hair readiness" title="Can her hair get there?">
+        A sanggul that fails on the day is usually not about the artist’s skill. It is
+        about hair condition, discovered at the trial when it is already too late to
+        fix. This checks it now, while there is still something to be done.
       </StudioHeader>
 
       {/* --- photos ------------------------------------------------------- */}
       <section className="mb-8">
-        <h2 className="text-sm font-medium text-ink">1. Tiga foto rambut</h2>
+        <h2 className="text-sm font-medium text-ink">1. Three photos of her hair</h2>
         <p className="mt-1 text-xs leading-5 text-ink-faint">
-          <strong className="font-medium text-ink-soft">Rambut harus tergerai di ketiganya.</strong>{" "}
-          Rambut yang diikat menyembunyikan teksturnya, dan diagnosanya akan menjawab tentang
-          fotonya — bukan tentang rambutnya. Terukur: foto sanggul membaca satu tingkat lebih
-          lurus daripada rambut yang sama saat tergerai.
+          <strong className="font-medium text-ink-soft">Hair must be worn loose in all three.</strong>{" "}
+          Tied-back hair hides its own texture, and the diagnostic then answers about the
+          photograph rather than about her hair. Measured: the same hair reads a full band
+          straighter in a bun than worn loose.
         </p>
 
         <div className="mt-3 grid grid-cols-3 gap-3">
@@ -216,7 +216,7 @@ export default function ReadinessPage() {
                   />
                 ) : (
                   <div className="flex aspect-3/4 w-full items-center justify-center rounded-lg border border-dashed border-line-strong text-[11px] text-ink-faint">
-                    pilih
+                    choose
                   </div>
                 )}
                 <input
@@ -240,7 +240,7 @@ export default function ReadinessPage() {
           onClick={() => void loadDemo()}
           className="mt-3 rounded-md border border-line-strong px-3 py-1.5 text-xs font-medium text-ink-soft hover:bg-surface"
         >
-          Pakai contoh
+          Use the sample
         </button>
       </section>
 
@@ -248,7 +248,7 @@ export default function ReadinessPage() {
       <section className="mb-8 grid gap-4 sm:grid-cols-2">
         <div>
           <label className="block text-sm font-medium text-ink" htmlFor="wd">
-            2. Tanggal pernikahan
+            2. Wedding date
           </label>
           <input
             id="wd"
@@ -258,12 +258,12 @@ export default function ReadinessPage() {
             className="mt-2 w-full rounded-lg border border-line-strong bg-paper p-2 text-sm text-ink"
           />
           {dated && (
-            <p className="mt-1 text-xs text-ink-faint">{monthsUntil(dated)} bulan lagi.</p>
+            <p className="mt-1 text-xs text-ink-faint">{monthsUntil(dated)} months away.</p>
           )}
         </div>
         <div>
           <label className="block text-sm font-medium text-ink" htmlFor="tg">
-            3. Gaya yang diincar
+            3. Target style
           </label>
           <select
             id="tg"
@@ -287,12 +287,12 @@ export default function ReadinessPage() {
         className="w-full rounded-lg bg-ink px-4 py-3 text-sm font-medium text-paper disabled:opacity-40"
       >
         {running
-          ? "Memeriksa…"
+          ? "Checking…"
           : !haveAll
-            ? "Lengkapi ketiga fotonya"
+            ? "Add all three photos"
             : !weddingDate
-              ? "Isi tanggal pernikahannya"
-              : "Periksa kesiapan — 6 unit"}
+              ? "Set the wedding date"
+              : "Check readiness — 6 units"}
       </button>
 
       {/* --- diagnostics --------------------------------------------------- */}
@@ -310,10 +310,10 @@ export default function ReadinessPage() {
                 <div className="flex items-center justify-between gap-3">
                   <span className="font-medium text-ink">{s.label}</span>
                   <span className="text-xs text-ink-faint">
-                    {st.status === "running" && "memeriksa…"}
-                    {st.status === "done" && (st.units === 0 ? "dari cache · 0 unit" : `${st.units} unit`)}
-                    {st.status === "failed" && "gagal"}
-                    {st.status === "idle" && "menunggu"}
+                    {st.status === "running" && "checking…"}
+                    {st.status === "done" && (st.units === 0 ? "from cache · 0 units" : `${st.units} units`)}
+                    {st.status === "failed" && "failed"}
+                    {st.status === "idle" && "waiting"}
                   </span>
                 </div>
                 {st.error && <p className="mt-1 text-xs leading-5 text-prep">{st.error}</p>}
@@ -326,9 +326,9 @@ export default function ReadinessPage() {
       {Object.keys(diagnosis).length > 0 && (
         <dl className="mt-4 grid grid-cols-3 gap-3 rounded-lg border border-line p-3">
           {[
-            ["Panjang", diagnosis.lengthTerm],
-            ["Tipe", diagnosis.typeTerm],
-            ["Kondisi", diagnosis.frizzTerm],
+            ["Length", diagnosis.lengthTerm],
+            ["Type", diagnosis.typeTerm],
+            ["Condition", diagnosis.frizzTerm],
           ].map(([k, v]) => (
             <div key={k}>
               <dt className="text-[11px] uppercase tracking-wide text-ink-faint">{k}</dt>
@@ -340,7 +340,7 @@ export default function ReadinessPage() {
 
       {spent > 0 && (
         <p className="mt-2 text-xs text-ink-faint">
-          {spent === 0 ? "0 unit." : `${spent} unit terpakai.`}
+          {spent === 0 ? "0 units." : `${spent} units spent.`}
         </p>
       )}
 
@@ -370,10 +370,10 @@ export default function ReadinessPage() {
               }`}
             >
               {readiness.verdict === "ready"
-                ? "Siap"
+                ? "Ready"
                 : readiness.verdict === "prep"
-                  ? "Bisa, dengan persiapan"
-                  : "Belum sampai"}
+                  ? "Ready, with preparation"
+                  : "Not by then"}
             </p>
             <p className="mt-2 font-display text-step-1 leading-snug text-ink">
               {readiness.headline}
@@ -392,7 +392,7 @@ export default function ReadinessPage() {
 
           {readiness.alternatives.length > 0 && (
             <div className="mt-4 rounded-xl border border-line p-4">
-              <h3 className="text-sm font-medium text-ink">Yang bisa dilakukan</h3>
+              <h3 className="text-sm font-medium text-ink">What can be done</h3>
               <ul className="mt-2 space-y-3">
                 {readiness.alternatives.map((a, i) => (
                   <li key={i} className="text-sm leading-6 text-ink-soft">
@@ -408,7 +408,7 @@ export default function ReadinessPage() {
                       </>
                     ) : (
                       <>
-                        <span className="font-medium text-ink">Hair extension</span> — {a.note}
+                        <span className="font-medium text-ink">Hair extensions</span> — {a.note}
                       </>
                     )}
                   </li>
@@ -419,7 +419,7 @@ export default function ReadinessPage() {
 
           {readiness.plan.length > 0 && (
             <div className="mt-4">
-              <h3 className="text-sm font-medium text-ink">Rencana sampai hari H</h3>
+              <h3 className="text-sm font-medium text-ink">The plan up to the day</h3>
               <ol className="mt-2 space-y-3 border-l border-line pl-4">
                 {readiness.plan.map((p, i) => (
                   <li key={i}>
@@ -437,7 +437,7 @@ export default function ReadinessPage() {
             onClick={() => setShowWhy((v) => !v)}
             className="mt-4 text-xs font-medium text-ink-faint underline"
           >
-            {showWhy ? "Sembunyikan alasannya" : "Kenapa hasilnya begini?"}
+            {showWhy ? "Hide the reasoning" : "Why this verdict?"}
           </button>
           {showWhy && (
             <ul className="mt-2 space-y-1.5 rounded-lg bg-surface p-3">
@@ -447,9 +447,9 @@ export default function ReadinessPage() {
                 </li>
               ))}
               <li className="pt-1 text-[11px] leading-5 text-ink-faint">
-                Perkiraan pertumbuhan memakai rata-rata 1,25 cm per bulan, dan panjang tiap
-                tingkat adalah perkiraan kami — API mengembalikan kata, bukan ukuran. Anggap
-                hasilnya kisaran, bukan tanggal pasti.
+                Growth is estimated at an average 1.25 cm a month, and the length of each
+                band is our own estimate — the API returns a word, not a measurement. Treat
+                the result as a range, not a fixed date.
               </li>
             </ul>
           )}

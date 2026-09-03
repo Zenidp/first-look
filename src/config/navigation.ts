@@ -20,20 +20,20 @@ export type NavItem = {
 export const primaryNav: NavItem[] = [
   {
     href: "/look",
-    label: "Susun look",
-    blurb: "Makeup, sanggul, busana dan perhiasan di satu foto.",
+    label: "Build the look",
+    blurb: "Makeup, hair, garment and jewellery on one photo.",
     sitemap: { priority: 0.9, changeFrequency: "weekly" },
   },
   {
     href: "/readiness",
-    label: "Kesiapan rambut",
-    blurb: "Apakah rambutnya bisa sampai ke gaya itu pada hari H.",
+    label: "Hair readiness",
+    blurb: "Whether her hair can reach that style by the wedding day.",
     sitemap: { priority: 0.9, changeFrequency: "weekly" },
   },
   {
     href: "/prewedding",
-    label: "Konsep prewedding",
-    blurb: "Konsep pemotretan sebelum memesan fotografer dan lokasi.",
+    label: "Prewedding concepts",
+    blurb: "See the shoot before booking a photographer and a location.",
     sitemap: { priority: 0.6, changeFrequency: "monthly" },
   },
 ];
@@ -41,7 +41,7 @@ export const primaryNav: NavItem[] = [
 /** The one action the header offers. Everything else in it is a link. */
 export const headerCta: NavItem = {
   href: "/look",
-  label: "Mulai susun look",
+  label: "Start a look",
 };
 
 export const footerNav: { heading: string; items: NavItem[] }[] = [
@@ -50,19 +50,19 @@ export const footerNav: { heading: string; items: NavItem[] }[] = [
     items: primaryNav,
   },
   {
-    heading: "Cara kerjanya",
+    heading: "How it works",
     items: [
-      { href: "/#cara-kerja", label: "Tiga langkah" },
-      { href: "/#nusantara", label: "Pustaka Nusantara" },
-      { href: "/#kesiapan", label: "Kenapa rambut lebih dulu" },
-      { href: "/#tanya", label: "Pertanyaan umum" },
+      { href: "/#how-it-works", label: "Three steps" },
+      { href: "/#nusantara", label: "The Nusantara library" },
+      { href: "/#readiness", label: "Why hair comes first" },
+      { href: "/#faq", label: "Questions" },
     ],
   },
   {
-    heading: "Untuk juru rias",
+    heading: "For makeup artists",
     items: [
-      { href: "/#untuk-mua", label: "Siapa yang membayar" },
-      { href: "/look", label: "Kirim ke klien" },
+      { href: "/#who-pays", label: "Who pays, and why" },
+      { href: "/look", label: "Send a board to a client" },
     ],
   },
 ];

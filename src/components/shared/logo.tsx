@@ -14,7 +14,7 @@ export default function Logo({ tone = "ink" }: { tone?: "ink" | "night" }) {
     <Link
       href="/"
       className="group inline-flex items-baseline gap-2 no-underline"
-      aria-label={`${site.name} — beranda`}
+      aria-label={`${site.name} — home`}
     >
       <span
         className={`font-display text-step-1 leading-none font-normal tracking-tight ${

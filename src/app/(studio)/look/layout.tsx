@@ -9,10 +9,10 @@ import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
  * the breadcrumb belongs, since this page sits one level below the root.
  */
 export const metadata = pageMetadata({
-  title: "Susun look pengantin",
+  title: "Build a bridal look",
   description:
-    "Tumpuk kebaya, sanggul, makeup, kalung dan anting ke satu foto wajahnya sendiri, " +
-    "lalu jadikan video lima detik. Bisa dicoba gratis dengan foto contoh.",
+    "Stack kebaya, sanggul, makeup, necklace and earrings onto one photo of her own " +
+    "face, then animate it into five seconds. Free to try with the sample photo.",
   path: "/look",
 });
 
@@ -22,8 +22,8 @@ export default function LookLayout({ children }: { children: ReactNode }) {
       {children}
       <JsonLd
         data={breadcrumbSchema([
-          { name: "Beranda", path: "/" },
-          { name: "Susun look", path: "/look" },
+          { name: "Home", path: "/" },
+          { name: "Build the look", path: "/look" },
         ])}
       />
     </>

@@ -10,33 +10,33 @@ import Container from "@/components/shared/container";
  */
 const STEPS = [
   {
-    title: "Satu foto, dipandu",
+    title: "One photo, guided",
     body:
-      "Setengah badan, menghadap kamera. Pemandu crop menentukan ukuran wajahnya di " +
-      "frame, jadi fotonya lolos syarat mesin sebelum apa pun diunggah — dan tidak ada " +
-      "unit terbuang untuk foto yang akan ditolak.",
+      "Waist-up, facing the camera. The crop guide defines how large her face sits in " +
+      "the frame, so the photo clears the engine's requirements before anything is " +
+      "uploaded — and nothing is spent on a picture that would be rejected.",
   },
   {
-    title: "Tumpuk look-nya",
+    title: "Stack the look",
     body:
-      "Busana, rambut, makeup, kalung, anting. Tiap pilihan dijalankan ke hasil " +
-      "sebelumnya, bukan ke foto aslinya, jadi yang keluar adalah satu foto utuh. " +
-      "Kombinasi yang pasti gagal ditolak di layar, bukan setelah dibayar.",
+      "Garment, hair, makeup, necklace, earrings. Each choice runs against the previous " +
+      "result rather than the original, so what comes out is one whole photograph. " +
+      "Combinations that are known to fail are refused on screen, not after payment.",
   },
   {
-    title: "Periksa, lalu kirim",
+    title: "Check it, then send it",
     body:
-      "Jadikan video lima detik supaya kainnya terlihat jatuh, cek kesiapan rambutnya " +
-      "terhadap tanggal pernikahan, lalu kirim satu look board ke periasnya.",
+      "Animate it into five seconds to see how the fabric falls, check her hair against " +
+      "the wedding date, then send a single look board to her makeup artist.",
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section id="cara-kerja" className="scroll-mt-24 border-b border-line bg-surface">
+    <section id="how-it-works" className="scroll-mt-24 border-b border-line bg-surface">
       <Container width="wide" className="py-16 sm:py-24">
         <h2 className="max-w-2xl font-display text-step-3 leading-tight font-normal text-ink">
-          Tiga langkah, sebelum uang pertama keluar.
+          Three steps, before the first rupiah is spent.
         </h2>
 
         <ol className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">

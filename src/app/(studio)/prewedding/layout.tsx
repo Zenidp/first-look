@@ -4,10 +4,10 @@ import JsonLd from "@/components/shared/json-ld";
 import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "Konsep prewedding",
+  title: "Prewedding concepts",
   description:
-    "Lihat konsep pemotretan prewedding sebelum memesan fotografer, lokasi dan wardrobe. " +
-    "Setiap gambar di halaman ini dibuat AI dan diberi label sebagai bahan diskusi.",
+    "See prewedding shoot concepts before booking a photographer, a location and a " +
+    "wardrobe. Every image here is AI-generated and labelled as a discussion aid.",
   path: "/prewedding",
 });
 
@@ -17,8 +17,8 @@ export default function PreweddingLayout({ children }: { children: ReactNode }) 
       {children}
       <JsonLd
         data={breadcrumbSchema([
-          { name: "Beranda", path: "/" },
-          { name: "Konsep prewedding", path: "/prewedding" },
+          { name: "Home", path: "/" },
+          { name: "Prewedding concepts", path: "/prewedding" },
         ])}
       />
     </>

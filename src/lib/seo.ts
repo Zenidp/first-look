@@ -58,7 +58,7 @@ export function organizationSchema() {
     url: site.url,
     description: site.description,
     areaServed: { "@type": "Country", name: "Indonesia" },
-    knowsLanguage: ["id-ID"],
+    knowsLanguage: ["en", "id-ID"],
   };
 }
 
@@ -69,7 +69,7 @@ export function websiteSchema() {
     "@id": `${site.url}/#website`,
     name: site.name,
     url: site.url,
-    inLanguage: "id-ID",
+    inLanguage: "en-US",
     description: site.description,
     publisher: { "@id": `${site.url}/#organization` },
   };
@@ -89,16 +89,16 @@ export function applicationSchema() {
     operatingSystem: "Web",
     url: site.url,
     description: site.description,
-    inLanguage: "id-ID",
+    inLanguage: "en-US",
     audience: {
       "@type": "Audience",
-      audienceType: "Juru rias pengantin dan calon pengantin",
+      audienceType: "Bridal makeup artists and their clients",
     },
     featureList: [
-      "Try-on makeup, sanggul, busana dan perhiasan pada satu foto",
-      "Pustaka busana dan makeup pengantin Nusantara",
-      "Diagnosa kesiapan rambut terhadap tanggal pernikahan",
-      "Look board yang bisa dikirim ke juru rias",
+      "Stack makeup, hair, garment and jewellery try-ons onto one photo",
+      "A Nusantara library of Indonesian bridal garments and regional makeup",
+      "Hair readiness diagnosed against the wedding date",
+      "A look board the bride can send to her makeup artist",
     ],
   };
 }

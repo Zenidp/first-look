@@ -15,11 +15,11 @@ export default function FinalCta() {
     <section className="border-b border-line">
       <Container width="narrow" className="py-20 text-center sm:py-28">
         <h2 className="font-display text-step-3 leading-tight font-normal text-ink">
-          Lihat look pengantinmu sebelum bayar trial.
+          See the wedding look before you pay for the trial.
         </h2>
         <p className="mx-auto mt-5 max-w-prose text-step-0 leading-relaxed text-ink-soft">
-          Mulai dengan foto contoh yang sudah tersedia. Tidak perlu akun, tidak
-          perlu mengunggah apa pun untuk melihat cara kerjanya.
+          Start with the sample photo that is already there. No account, and
+          nothing to upload before you can see how it works.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link
@@ -32,7 +32,7 @@ export default function FinalCta() {
             href="/readiness"
             className="inline-flex min-h-12 items-center rounded-control border border-line-strong px-6 text-step-0 font-medium text-ink no-underline transition-colors hover:bg-surface"
           >
-            Cek kesiapan rambut
+            Check hair readiness
           </Link>
         </div>
       </Container>

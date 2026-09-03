@@ -70,14 +70,14 @@ async function pollVideo(taskId: string): Promise<VideoState> {
 
   return {
     error:
-      "Videonya belum selesai setelah lima menit. Unitnya sudah terpakai — " +
-      "coba lagi nanti, hasilnya akan langsung muncul kalau sudah jadi.",
+      "The video has not finished after five minutes. The units are already spent — " +
+      "try again later and the result will appear immediately if it is ready.",
   };
 }
 
 const DETAILS = [
-  { feature: "ring", label: "Cincin", photo: "/demo/hand-ring.jpg", referenceId: "ring-gold-solitaire" },
-  { feature: "bracelet", label: "Gelang", photo: "/demo/hand-bracelet.jpg", referenceId: "bracelet-gold-cuff" },
+  { feature: "ring", label: "Ring", photo: "/demo/hand-ring.jpg", referenceId: "ring-gold-solitaire" },
+  { feature: "bracelet", label: "Bracelet", photo: "/demo/hand-bracelet.jpg", referenceId: "bracelet-gold-cuff" },
 ];
 
 /** Demo photo + preselected slots per framing, derived from the recipes so
@@ -88,13 +88,13 @@ const DETAILS = [
  */
 const VIDEO_CAVEAT: Record<Framing, string> = {
   beauty:
-    "Klip ini menangkap suasananya, bukan detail produknya — perhiasan halus bisa bergeser bentuknya saat dianimasikan.",
+    "This clip captures the mood, not the product detail — fine jewellery can shift shape once it is animated.",
   outfit:
-    "Perhatikan jatuhnya bahan, bukan wajahnya: di jarak seluruh badan wajah digambar ulang oleh model dan bisa bergeser. Kameranya juga cenderung maju sendiri sampai kadang memotong sepatu, jadi patokan panjang kain tetap fotonya.",
+    "Watch how the fabric falls, not the face: at full-body distance the face is re-synthesised by the model and drifts. The camera also pushes in on its own and sometimes crops the shoes, so the still remains the record of hem length.",
   groom:
-    "Klip ini menangkap suasananya, bukan detail produknya — jenggot dan tekstur beludru bisa bergeser sedikit saat dianimasikan.",
+    "This clip captures the mood, not the product detail — the beard and the velvet texture can shift slightly once animated.",
   groomOutfit:
-    "Perhatikan jatuhnya beskap dan kain, bukan wajahnya: di jarak seluruh badan wajah digambar ulang oleh model dan bisa bergeser. Kameranya juga cenderung maju sendiri, jadi patokan panjang kain tetap fotonya.",
+    "Watch how the beskap and the kain fall, not the face: at full-body distance the face is re-synthesised by the model and drifts. The camera also pushes in on its own, so the still remains the record of the hem.",
 };
 
 const DEMO: Record<Framing, (typeof LOOK_RECIPES)[number]> = {
@@ -279,7 +279,7 @@ export default function LookPage() {
 
       setVideo(await pollVideo(data.taskId));
     } catch (err) {
-      setVideo({ error: err instanceof Error ? err.message : "Gagal membuat video." });
+      setVideo({ error: err instanceof Error ? err.message : "Could not create the video." });
     } finally {
       setVideoBusy(false);
     }
@@ -319,10 +319,11 @@ export default function LookPage() {
   }
 
   return (
-    <main id="konten" className="mx-auto w-full max-w-2xl px-5 py-10 sm:py-14">
-      <StudioHeader eyebrow="Look builder" title="Susun look-nya">
-        Pilih makeup, rambut, busana dan perhiasannya. Semuanya ditumpuk ke satu foto
-        yang sama — jadi satu foto asli, bukan kolase — lalu bisa digerakkan jadi video.
+    <main id="main-content" className="mx-auto w-full max-w-2xl px-5 py-10 sm:py-14">
+      <StudioHeader eyebrow="Look builder" title="Build the look">
+        Choose the makeup, hair, garment and jewellery. Every choice stacks onto the
+        same photograph — so the result is one real picture, not a collage — and it
+        can then be animated into a short clip.
       </StudioHeader>
 
       {/* --- subject ------------------------------------------------------- */}
@@ -365,10 +366,10 @@ export default function LookPage() {
             <span className="block text-sm font-medium text-ink">{GUIDES[f].label}</span>
             <span className="block text-[11px] leading-4 text-ink-faint">
               {f === "beauty"
-                ? "Makeup, rambut, perhiasan"
+                ? "Makeup, hair, jewellery"
                 : f === "groom"
-                  ? "Jenggot, rambut, busana"
-                  : "Busana saja"}
+                  ? "Beard, hair, garment"
+                  : "Garment only"}
             </span>
           </button>
         ))}
@@ -382,25 +383,25 @@ export default function LookPage() {
 
       {/* --- photo --------------------------------------------------------- */}
       <section className="mb-6">
-        <h2 className="text-sm font-medium text-ink">1. Foto</h2>
+        <h2 className="text-sm font-medium text-ink">1. Photo</h2>
         <div className="mt-2 flex items-start gap-3">
           {photo ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={photo.url}
-              alt="Foto pengantin"
+              alt="The uploaded photo"
               className="w-24 shrink-0 rounded-lg border border-line object-cover"
             />
           ) : (
             <div className="flex h-32 w-24 shrink-0 items-center justify-center rounded-lg border border-dashed border-line-strong text-[11px] text-ink-faint">
-              belum ada
+              none yet
             </div>
           )}
           <div className="min-w-0 flex-1">
             <p className="text-xs leading-5 text-ink-faint">{GUIDES[framing].hint}</p>
             <div className="mt-2 flex flex-wrap gap-2">
               <label className="cursor-pointer rounded-md border border-line-strong px-3 py-1.5 text-xs font-medium text-ink-soft hover:bg-surface">
-                {photo ? "Ganti foto" : "Unggah foto"}
+                {photo ? "Replace photo" : "Upload photo"}
                 <input
                   type="file"
                   accept="image/*"
@@ -416,12 +417,12 @@ export default function LookPage() {
                 onClick={() => void loadDemo()}
                 className="rounded-md border border-line-strong px-3 py-1.5 text-xs font-medium text-ink-soft hover:bg-surface"
               >
-                Pakai contoh
+                Use the sample
               </button>
             </div>
             {photo?.demo && (
               <p className="mt-1.5 text-[11px] text-ready">
-                Foto contoh — look ini sudah tersimpan, jadi 0 unit.
+                Sample photo — this look is already cached, so it costs 0 units.
               </p>
             )}
           </div>
@@ -430,7 +431,7 @@ export default function LookPage() {
 
       {/* --- slots --------------------------------------------------------- */}
       <section className="mb-6">
-        <h2 className="text-sm font-medium text-ink">2. Pilihan</h2>
+        <h2 className="text-sm font-medium text-ink">2. Choices</h2>
         <div className="mt-1">
           {slots.map((slot) => (
             <StepPicker
@@ -455,17 +456,17 @@ export default function LookPage() {
         className="w-full rounded-lg bg-ink px-4 py-3 text-sm font-medium text-paper disabled:opacity-40"
       >
         {running
-          ? "Menyusun…"
+          ? "Building…"
           : !photo
-            ? "Pilih foto dulu"
+            ? "Choose a photo first"
             : chosen.length === 0
-              ? "Pilih minimal satu"
-              : `Susun look — perkiraan ${estimate} unit`}
+              ? "Choose at least one"
+              : `Build the look — about ${estimate} units`}
       </button>
       {photo && !photo.demo && chosen.length > 0 && !running && (
         <p className="mt-2 text-center text-[11px] leading-4 text-ink-faint">
-          Foto sendiri belum pernah diproses, jadi setiap langkah adalah panggilan
-          berbayar. Sekitar {chosen.length * 8} detik.
+          Your own photo has never been processed, so every step is a paid call.
+          Around {chosen.length * 8} seconds.
         </p>
       )}
 
@@ -493,14 +494,14 @@ export default function LookPage() {
                       <span className="ml-2 font-normal text-ink-faint">{s.choice.label}</span>
                     </p>
                     <p className="text-[11px] text-ink-faint">
-                      {s.status === "running" && "sedang diproses…"}
-                      {s.status === "idle" && "menunggu"}
-                      {s.status === "skipped" && "dilewati"}
+                      {s.status === "running" && "running…"}
+                      {s.status === "idle" && "waiting"}
+                      {s.status === "skipped" && "skipped"}
                       {s.status === "done" &&
                         (s.units === 0
-                          ? `dari cache · 0 unit · ${(s.elapsedMs / 1000).toFixed(1)}s`
-                          : `${s.units} unit · ${(s.elapsedMs / 1000).toFixed(1)}s`)}
-                      {s.status === "failed" && "gagal"}
+                          ? `from cache · 0 units · ${(s.elapsedMs / 1000).toFixed(1)}s`
+                          : `${s.units} units · ${(s.elapsedMs / 1000).toFixed(1)}s`)}
+                      {s.status === "failed" && "failed"}
                     </p>
                   </div>
                 </div>
@@ -510,8 +511,8 @@ export default function LookPage() {
                     <p className="text-xs leading-5 text-late">{s.error}</p>
                     <p className="mt-1 text-[11px] text-accent">
                       {s.billed
-                        ? "Langkah ini tetap terhitung unit — task sudah dibuat sebelum gagal."
-                        : "Ditolak sebelum task dibuat, jadi tidak ada unit terpakai."}
+                        ? "This step was still billed — the task was created before it failed."
+                        : "Refused before a task was created, so nothing was spent."}
                     </p>
                     <div className="mt-2 flex gap-2">
                       <button
@@ -519,14 +520,14 @@ export default function LookPage() {
                         disabled={running}
                         className="rounded-md border border-late/40 px-3 py-1.5 text-xs font-medium text-late disabled:opacity-40"
                       >
-                        Ulangi langkah ini
+                        Retry this step
                       </button>
                       <button
                         onClick={() => retryFrom(i, true)}
                         disabled={running}
                         className="rounded-md border border-line-strong px-3 py-1.5 text-xs font-medium text-ink-soft disabled:opacity-40"
                       >
-                        Lewati, lanjut yang lain
+                        Skip it, carry on
                       </button>
                     </div>
                   </div>
@@ -535,8 +536,8 @@ export default function LookPage() {
             ))}
           </ol>
           <p className="mt-2 text-xs text-ink-faint">
-            {spent === 0 ? "Sejauh ini 0 unit." : `Sejauh ini ${spent} unit terpakai.`}
-            {failedAt >= 0 && " Lapisan yang sudah jadi tetap tersimpan."}
+            {spent === 0 ? "0 units so far." : `${spent} units spent so far.`}
+            {failedAt >= 0 && " The layers already finished are kept."}
           </p>
         </section>
       )}
@@ -545,7 +546,7 @@ export default function LookPage() {
       {finalUrl && !running && (
         <section className="mt-6">
           <h2 className="text-sm font-medium text-ink">
-            {failedAt >= 0 ? "Sejauh ini" : "Look utuh"}
+            {failedAt >= 0 ? "So far" : "The whole look"}
           </h2>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -559,20 +560,20 @@ export default function LookPage() {
               download="first-look.jpg"
               className="rounded-md border border-line-strong px-3 py-2 text-xs font-medium text-ink-soft hover:bg-surface"
             >
-              Unduh foto
+              Download photo
             </a>
             <button
               onClick={() => void makeVideo()}
               disabled={videoBusy}
               className="rounded-md bg-accent px-3 py-2 text-xs font-medium text-paper disabled:opacity-40"
             >
-              {videoBusy ? "Membuat video…" : "Jadikan video — 5 unit"}
+              {videoBusy ? "Creating video…" : "Animate it — 5 units"}
             </button>
           </div>
           {videoBusy && (
             <p className="mt-2 text-xs text-ink-faint">
-              Video generatif jauh lebih lambat daripada try-on: sekitar satu menit untuk
-              klip 5 detik.
+              Generative video is far slower than a try-on: about a minute for a
+              five-second clip.
             </p>
           )}
         </section>
@@ -600,10 +601,10 @@ export default function LookPage() {
               download="first-look.mp4"
               className="rounded-md border border-line-strong px-3 py-2 text-xs font-medium text-ink-soft hover:bg-surface"
             >
-              Unduh video
+              Download video
             </a>
             <span className="text-xs text-ink-faint">
-              {video.units === 0 ? "Dari cache — 0 unit." : `${video.units} unit.`}
+              {video.units === 0 ? "From cache — 0 units." : `${video.units} units.`}
             </span>
           </div>
           {/* Keyed by framing for the same reason as the prompt above: a
@@ -615,11 +616,11 @@ export default function LookPage() {
 
       {/* --- details ------------------------------------------------------- */}
       <section className="mt-10 border-t border-line pt-6">
-        <h2 className="text-sm font-medium text-ink">Detail tangan</h2>
+        <h2 className="text-sm font-medium text-ink">Hand details</h2>
         <p className="mt-1 text-xs leading-5 text-ink-faint">
-          Cincin dan gelang tidak bisa masuk ke foto yang sama — keduanya makro tangan, dan
-          tidak ada try-on yang menempelkan satu foto ke foto lain. Keduanya berdiri sebagai
-          tile terpisah, seperti moodboard pengantin pada umumnya.
+          A ring and a bracelet cannot join the same photograph — both are macro shots of
+          a hand, and no try-on composites one picture into another. They stand as separate
+          tiles, which is how a bridal moodboard is laid out anyway.
         </p>
         <div className="mt-3 grid grid-cols-2 gap-3">
           {DETAILS.map((d) => (
@@ -638,14 +639,14 @@ export default function LookPage() {
                     download={`first-look-${d.feature}.jpg`}
                     className="text-[11px] font-medium text-accent"
                   >
-                    Unduh
+                    Download
                   </a>
                 ) : (
                   <button
                     onClick={() => void runDetail(d)}
                     className="text-[11px] font-medium text-accent"
                   >
-                    Coba
+                    Try it
                   </button>
                 )}
               </div>

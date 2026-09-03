@@ -12,41 +12,40 @@ import { site } from "@/config/site";
  */
 const MODEL = [
   {
-    heading: "Yang membayar adalah periasnya",
+    heading: "The artist pays, not the bride",
     body:
-      "Bukan pengantinnya. Ini alat kerja untuk profesional jasa: juru rias dan sanggar " +
-      "sudah membayar untuk perkakas, dan pendapatan per klien mereka jelas. Satu trial " +
-      "yang tidak terbuang sudah menutup biaya langganan berbulan-bulan.",
+      "This is a working tool for a service professional. Makeup artists and bridal " +
+      "sanggar already pay for equipment, and their revenue per client is well defined. " +
+      "One trial that does not get wasted covers months of subscription.",
   },
   {
-    heading: "Look board-nya yang menyebar",
+    heading: "The look board is the distribution",
     body:
-      "Artefak yang dikirim pengantin ke periasnya, ke ibunya, ke grup keluarganya. " +
-      "Setiap kiriman memperkenalkan periasnya ke calon klien berikutnya — distribusinya " +
-      "menempel pada barang yang sudah pasti diteruskan.",
+      "It is the artefact the bride forwards to her artist, her mother, the family " +
+      "group chat. Every forward introduces the artist to the next client — the " +
+      "distribution rides on the thing that was always going to be shared.",
   },
   {
-    heading: "Baris kedua ada di rambut",
+    heading: "The second line is in the hair",
     body:
-      "Vonis “bisa dengan persiapan” adalah rujukan perawatan yang terjadi secara alami: " +
-      "salon, treatment, hair extension. Diagnosanya menghasilkan kebutuhan yang " +
-      "spesifik, bertanggal, dan sudah diterima calon pengantin sebelum ada yang menjual " +
-      "apa pun kepadanya.",
+      "A “ready with preparation” verdict is a treatment referral that arises naturally: " +
+      "salons, treatments, extensions. The diagnostic produces a specific, dated need " +
+      "that the bride has already accepted before anyone tries to sell her anything.",
   },
 ];
 
 export default function WhoPays() {
   return (
-    <section id="untuk-mua" className="scroll-mt-24 border-b border-line">
+    <section id="who-pays" className="scroll-mt-24 border-b border-line">
       <Container width="wide" className="py-16 sm:py-24">
         <div className="max-w-2xl">
           <h2 className="font-display text-step-3 leading-tight font-normal text-ink">
-            Dibangun untuk juru rias, bukan untuk mengganti mereka.
+            Built for makeup artists, not to replace them.
           </h2>
           <p className="mt-5 text-step-0 leading-relaxed text-ink-soft">
-            Alat ini tidak merias siapa pun. Ia memindahkan kesepakatan soal look ke
-            sebelum trial, supaya waktu perias di hari trial dipakai untuk
-            menyempurnakan, bukan untuk menemukan bahwa arahnya salah.
+            The tool does not do anyone’s makeup. It moves the agreement about the
+            look to before the trial, so that the artist’s time on the day is spent
+            refining rather than discovering the direction was wrong.
           </p>
         </div>
 
@@ -62,9 +61,8 @@ export default function WhoPays() {
         </div>
 
         <p className="mt-10 max-w-prose text-step--1 leading-6 text-ink-faint">
-          Angka pembanding yang dipakai di halaman ini: satu sesi trial rias
-          pengantin di {site.city} berkisar {site.trialCost} dan memakan setengah
-          hari kerja bagi kedua pihak.
+          The benchmark used on this page: one bridal trial session in {site.city}{" "}
+          runs {site.trialCost} and costs both sides half a working day.
         </p>
       </Container>
     </section>

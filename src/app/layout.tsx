@@ -41,13 +41,14 @@ export const metadata: Metadata = {
   applicationName: site.name,
   category: "beauty",
   keywords: [
-    "look pengantin",
-    "juru rias",
-    "MUA pengantin",
-    "trial makeup",
+    "bridal look",
+    "wedding makeup artist",
+    "bridal trial",
     "kebaya",
     "sanggul",
+    "beskap",
     "virtual try-on",
+    "Indonesian wedding",
   ],
   alternates: {
     canonical: "/",
@@ -93,10 +94,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
          * user tabs into a control they cannot see.
          */}
         <a
-          href="#konten"
+          href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-100 focus:rounded-control focus:bg-ink focus:px-4 focus:py-2.5 focus:text-step--1 focus:font-medium focus:text-paper"
         >
-          Lewati ke konten
+          Skip to content
         </a>
         {children}
         <JsonLd data={organizationSchema()} />

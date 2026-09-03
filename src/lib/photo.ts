@@ -46,13 +46,13 @@ export type Subject = "bride" | "groom";
 
 export const SUBJECTS: Record<Subject, { label: string; blurb: string; framings: Framing[] }> = {
   bride: {
-    label: "Pengantin wanita",
-    blurb: "Makeup, sanggul, kebaya, perhiasan",
+    label: "Bride",
+    blurb: "Makeup, hair, kebaya, jewellery",
     framings: ["beauty", "outfit"],
   },
   groom: {
-    label: "Pengantin pria",
-    blurb: "Jenggot, rambut, beskap",
+    label: "Groom",
+    blurb: "Beard, hair, beskap",
     framings: ["groom", "groomOutfit"],
   },
 };
@@ -79,17 +79,17 @@ export const GUIDES: Record<
   }
 > = {
   beauty: {
-    label: "Setengah badan",
-    hint: "Pas-kan wajah ke oval, dan pastikan kedua bahu masuk frame.",
+    label: "Waist-up",
+    hint: "Fit the face to the oval, and keep both shoulders in frame.",
     // rx 0.12 of 768 => ~184px face width, comfortably over the 128px minimum.
     face: { cx: 0.5, cy: 0.2, rx: 0.12, ry: 0.155 },
   },
   outfit: {
-    label: "Seluruh badan",
-    hint: "Ujung kepala di garis atas, ujung kaki di garis bawah.",
+    label: "Full body",
+    hint: "Crown on the top line, feet on the bottom line.",
     lines: [
-      { y: 0.04, label: "ujung kepala" },
-      { y: 0.96, label: "ujung kaki" },
+      { y: 0.04, label: "crown" },
+      { y: 0.96, label: "feet" },
     ],
   },
   // The groom's two framings reuse the bride's geometry exactly. The API's
@@ -97,16 +97,16 @@ export const GUIDES: Record<
   // engine, not of who is standing in front of the camera — so the guide that
   // satisfies them is the same guide. Only the wording changes.
   groom: {
-    label: "Setengah badan",
-    hint: "Pas-kan wajah ke oval, dan pastikan rahang dan kedua bahu masuk frame.",
+    label: "Waist-up",
+    hint: "Fit the face to the oval, keeping the jawline and both shoulders in frame.",
     face: { cx: 0.5, cy: 0.2, rx: 0.12, ry: 0.155 },
   },
   groomOutfit: {
-    label: "Seluruh badan",
-    hint: "Ujung kepala di garis atas, ujung sepatu di garis bawah.",
+    label: "Full body",
+    hint: "Crown on the top line, shoes on the bottom line.",
     lines: [
-      { y: 0.04, label: "ujung kepala" },
-      { y: 0.96, label: "ujung sepatu" },
+      { y: 0.04, label: "crown" },
+      { y: 0.96, label: "shoes" },
     ],
   },
 };
@@ -240,7 +240,7 @@ async function rotate(bitmap: ImageBitmap, orientation: number): Promise<ImageBi
   canvas.width = w;
   canvas.height = h;
   const ctx = canvas.getContext("2d");
-  if (!ctx) throw new PhotoError("Browser tidak bisa memproses gambar ini.");
+  if (!ctx) throw new PhotoError("This browser cannot process the image.");
 
   // Standard EXIF orientation transforms.
   switch (orientation) {
@@ -282,18 +282,18 @@ export function validateCrop(
   const problems: string[] = [];
 
   if (photo.file.size > MAX_BYTES) {
-    problems.push("Ukuran filenya lebih dari 10 MB. Kecilkan dulu, atau foto ulang.");
+    problems.push("The file is over 10 MB. Shrink it, or take a new photo.");
   }
   if (crop.width < 1 || crop.height < 1) {
-    problems.push("Area yang dipilih kosong.");
+    problems.push("The selected area is empty.");
   }
 
   // How much the chosen region has to be blown up to fill 768x1024.
   const upscale = OUT_WIDTH / Math.max(crop.width, 1);
   if (upscale > MAX_UPSCALE) {
     problems.push(
-      "Fotonya kurang tajam untuk area sepotong ini. Ambil foto dari lebih dekat, " +
-        "atau pilih area yang lebih lebar.",
+      "The photo is not sharp enough for a crop this tight. Move closer, or " +
+        "select a wider area.",
     );
   }
 
@@ -320,7 +320,7 @@ export async function exportCrop(
   canvas.width = OUT_WIDTH;
   canvas.height = OUT_HEIGHT;
   const ctx = canvas.getContext("2d");
-  if (!ctx) throw new PhotoError("Browser tidak bisa memproses gambar ini.");
+  if (!ctx) throw new PhotoError("This browser cannot process the image.");
 
   ctx.imageSmoothingQuality = "high";
   // A photo cropped right to the edge would otherwise leave transparent
@@ -336,7 +336,7 @@ export async function exportCrop(
   const blob = await new Promise<Blob | null>((resolve) =>
     canvas.toBlob(resolve, "image/jpeg", 0.92),
   );
-  if (!blob) throw new PhotoError("Gagal menyimpan hasil crop.");
+  if (!blob) throw new PhotoError("Could not save the cropped image.");
 
   const name = (opts.name ?? photo.file.name).replace(/\.\w+$/, "") + ".jpg";
   return new File([blob], name, { type: "image/jpeg" });

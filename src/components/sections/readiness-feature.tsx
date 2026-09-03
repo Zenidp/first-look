@@ -19,22 +19,22 @@ import Container from "@/components/shared/container";
  */
 const VERDICTS = [
   {
-    label: "Siap",
+    label: "Ready",
     tone: "ready",
-    example: "Sanggul, 12 bulan lagi",
-    body: "Panjang dan teksturnya sudah memenuhi syarat gaya itu hari ini.",
+    example: "Sanggul, 12 months out",
+    body: "Length and texture already meet what that style needs, today.",
   },
   {
-    label: "Bisa dengan persiapan",
+    label: "Ready with preparation",
     tone: "prep",
-    example: "Gerai panjang, 12 bulan lagi",
-    body: "Kurang panjang, tapi waktunya cukup — dengan rencana bulan per bulan.",
+    example: "Long and loose, 12 months out",
+    body: "Short of length, but there is time — with a month-by-month plan.",
   },
   {
-    label: "Belum sampai",
+    label: "Not by then",
     tone: "late",
-    example: "Gerai panjang, 6 bulan lagi",
-    body: "Selisihnya tidak tertutup pada tanggal itu. Ada alternatif, dan ada angkanya.",
+    example: "Long and loose, 6 months out",
+    body: "The gap does not close by that date. Alternatives are offered, with the numbers.",
   },
 ] as const;
 
@@ -46,34 +46,34 @@ const TONE_CLASS = {
 
 export default function ReadinessFeature() {
   return (
-    <section id="kesiapan" className="scroll-mt-24 bg-night text-night-soft">
+    <section id="readiness" className="scroll-mt-24 bg-night text-night-soft">
       <Container width="wide" className="py-16 sm:py-24">
         <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
           <div>
             <p className="text-step--2 font-medium tracking-[0.18em] text-gold uppercase">
-              Yang tidak ditanyakan siapa pun
+              The question nobody asks
             </p>
             <h2 className="mt-4 font-display text-step-3 leading-tight font-normal text-paper">
-              Bukan cuma &ldquo;bagus atau tidak&rdquo;. Juga: rambutnya keburu atau
-              tidak.
+              Not just whether it suits her. Whether her hair can get there in
+               time.
             </h2>
             <p className="mt-5 max-w-prose text-step-0 leading-relaxed">
-              Tiga diagnosa membaca panjang, tipe dan kondisi rambutnya dari foto.
-              Lapisan aturan kami membandingkannya dengan gaya yang dia incar dan
-              sisa waktu sampai hari H, lalu menjawab dengan satu dari tiga vonis.
+              Three diagnostics read her hair’s length, type and condition from a
+              photo. Our own rule layer weighs those against the style she wants and
+              the time left before the wedding, and answers with one of three
+              verdicts.
             </p>
             <p className="mt-4 max-w-prose text-step-0 leading-relaxed">
-              Kalau jawabannya belum sampai, dia mendapat alternatif yang panjang
-              rambutnya sudah cukup, dan rencana bulan per bulan. Setiap ambang yang
-              memicu vonis itu bisa dibuka dan dibaca — sebuah &ldquo;kenapa&rdquo;
-              yang terlihat, bukan kotak hitam.
+              If the answer is no, she gets alternatives her current length already
+              reaches, and a month-by-month plan. Every threshold that fired can be
+              opened and read — a visible &ldquo;why&rdquo;, not a black box.
             </p>
 
             <Link
               href="/readiness"
               className="mt-8 inline-flex min-h-12 items-center rounded-control bg-paper px-6 text-step-0 font-medium text-ink no-underline transition-colors hover:bg-gold-tint"
             >
-              Coba dengan foto contoh
+              Try it with the sample photo
             </Link>
           </div>
 
@@ -93,9 +93,9 @@ export default function ReadinessFeature() {
               </li>
             ))}
             <li className="pt-2 text-step--2 leading-5">
-              Pertumbuhan dihitung dengan rata-rata 1,25 cm per bulan. API
-              mengembalikan kata, bukan ukuran, jadi hasilnya kisaran — dan halaman
-              itu mengatakannya sendiri.
+              Growth is estimated at an average 1.25 cm a month. The API returns a
+              word, not a measurement, so treat the result as a range — and the page
+              itself says so.
             </li>
           </ul>
         </div>

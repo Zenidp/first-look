@@ -14,64 +14,72 @@ import Container from "@/components/shared/container";
  */
 export const FAQ_ITEMS = [
   {
-    q: "Hasilnya benar-benar wajah saya, atau wajah model?",
+    q: "Is it really her face, or a model's?",
     a:
-      "Wajahmu. Tiap pilihan dijalankan ke fotomu sendiri, dan hasil satu langkah menjadi " +
-      "masukan langkah berikutnya, jadi yang keluar tetap satu foto dengan wajah, latar dan " +
-      "potongan yang sama. Pengecualiannya adalah halaman konsep prewedding, yang memang " +
-      "mengarang adegan baru dan diberi label AI di setiap gambarnya.",
+      "Hers. Every choice runs against her own photo, and each step's output becomes the " +
+      "next step's input, so what comes out is one picture with the same face, the same " +
+      "background and the same crop. The exception is the prewedding concept page, which " +
+      "deliberately invents a new scene and labels every image as AI-generated.",
   },
   {
-    q: "Apakah ini menggantikan trial rias?",
+    q: "Does this replace the trial?",
     a:
-      "Tidak. Ini memindahkan kesepakatan soal look ke sebelum trial. Tekstur kulit, daya " +
-      "tahan riasan seharian dan cara kain jatuh saat dipakai bergerak tetap hanya bisa " +
-      "diuji langsung. Yang hilang adalah trial yang dimulai tanpa arah yang disepakati.",
+      "No. It moves the agreement about the look to before the trial. Skin texture, how " +
+      "makeup holds over a long day, and how fabric moves when she does can only be tested " +
+      "in person. What disappears is the trial that starts with no agreed direction.",
   },
   {
-    q: "Fotonya harus seperti apa?",
+    q: "What kind of photo does it need?",
     a:
-      "Setengah badan, menghadap kamera, bahu terlihat, satu wajah saja, dan cahaya rata. " +
-      "Aplikasinya memandu pemotongan foto sebelum apa pun diunggah, jadi foto yang akan " +
-      "ditolak mesin ketahuan lebih dulu tanpa biaya.",
+      "Waist-up, facing the camera, shoulders visible, one face only, even light. The app " +
+      "guides the crop before anything is uploaded, so a photo the engine would reject is " +
+      "caught first, at no cost.",
   },
   {
-    q: "Kenapa rambut harus tergerai untuk cek kesiapan?",
+    q: "Why does hair have to be down for the readiness check?",
     a:
-      "Karena diagnosanya menjawab tentang fotonya, bukan tentang orangnya. Terukur pada " +
-      "model yang sama: rambut yang disanggul terbaca satu tingkat lebih lurus daripada " +
-      "rambut yang sama saat tergerai. Vonis yang berubah karena cara dia menata rambut " +
-      "pagi itu bukan vonis.",
+      "Because the diagnostic answers about the photograph, not about the person. Measured " +
+      "on the same model: hair in a bun reads a full band straighter than the same hair worn " +
+      "loose. A verdict that changes with how she happened to tie her hair that morning is " +
+      "not a verdict.",
   },
   {
-    q: "Apakah bisa untuk pengantin berhijab?",
+    q: "Does it work for a bride in hijab?",
     a:
-      "Bisa. Pustaka busananya memuat dua look hijab — kebaya hijab modern dan gaun syar'i " +
-      "Aceh — dan keduanya lewat jalur try-on busana yang sama seperti kebaya lainnya.",
+      "Yes. The garment library includes two hijab looks — a modern hijab kebaya and an " +
+      "Acehnese gaun syar'i — and both run through the same garment try-on path as every " +
+      "other kebaya.",
   },
   {
-    q: "Foto saya disimpan?",
+    q: "Is there a groom's version?",
     a:
-      "Tidak ada akun dan tidak ada galeri. Foto diunggah untuk diproses, dan hasil " +
-      "pemrosesan disimpan sebagai cache supaya look yang sama tidak ditagih dua kali. " +
-      "Berkas di sisi penyedia API kedaluwarsa sendiri sesuai ketentuan mereka.",
+      "Yes, and it is a first-class path rather than a variation. Beskap, haircut and beard " +
+      "stack onto his photo in the same order, with four regional groom garments from Java, " +
+      "Sunda and Minang plus a modern suit.",
   },
   {
-    q: "Kenapa ada yang butuh beberapa detik?",
+    q: "Are photos stored?",
     a:
-      "Karena panggilannya nyata. Satu lapisan try-on rata-rata 7,4 detik dan klip video " +
-      "lima detik butuh sekitar satu menit. Look yang sudah pernah dibuat tampil " +
-      "seketika dari cache.",
+      "There are no accounts and no gallery. A photo is uploaded to be processed, and the " +
+      "result is cached so the same look is never billed twice. Files on the API provider's " +
+      "side expire on their own schedule.",
+  },
+  {
+    q: "Why does some of it take a few seconds?",
+    a:
+      "Because the calls are real. One try-on layer averages 7.4 seconds and a five-second " +
+      "video clip takes about a minute. A look that has been built before appears instantly " +
+      "from cache.",
   },
 ];
 
 export default function Faq() {
   return (
-    <section id="tanya" className="scroll-mt-24 border-b border-line bg-surface">
+    <section id="faq" className="scroll-mt-24 border-b border-line bg-surface">
       <Container width="wide" className="py-16 sm:py-24">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <h2 className="font-display text-step-3 leading-tight font-normal text-ink">
-            Pertanyaan yang biasanya muncul.
+            The questions that usually come up.
           </h2>
 
           <div className="border-t border-line">

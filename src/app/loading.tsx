@@ -13,7 +13,7 @@ export default function Loading() {
       aria-live="polite"
       className="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8"
     >
-      <span className="sr-only">Memuat…</span>
+      <span className="sr-only">Loading…</span>
       <div aria-hidden="true" className="grid gap-12 lg:grid-cols-[1fr_1.05fr]">
         <div className="max-w-xl">
           <div className="h-[3.2rem] w-full rounded-card bg-surface-2" />

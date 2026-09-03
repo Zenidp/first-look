@@ -19,88 +19,88 @@ const RULES: Rule[] = [
   {
     match: /error_src_face_too_small|face.*too small/i,
     message:
-      "Wajahnya terlalu kecil di foto ini. Pakai crop terpandu dan pas-kan wajah ke oval, " +
-      "atau ambil foto dari lebih dekat.",
+      "The face is too small in this photo. Use the guided crop and fit the face to the " +
+      "oval, or take the picture from closer in.",
   },
   {
     match: /error_src_no_face|no.*face.*detect/i,
-    message: "Tidak ada wajah yang terdeteksi. Pastikan wajahnya menghadap kamera dan tidak terhalang.",
+    message: "No face was detected. Make sure the face is toward the camera and unobstructed.",
   },
   {
     match: /error_src_large_face_angle|error_face_angle_invalid|face.*angle/i,
     message:
-      "Wajahnya terlalu menyerong. Butuh foto menghadap lurus ke kamera, kepala tegak tanpa miring.",
+      "The face is turned too far. This needs a photo looking straight at the camera, head upright and untilted.",
   },
   {
     match: /error_src_eye_closed/i,
-    message: "Matanya terpejam di foto ini. Pilih foto dengan kedua mata terbuka jelas.",
+    message: "The eyes are closed in this photo. Choose one with both eyes clearly open.",
   },
   {
     match: /error_src_eye_occluded|error_src_lip_occluded/i,
     message:
-      "Ada yang menutupi mata atau bibirnya — rambut, tangan, atau kacamata. " +
-      "Pakai foto dengan wajah bersih.",
+      "Something is covering the eyes or lips — hair, a hand, or glasses. " +
+      "Use a photo with the face clear.",
   },
 
   // --- specific features -----------------------------------------------------
   {
     match: /earlobe alignment/i,
     message:
-      "Telinganya tertutup rambut, jadi antingnya tidak bisa dipasang. " +
-      "Pilih model rambut sanggul, atau lewati antingnya.",
+      "The ears are covered by hair, so the earrings cannot be placed. " +
+      "Choose an updo, or skip the earrings.",
   },
   {
     match: /error_no_teeth/i,
-    message: "Giginya tidak terlihat. Pemutihan gigi butuh foto dengan senyum terbuka.",
+    message: "No teeth are visible. Whitening needs a photo with an open smile.",
   },
   {
     match: /error_nail_too_small/i,
-    message: "Kukunya terlalu kecil di frame. Butuh foto makro yang didominasi tangan.",
+    message: "The nails are too small in frame. This needs a macro shot dominated by the hand.",
   },
   {
     match: /hand pose/i,
     message:
-      "Posisi tangannya belum pas. Satu tangan saja, tegak, punggung tangan menghadap kamera, " +
-      "pergelangan ikut masuk frame.",
+      "The hand pose is off. One hand only, upright, back of the hand toward the camera, " +
+      "with the wrist in frame.",
   },
   {
     match: /wrist/i,
     message:
-      "Posisi pergelangannya belum pas. Lengan tegak lurus dengan pergelangan menghadap kamera, " +
-      "bukan menyamping.",
+      "The wrist position is off. Hold the arm vertical with the wrist facing the camera, " +
+      "not side-on.",
   },
 
   // --- the reference image ---------------------------------------------------
   {
     match: /error_ref_face_too_small|error_inappropriate_ref/i,
     message:
-      "Foto referensinya tidak memenuhi syarat — biasanya terlalu kecil, menyerong, " +
-      "atau wajahnya tertutup rambut. Pakai foto referensi yang besar dan menghadap depan.",
+      "The reference photo does not qualify — usually too small, turned away, or with the " +
+      "face covered by hair. Use a large, front-facing reference.",
   },
-  { match: /error_ref_no_face/i, message: "Tidak ada wajah di foto referensinya." },
+  { match: /error_ref_no_face/i, message: "There is no face in the reference photo." },
 
   // --- request-level, and free -----------------------------------------------
   {
     match: /InvalidTemplate/i,
-    message: "Pilihan itu sudah tidak ada di katalog. Pilih yang lain.",
+    message: "That option is no longer in the catalogue. Choose another.",
   },
   {
     match: /OfflineCacheMiss/i,
     message:
-      "Mode hemat aktif: kombinasi ini belum tersimpan, jadi tidak dijalankan. " +
-      "Tidak ada unit yang terpakai.",
+      "Saver mode is on: this combination is not cached, so it was not run. " +
+      "Nothing was spent.",
   },
   {
     match: /PollTimeout/i,
-    message: "Prosesnya terlalu lama dan dihentikan. Coba lagi sebentar lagi.",
+    message: "It took too long and was stopped. Try again shortly.",
   },
   {
     match: /MissingApiKey/i,
-    message: "Konfigurasi server belum lengkap. Hubungi pengelola aplikasi.",
+    message: "The server is not fully configured. Contact whoever runs the app.",
   },
   {
     match: /rate limit|429/i,
-    message: "Terlalu banyak permintaan sekaligus. Tunggu sebentar lalu coba lagi.",
+    message: "Too many requests at once. Wait a moment and try again.",
   },
 ];
 
@@ -117,8 +117,8 @@ export function explain(code?: string, message?: string): string {
   // Nothing matched. Say so plainly and keep the original, rather than invent a
   // reason — an unrecognised failure is exactly when the raw text is worth most.
   return message?.trim()
-    ? `Langkah ini gagal: ${message.trim()}`
-    : "Langkah ini gagal karena sebab yang tidak dikenali.";
+    ? `This step failed: ${message.trim()}`
+    : "This step failed for a reason we do not recognise.";
 }
 
 /**

@@ -26,31 +26,31 @@ export default function Nusantara() {
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <h2 className="font-display text-step-3 leading-tight font-normal text-ink">
-              Katalog bawaannya tidak punya satu pun kebaya.
+              The built-in catalogue does not contain a single kebaya.
             </h2>
             <p className="mt-5 max-w-prose text-step-0 leading-relaxed text-ink-soft">
-              Itu bukan tebakan, itu hasil audit: tiga look pengantin dan empat gaun,
-              semuanya Barat. Untuk pasar yang menikah dengan kebaya, songket dan
-              ulos, katalog itu kosong.
+              That is an audit result, not a guess: three bridal looks and four
+              gowns, all Western. For a market that marries in kebaya, songket and
+              ulos, the catalogue is empty.
             </p>
             <p className="mt-4 max-w-prose text-step-0 leading-relaxed text-ink-soft">
-              Jadi busana dan makeup daerah tidak diambil dari katalog. Keduanya
-              masuk lewat gambar referensi sendiri — dan Indonesia dibaca sebagai
-              beberapa estetika, bukan satu. Paes ageng Yogyakarta, siger Sunda dan
-              suntiang Minang adalah siluet, hiasan kepala dan riasan yang berbeda.
+              So the regional garments and makeup do not come from a catalogue at
+              all. Both enter through our own reference images — and Indonesia is
+              read as several aesthetics rather than one. Paes ageng from Yogyakarta,
+              the Sundanese siger and Minang suntiang are different silhouettes,
+              different headpieces and different makeup entirely.
             </p>
             <p className="mt-4 max-w-prose text-step-0 leading-relaxed text-ink-soft">
-              Dan pernikahan itu dua orang. Pengantin pria punya jalurnya sendiri —
-              beskap, potongan rambut dan jenggot, ditumpuk ke fotonya dengan urutan
-              yang sama. Kain batik parang yang sama mengalir di kebaya dan di
-              beskapnya, karena begitulah sepasang pengantin Jawa sebenarnya
-              berpakaian.
+              And a wedding has two people in it. The groom has his own path —
+              beskap, haircut and beard, stacked onto his photo in the same order.
+              The same batik parang runs through her kebaya and his beskap, because
+              that is how a Javanese couple actually dresses.
             </p>
 
             <div className="mt-8 grid gap-6 sm:grid-cols-2">
               {[
-                { heading: "Pengantin wanita", items: GARMENTS },
-                { heading: "Pengantin pria", items: GROOM_GARMENTS },
+                { heading: "Bride", items: GARMENTS },
+                { heading: "Groom", items: GROOM_GARMENTS },
               ].map((column) => (
                 <div key={column.heading}>
                   <h3 className="text-step--2 font-medium tracking-wide text-ink">
@@ -86,7 +86,7 @@ export default function Nusantara() {
               <div className="relative aspect-3/4 overflow-hidden rounded-frame border border-line bg-surface shadow-frame">
                 <Image
                   src="/fixtures/8ff00575b06c290b8e205605f22c4d41.jpg"
-                  alt="Hasil try-on seluruh badan pada pengantin wanita: kebaya renda gading berlengan panjang di atas kain batik parang cokelat."
+                  alt="A full-body try-on on the bride: a long-sleeved ivory lace kebaya over a brown batik parang wrap."
                   fill
                   sizes="(min-width: 1024px) 15rem, 45vw"
                   className="object-cover"
@@ -95,7 +95,7 @@ export default function Nusantara() {
               <div className="relative aspect-3/4 overflow-hidden rounded-frame border border-line bg-surface shadow-frame">
                 <Image
                   src="/fixtures/ef2a0bf1203c6cc46842d69bf1706914.jpg"
-                  alt="Hasil try-on seluruh badan pada pengantin pria: beskap beludru biru tua di atas kain batik parang yang sama."
+                  alt="A full-body try-on on the groom: a deep navy velvet beskap over the same batik parang wrap."
                   fill
                   sizes="(min-width: 1024px) 15rem, 45vw"
                   className="object-cover"
@@ -123,9 +123,9 @@ export default function Nusantara() {
             </div>
 
             <figcaption className="mt-4 text-step--2 leading-5 text-ink-faint">
-              Referensi busana di atas adalah gambar sintetis yang dibuat untuk
-              proyek ini, bukan karya perancang sungguhan. Kedua foto di
-              sebelahnya adalah keluaran API yang sebenarnya.
+              The garment references above are synthetic images made for this
+              project, not real designers’ work. The two photographs beside them are
+              genuine API output.
             </figcaption>
           </figure>
         </div>

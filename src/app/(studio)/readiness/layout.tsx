@@ -4,10 +4,10 @@ import JsonLd from "@/components/shared/json-ld";
 import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "Kesiapan rambut pengantin",
+  title: "Bridal hair readiness",
   description:
-    "Panjang, tipe dan kondisi rambut dibaca dari foto, lalu dibandingkan dengan gaya " +
-    "yang diincar dan tanggal pernikahan. Tiga vonis, alternatif, dan rencana bulan per bulan.",
+    "Hair length, type and condition are read from a photo, then weighed against the " +
+    "target style and the wedding date. Three verdicts, alternatives, and a month-by-month plan.",
   path: "/readiness",
 });
 
@@ -17,8 +17,8 @@ export default function ReadinessLayout({ children }: { children: ReactNode }) {
       {children}
       <JsonLd
         data={breadcrumbSchema([
-          { name: "Beranda", path: "/" },
-          { name: "Kesiapan rambut", path: "/readiness" },
+          { name: "Home", path: "/" },
+          { name: "Hair readiness", path: "/readiness" },
         ])}
       />
     </>

@@ -87,7 +87,7 @@ export default function StepPicker({
       })
       .catch(() => {
         if (cancelled) return;
-        setError("Katalognya gagal dimuat.");
+        setError("The catalogue could not be loaded.");
         setFetched(true);
       })
       .finally(() => {
@@ -126,7 +126,7 @@ export default function StepPicker({
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium text-ink">{slot.label}</p>
           <p className="truncate text-xs text-ink-faint">
-            {value ? value.label : slot.optional ? "Belum dipilih (boleh dilewati)" : "Wajib dipilih"}
+            {value ? value.label : slot.optional ? "Not chosen (optional)" : "Required"}
           </p>
         </div>
 
@@ -136,14 +136,14 @@ export default function StepPicker({
               onClick={() => onChange(undefined)}
               className="rounded-md px-2 py-1.5 text-xs font-medium text-ink-faint hover:bg-surface"
             >
-              Hapus
+              Remove
             </button>
           )}
           <button
             onClick={() => setOpen((o) => !o)}
             className="rounded-md border border-line-strong px-3 py-1.5 text-xs font-medium text-ink-soft hover:bg-surface"
           >
-            {open ? "Tutup" : value ? "Ganti" : "Pilih"}
+            {open ? "Close" : value ? "Change" : "Choose"}
           </button>
         </div>
       </div>
@@ -160,7 +160,7 @@ export default function StepPicker({
 
       {open && (
         <div className="mt-3">
-          {loading && <p className="text-xs text-ink-faint">Memuat katalog…</p>}
+          {loading && <p className="text-xs text-ink-faint">Loading catalogue…</p>}
           {error && <p className="text-xs text-late">{error}</p>}
 
           {slot.source === "template" && templates.length > 0 && (
@@ -225,7 +225,7 @@ export default function StepPicker({
 
           {!loading && !error && slot.source === "reference" && refs.length === 0 && (
             <p className="text-xs text-ink-faint">
-              Belum ada pilihan untuk slot ini di pustaka referensi.
+              Nothing in the reference library fits this slot yet.
             </p>
           )}
         </div>

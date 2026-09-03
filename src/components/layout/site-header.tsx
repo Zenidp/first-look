@@ -96,7 +96,7 @@ export default function SiteHeader() {
       >
         <Logo />
 
-        <nav aria-label="Utama" className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
           {primaryNav.map((item) => (
             <Link
               key={item.href}
@@ -126,10 +126,10 @@ export default function SiteHeader() {
             type="button"
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
-            aria-controls="menu-utama"
+            aria-controls="main-menu"
             className="-mr-2 flex size-11 items-center justify-center rounded-control text-ink md:hidden"
           >
-            <span className="sr-only">{open ? "Tutup menu" : "Buka menu"}</span>
+            <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
             <svg
               viewBox="0 0 24 24"
               className="size-6"
@@ -152,7 +152,7 @@ export default function SiteHeader() {
       {open && (
         <div
           ref={panelRef}
-          id="menu-utama"
+          id="main-menu"
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
@@ -164,7 +164,7 @@ export default function SiteHeader() {
            * second render pass, and leaves the overlay covering the page it
            * just asked for during the gap.
            */}
-          <nav aria-label="Utama (ponsel)" className="flex flex-col">
+          <nav aria-label="Main (mobile)" className="flex flex-col">
             {primaryNav.map((item) => (
               <Link
                 key={item.href}

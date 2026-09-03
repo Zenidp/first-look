@@ -12,29 +12,29 @@ import Container from "@/components/shared/container";
 const FACTS = [
   {
     figure: "31",
-    unit: "API terpasang",
-    note: "Try-on, generatif dan diagnosa, semuanya versi terbaru.",
+    unit: "APIs wired up",
+    note: "Try-on, generative and diagnostic — every one on its newest version.",
   },
   {
     figure: "5",
-    unit: "lapis di satu foto",
-    note: "Busana, rambut, makeup, kalung, anting — berurutan, satu frame.",
+    unit: "layers, one photo",
+    note: "Garment, hair, makeup, necklace, earrings — in sequence, one frame.",
   },
   {
     figure: "17",
-    unit: "referensi Nusantara",
-    note: "12 busana daerah — pengantin wanita dan pria — dan 5 makeup pengantin.",
+    unit: "Nusantara references",
+    note: "12 regional garments for bride and groom, and 5 bridal makeup looks.",
   },
   {
-    figure: "7,4 dtk",
-    unit: "per lapisan, terukur",
-    note: "Rata-rata satu panggilan try-on dari unggah sampai hasil.",
+    figure: "7.4s",
+    unit: "per layer, measured",
+    note: "Average for one try-on call, from upload to finished image.",
   },
 ];
 
 export default function ProofStrip() {
   return (
-    <section aria-label="Angka yang terukur" className="border-b border-line bg-surface">
+    <section aria-label="Measured figures" className="border-b border-line bg-surface">
       <Container width="wide" className="py-10 sm:py-12">
         <dl className="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
           {FACTS.map((fact) => (

@@ -202,8 +202,8 @@ export const LOOK_RECIPES: LookRecipe[] = [
     id: "jawa-klasik",
     label: "Beauty look",
     blurb:
-      "Kebaya, sanggul, makeup, kalung dan anting ditumpuk di satu foto yang sama. " +
-      "Wajahnya yang jadi subjek.",
+      "Kebaya, sanggul, makeup, necklace and earrings stacked onto the same photo. " +
+      "Her face is the subject.",
     photo: "half-body.jpg",
     steps: [
       {
@@ -239,12 +239,12 @@ export const LOOK_RECIPES: LookRecipe[] = [
       },
       {
         feature: "necklace",
-        label: "Kalung",
+        label: "Necklace",
         referenceId: "necklace-gold-collar",
       },
       {
         feature: "earrings",
-        label: "Anting",
+        label: "Earrings",
         referenceId: "earring-gold-drop",
       },
     ],
@@ -267,10 +267,10 @@ export const LOOK_RECIPES: LookRecipe[] = [
    */
   {
     id: "jawa-klasik-outfit",
-    label: "Bajunya, saat dipakai",
+    label: "The outfit, worn",
     blurb:
-      "Kebaya dan kain di seluruh badan, lalu digerakkan — untuk melihat jatuhnya " +
-      "bahan, panjang kain dan siluetnya.",
+      "Kebaya and kain at full length, then animated — to see how the fabric falls, " +
+      "how long the kain is, and the silhouette.",
     photo: "full-body.jpg",
     steps: [
       {
@@ -293,10 +293,10 @@ export const LOOK_RECIPES: LookRecipe[] = [
    */
   {
     id: "jawa-groom",
-    label: "Look pengantin pria",
+    label: "Groom look",
     blurb:
-      "Beskap, potongan rambut dan jenggot ditumpuk di satu foto yang sama — " +
-      "urutan yang sama seperti look pengantin wanita.",
+      "Beskap, haircut and beard stacked onto the same photo — the same order as " +
+      "the bride's look.",
     photo: "groom-half-body.jpg",
     steps: [
       {
@@ -307,7 +307,7 @@ export const LOOK_RECIPES: LookRecipe[] = [
       },
       {
         feature: "hairStyle",
-        label: "Rambut",
+        label: "Hair",
         // hairColor 'src' for the same reason as the bride's updo: without it
         // the template drags its own colour along, and a black-haired groom
         // comes back several shades lighter than he went in.
@@ -317,7 +317,7 @@ export const LOOK_RECIPES: LookRecipe[] = [
         // Beard last. It repaints the jaw, so any step after it would be
         // painting over a beard it has no knowledge of.
         feature: "beardStyle",
-        label: "Jenggot",
+        label: "Beard",
         options: { templateId: "all_goatee" },
       },
     ],
@@ -325,10 +325,10 @@ export const LOOK_RECIPES: LookRecipe[] = [
 
   {
     id: "jawa-groom-outfit",
-    label: "Beskapnya, saat dipakai",
+    label: "The beskap, worn",
     blurb:
-      "Beskap dan kain di seluruh badan, lalu digerakkan — untuk melihat jatuhnya " +
-      "bahan dan siluetnya.",
+      "Beskap and kain at full length, then animated — to see how the fabric falls " +
+      "and the silhouette.",
     photo: "groom-full-body.jpg",
     steps: [
       {
@@ -353,7 +353,7 @@ export function getRecipe(id: string): LookRecipe | undefined {
  * out.
  */
 export const DETAIL_STEPS: LookStep[] = [
-  { feature: "ring", label: "Cincin", referenceId: "ring-gold-solitaire" },
-  { feature: "bracelet", label: "Gelang", referenceId: "bracelet-gold-cuff" },
+  { feature: "ring", label: "Ring", referenceId: "ring-gold-solitaire" },
+  { feature: "bracelet", label: "Bracelet", referenceId: "bracelet-gold-cuff" },
 ];
 

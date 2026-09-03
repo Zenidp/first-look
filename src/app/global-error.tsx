@@ -16,7 +16,7 @@ export default function GlobalError({
   retry: () => void;
 }) {
   return (
-    <html lang="id">
+    <html lang="en">
       <body
         style={{
           margin: 0,
@@ -32,11 +32,11 @@ export default function GlobalError({
       >
         <div style={{ maxWidth: "34rem" }}>
           <h1 style={{ fontSize: "1.75rem", lineHeight: 1.2, margin: 0 }}>
-            First Look sedang bermasalah.
+            First Look is having trouble.
           </h1>
           <p style={{ marginTop: "1rem", lineHeight: 1.6, color: "#5a5049" }}>
-            Aplikasinya gagal dimuat sepenuhnya. Muat ulang biasanya cukup; kalau
-            tidak, coba lagi beberapa menit lagi.
+            The app failed to load completely. A reload usually fixes it; if not,
+            try again in a few minutes.
           </p>
           <button
             type="button"
@@ -53,11 +53,11 @@ export default function GlobalError({
               cursor: "pointer",
             }}
           >
-            Muat ulang
+            Reload
           </button>
           {error.digest && (
             <p style={{ marginTop: "2rem", fontSize: "0.8rem", color: "#7a6f66" }}>
-              Kode kejadian: {error.digest}
+              Incident code: {error.digest}
             </p>
           )}
         </div>

@@ -79,7 +79,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   // ---- Busana: kebaya & traditional ---------------------------------------
   {
     id: "kebaya-jawa-klasik",
-    label: "Kebaya Jawa klasik",
+    label: "Classic Javanese kebaya",
     region: "Jawa",
     use: "clothes",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -88,7 +88,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "kebaya-sunda-siger",
-    label: "Kebaya Sunda",
+    label: "Sundanese kebaya",
     region: "Sunda",
     use: "clothes",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -96,7 +96,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "baju-kurung-minang",
-    label: "Baju kurung Minang",
+    label: "Minang baju kurung",
     region: "Minang",
     use: "clothes",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -105,7 +105,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "payas-agung-bali",
-    label: "Payas agung Bali",
+    label: "Balinese payas agung",
     region: "Bali",
     use: "clothes",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -113,7 +113,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "baju-bodo-bugis",
-    label: "Baju bodo Bugis",
+    label: "Bugis baju bodo",
     region: "Bugis",
     use: "clothes",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -121,7 +121,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "ulos-batak",
-    label: "Ulos Batak",
+    label: "Batak ulos",
     region: "Batak",
     use: "clothes",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -134,7 +134,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   // `clothes` (cloth-v4) as a full-body garment reference instead.
   {
     id: "kebaya-hijab-modern",
-    label: "Kebaya hijab modern",
+    label: "Modern hijab kebaya",
     region: "Nasional",
     use: "clothes",
     hijab: true,
@@ -144,7 +144,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "gaun-syari-aceh",
-    label: "Gaun syar'i Aceh",
+    label: "Acehnese gaun syar'i",
     region: "Aceh",
     use: "clothes",
     hijab: true,
@@ -162,7 +162,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   // jacket over a bare chest.
   {
     id: "beskap-jawa-groom",
-    label: "Beskap Jawa",
+    label: "Javanese beskap",
     region: "Jawa",
     use: "clothes",
     groom: true,
@@ -172,7 +172,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "beskap-sunda-groom",
-    label: "Beskap Sunda",
+    label: "Sundanese beskap",
     region: "Sunda",
     use: "clothes",
     groom: true,
@@ -181,7 +181,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "baju-minang-groom",
-    label: "Baju pengantin Minang",
+    label: "Minang groom's dress",
     region: "Minang",
     use: "clothes",
     groom: true,
@@ -190,7 +190,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "jas-pengantin-modern",
-    label: "Jas pengantin modern",
+    label: "Modern wedding suit",
     region: "Nasional",
     use: "clothes",
     groom: true,
@@ -205,7 +205,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   // see FINDINGS.md §2 before shooting these.
   {
     id: "paes-ageng-jogja",
-    label: "Paes ageng Yogyakarta",
+    label: "Paes ageng, Yogyakarta",
     region: "Jawa",
     use: "makeupTransfer",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -214,7 +214,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "makeup-sunda-siger",
-    label: "Makeup pengantin Sunda",
+    label: "Sundanese bridal makeup",
     region: "Sunda",
     use: "makeupTransfer",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -222,7 +222,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "makeup-minang-suntiang",
-    label: "Makeup Minang suntiang",
+    label: "Minang suntiang makeup",
     region: "Minang",
     use: "makeupTransfer",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -230,7 +230,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "makeup-bali-payas",
-    label: "Makeup payas agung Bali",
+    label: "Balinese payas agung makeup",
     region: "Bali",
     use: "makeupTransfer",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -238,7 +238,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "makeup-betawi-none",
-    label: "Makeup pengantin Betawi",
+    label: "Betawi bridal makeup",
     region: "Betawi",
     use: "makeupTransfer",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -248,7 +248,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   // Not regional: these are generic bridal pieces used to prove the endpoints.
   {
     id: "earring-gold-drop",
-    label: "Anting emas menjuntai",
+    label: "Gold drop earrings",
     region: "Nasional",
     use: "earrings",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -256,7 +256,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "necklace-gold-collar",
-    label: "Kalung emas kolar",
+    label: "Gold collar necklace",
     region: "Nasional",
     use: "necklace",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -264,7 +264,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "ring-gold-solitaire",
-    label: "Cincin emas solitaire",
+    label: "Gold solitaire ring",
     region: "Nasional",
     use: "ring",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -273,7 +273,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "bracelet-gold-cuff",
-    label: "Gelang emas",
+    label: "Gold bracelet",
     region: "Nasional",
     use: "bracelet",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
@@ -287,7 +287,7 @@ export const REFERENCE_LIBRARY: ReferenceItem[] = [
   },
   {
     id: "lens-hazel",
-    label: "Lensa hazel",
+    label: "Hazel contact lenses",
     region: "Nasional",
     use: "eyeColor",
     credit: "Generated with Gemini 2.5 Flash Image (Vertex AI), 31 Aug 2026",
